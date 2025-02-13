@@ -72,11 +72,11 @@
 \newcommand{\druh}{Diplomová práce} % nebo "Diplomová práce"
 \newcommand{\woman}{} % pokud jste ŽENA, ZMĚŇTE na: ...{\woman}{a} (je to do Prohlášení)
 
-\newcommand{\logoCVUT}{\includegraphics{symbol_cvut_konturova_verze_cb.pdf}} % logo ČVUT -- podle grafického manuálu ČVUT platného od prosince 2016. Pokud nevyhovuje PDF-verze, tak použijte jinou variantu loga: https://www.cvut.cz/logo-a-graficky-manual -> "Symbol a logo ČVUT v Praze"). Pokud chcete logo úplně vynechat, zadejte místo "\includegraphics{...}" text "\vspace{35mm}"
+\newcommand{\logoCVUT}{\includegraphics{pictures/symbol_cvut_konturova_verze_cb.pdf}} % logo ČVUT -- podle grafického manuálu ČVUT platného od prosince 2016. Pokud nevyhovuje PDF-verze, tak použijte jinou variantu loga: https://www.cvut.cz/logo-a-graficky-manual -> "Symbol a logo ČVUT v Praze"). Pokud chcete logo úplně vynechat, zadejte místo "\includegraphics{...}" text "\vspace{35mm}"
 
 % přesně podle formuláře "Zadání bak./dipl. práce" VYPLŇTE:
-\newcommand{\nazevcz}{Vývoj QGIS zásuvného modulu pro potřeby výpočtu objemu přímého odtoku metodou SCS-CN}    % český název práce (přesně podle zadání!)
-\newcommand{\nazeven}{Development of a QGIS plugin for calculating direct runoff volume using the SCS-CN method}          % anglický název práce (přesně podle zadání!)
+\newcommand{\nazevcz}{Vývoj QGIS zásuvného modulu pro potřeby analýzy odtokových poměrů metodou SCS-CN}    % český název práce (přesně podle zadání!)
+\newcommand{\nazeven}{Development of a QGIS plugin for runoff analysis using the SCS-CN method}          % anglický název práce (přesně podle zadání!)
 \newcommand{\autor}{Bc. Josef Jehlička}   % vyplňte své jméno a příjmení (s akademickým titulem, máte-li jej)
 \newcommand{\vedouci}{Ing. Martin Landa, Ph.D.} % vyplňte jméno a příjmení vedoucího práce, včetně titulů, např.: Doc. Ing. Ivo Malý, Ph.D.
 \newcommand{\pracovisteVed}{\ksi, \fjfi, \cvut} % ZMĚŇTE, pokud vedoucí Vaší práce není z KSI
@@ -205,25 +205,25 @@
 
 \section*{ABSTRAKT}
 \begin{flushleft}
-Tato práce popisuje vývoj zásuvného modulu open source softwaru QGIS, který provádí analýzu SNS-CN na automatizovaně získávaných českých datech jako jsou například ZABAGED nebo LPIS. Data jsou ohodnocena podle způsobu využití území a v kombinaci s daty hydrologicých skupin půd a hodnotou úhrnu návrhové srážky vstupují do analýzy.  
+Tato práce popisuje vývoj zásuvného modulu open-source softwaru QGIS, který provádí přípravu dat a následnou analýzu odtoků SCS-CN  na automatizovaně získávaných volně dostupných geo datech v ČR jako jsou ZABAGED, LPIS, RÚIAN a data poskytovaná projektem rain.fsv.cvut.cz. Data jsou ohodnocena podle způsobu využití území a v kombinaci s daty hydrologických skupin půd a hodnotou úhrnu návrhové srážky vstupují do následné analýzy. 
 \end{flushleft}
 
 
 \section*{KLÍČOVÁ SLOVA}
 \begin{flushleft}
-QGIS, SNS-CN, zásuvný modul, Python, odtok, povodí, GIS, ZABAGED, LPIS 
+QGIS, SCS-CN, využití území, zásuvný modul, Python, odtok, povodí, GIS, ZABAGED, LPIS
 \end{flushleft}
 
 
 \section*{ABSTRACT}
 \begin{flushleft}
-This master's thesis describes the development of a plugin for the open-source software QGIS, which performs SCS-CN analysis on automatically obtained Czech data, such as ZABAGED or LPIS. The data are evaluated based on land use and, in combination with data on hydrologic soil groups and the design rainfall amount, serve as inputs for the analysis.
+This master's thesis describes the development of a plugin for the open-source software QGIS, which performs data preparation and subsequent runoff analysis using the SCS-CN method on automatically acquired freely available geodata in the Czech Republic, such as ZABAGED, LPIS, RÚIAN, and data provided by the rain.fsv.cvut.cz project. The data are evaluated based on land use and, in combination with data on hydrologic soil groups and the total design rainfall amount, serve as inputs for the subsequent analysis.
 \end{flushleft}
 
 
 \section*{KEY WORDS}
 \begin{flushleft}
-QGIS, SNS-CN, plugin, Python, runoff, watershed, GIS, ZABAGED, LPIS 
+QGIS, SCS-CN, land use, plugin, Python, runoff, watershed, GIS, ZABAGED, LPIS
 \end{flushleft}
 
 
@@ -297,8 +297,8 @@ V \kde\ dne .................... &........................................ \\	% 
 \chapter*{Úvod} \label{uvod}
 
 \newpage
-\chapter{Meotda SNS-CN} \label{SNSCN}
-\hspace{10mm} Metoda odtokových křivek (SNS-CN) se používá pro určení objemu přímého odtoku při návrhových přívalových deštích. Výhody této metody spočívají v její jednoduchosti a schopnosti reagovat na vlastnosti povodí jako je typ půdy či využití pozemku (land use). Metoda byla vyvinuta v roce 1954 a publikována v roce 1986 organizací USDA Natural Resources Conservation Service (dříve nazývána Soil Conservation Service). [1] Vývoj probíhal na empirických datech získaných v USA, nicméně později byla modifikována na různé typy využití pozemku typické i pro jiné podmínky. [2][3]
+\chapter{Meotda SCS-CN} \label{SCSCN}
+\hspace{10mm} Metoda odtokových křivek (SCS-CN) se používá pro určení objemu přímého odtoku při návrhových přívalových deštích. Výhody této metody spočívají v její jednoduchosti a schopnosti reagovat na vlastnosti povodí jako je typ půdy či využití pozemku (land use). Metoda byla vyvinuta v roce 1954 a publikována v roce 1986 organizací USDA Natural Resources Conservation Service (dříve nazývána Soil Conservation Service). [1] Vývoj probíhal na empirických datech získaných v USA, nicméně později byla modifikována na různé typy využití pozemku typické i pro jiné podmínky. [2][3]
 
 \hspace{10mm} Tato metoda může být využita i v menších částech jednotlivých povodí, jejichž rozloha by neměla překročit 10 $km^{2}$ a není vhodná pro výpočet odtoku z tání sněhu. V České republice se využívá hlavně pro návrhy protierozních opatření, a to v souladu s ČSN 75 1300. [4]
 
@@ -410,7 +410,7 @@ hranici potenciální retence, což by znamenalo, že takové povodí je nekone�
 
 
 \chapter{Datové zdroje} \label{data}
-\hspace{10mm} Vstupem pro metodu SNS-CN .... 
+\hspace{10mm} Vstupem pro metodu SCS-CN .... 
 
 \section{ZABAGED\texorpdfstring{\textsuperscript{\textregistered}}{ (R)}} \label{zabaged}
 
@@ -443,10 +443,64 @@ skenování či data od externích subjektů. [12]
 
 
 \section{LPIS} \label{lpis}
-%F1-D-2018-Devaty-Jan-Disertacni_prace_Jan_Devaty_2018
+\hspace{10mm} LPIS (Land Parcel Identification System) je geografický informační systém sloužící hlavně k evidenci zemědělské půdy, za který je odpovědné Ministerstvo zemědělství. Obsahem jsou zemědělské parcely zobrazující vlastnické vztahy. Ty jsou výchozí pro udělování dotací pro zemědělskou půdu.[13] 
+
+\hspace{10mm} Základní datovou jednotkou je díl půdního bloku (DPB), které jsou zcelovány do souvislých obhospodařovaných ploch tzv. půdních bloků (PB).[13]
+
+\hspace{10mm} LPIS je veden ve všech státech Evropské unie, ale v různých státech se pozemky uchovávají v jiných druzích parcel (katastrální parcely, zemědělské parcely, zemědělské půdní bloky nebo fyzické bloky). [14]
+
+Takové plochy obsahují údaje o druhu zemědělské kultury, a to [15]:
+\begin{itemize}
+    \item orná půda, kterou je
+    \begin{itemize}
+        \item standardní orná půda,
+        \item travní porost a
+        \item úhor,
+    \end{itemize}
+    \item trvalý travní porost,
+    \item trvalá kultura, kterou je
+    \begin{itemize}
+        \item vinice,
+        \item chmelnice,
+        \item ovocný sad,
+        \item školka,
+        \item rychle rostoucí dřeviny pěstované ve výmladkových plantážích,
+        \item plocha s víceletými produkčními plodinami,
+        \item plocha s lanýži a
+        \item jiná trvalá kultura, 
+    \end{itemize}
+    \item ostatní kultura, kterou je
+    \begin{itemize}
+        \item zalesněná půda,
+        \item rybník,
+        \item plocha s kontejnery,
+        \item mimoprodukční plocha a
+        \item jiná kultura.
+    \end{itemize}
+\end{itemize}
+
+\hspace{10mm} Databáze také obsahuje ekologicky významné prvky a další objekty. [15]
+Přístup k těmto datům je zprostředkován webovými službami (iLPIS a pLPIS)  a WMS či WFS službou. [14]
 
 \section{Hydrologické skupiny půd (HSP)} \label{hsp}
+Význam hydrologických skupin půd (hydrology soil groups) a jejich dělení je popsáno v první kapitole. 
 % Různé zdroje půd (HSP) - velký rozdíl výsledků, je tam graf https://www.vodnihospodarstvi.cz/ArchivPDF/vh2022/vh_09-2022.pdf
+
+Zdroje hydrologických skupin půd v České republice existují celkem čtyři[16]:
+\begin{itemize}
+\item CN (s metodikou výpočtu) dle ČHMÚ (2004)
+\item HSP dle projektu „Strategie ochrany před negativními dopady povodní a erozními jevy přírodě blízkými opatřeními v České republice“ (2015)
+\item HSP dle VÚMOP (2018) 
+\item HSP dle půdní zrnitosti, dle projektu "Fyzikální a hydropedologické vlastnosti půd ČR" (2021)
+\end{itemize}
+Volba zdroje půdních dat může ovlivnit výsledky analýz, nicméně neexistuje způsob, jak určit spolehlivost těchto rozdílných zdrojů dat, i přestože se poměrně značně liší.[16] To je vizualizováno níže.
+
+\begin{figure}[ht] \label{obr3}
+\centering
+\includegraphics[height=12cm]{pictures/HSPmapa.png}
+\caption{Plošné rozdělení jednotlivých HSP na povodí Hruškovice podle různých podkladů [16]}
+\label{fig:OSGEO}
+\end{figure}
 
 \newpage
 \newpage
@@ -498,6 +552,22 @@ QGIS DEVELOPMENT TEAM. \textit{QGIS geographic information system}. Online. 2025
 
 \bibitem{nEFEg7XpI9hVQCiO}
 \textit{Katalog objektů ZABAGED®}. Verze 4.4. Zeměměřický úřad, 2024.
+
+
+\bibitem{Devaty2018}
+DEVÁTÝ, Jan. \textit{Klasifikace území pro erozní modely pomocí GIS a veřejně dostupných datových zdrojů}. Disertační práce. Praha: České vysoké učení technické v Praze, Fakulta stavební, Katedra hydromeliorací a krajinného inženýrství, 2018.
+
+\bibitem{KocurBera2019}
+KOCUR-BERA, Katarzyna. Data compatibility between the Land and Building Cadaster (LBC) and the Land Parcel Identification System (LPIS) in the context of area-based payments: A case study in the Polish Region of Warmia and Mazury. \textit{Land Use Policy}. 2019, roč. 2019, č. 80, s.~370-379. ISSN 0264-8377.
+
+\bibitem{sSYEwLE0rNKoWGYk}
+\textit{Nařízení vlády č. 307/2014 Sb. o stanovení podrobností evidence využití půdy podle uživatelských vztahů}. 2014. Dostupné také z: \url{http://www.zakonyprolidi.cz/cs/2014-307}.
+
+\bibitem{Strouhal2022}
+STROUHAL, Luděk a KAVKA, Petr. Hydrologické skupiny půd --- rozevřené nůžky hydrologických výpočtů (2. část). \textit{Vodní hospodářství}. 2022, roč. 72, č. 9, s.~7-12.
+
+
+
 
 \end{thebibliography}
 \end{document}
