@@ -75,10 +75,11 @@
 \newcommand{\logoCVUT}{\includegraphics{pictures/symbol_cvut_konturova_verze_cb.pdf}} % logo ČVUT -- podle grafického manuálu ČVUT platného od prosince 2016. Pokud nevyhovuje PDF-verze, tak použijte jinou variantu loga: https://www.cvut.cz/logo-a-graficky-manual -> "Symbol a logo ČVUT v Praze"). Pokud chcete logo úplně vynechat, zadejte místo "\includegraphics{...}" text "\vspace{35mm}"
 
 % přesně podle formuláře "Zadání bak./dipl. práce" VYPLŇTE:
-\newcommand{\nazevcz}{Vývoj QGIS zásuvného modulu pro potřeby analýzy odtokových poměrů metodou SCS-CN}    % český název práce (přesně podle zadání!)
-\newcommand{\nazeven}{Development of a QGIS plugin for runoff analysis using the SCS-CN method}          % anglický název práce (přesně podle zadání!)
+\newcommand{\nazevcz}{Vývoj zásuvného modulu QGIS pro určení využití území a potřeby analýz odtokových poměrů}    % český název práce (přesně podle zadání!)
+\newcommand{\nazeven}{Development of a QGIS Plugin for Land Use Determination and Purposes of Runoff Analysis}          % anglický název práce (přesně podle zadání!)
 \newcommand{\autor}{Bc. Josef Jehlička}   % vyplňte své jméno a příjmení (s akademickým titulem, máte-li jej)
-\newcommand{\vedouci}{Ing. Martin Landa, Ph.D.} % vyplňte jméno a příjmení vedoucího práce, včetně titulů, např.: Doc. Ing. Ivo Malý, Ph.D.
+\newcommand{\vedouci}{Ing. Martin Landa, Ph.D. } % vyplňte jméno a příjmení vedoucího práce, včetně titulů, např.: Doc. Ing. Ivo Malý, Ph.D.
+\newcommand{\druhyvedouci}{doc. Ing. Petr Kavka, Ph.D.}
 \newcommand{\pracovisteVed}{\ksi, \fjfi, \cvut} % ZMĚŇTE, pokud vedoucí Vaší práce není z KSI
 \newcommand{\konzultant}{--} % POKUD MÁTE určeného konzultanta, NAPIŠTE jeho jméno a příjmení
 \newcommand{\pracovisteKonz}{--} % POKUD MÁTE konzultanta, NAPIŠTE jeho pracoviště
@@ -92,7 +93,7 @@
 \newcommand{\abstrCZ}{Popis práce česky}    % zde NAPIŠTE abstrakt v češtině (cca 7 vět, min. 80 slov)
 \newcommand{\abstrEN}{Popis práce anglicky} % zde NAPIŠTE abstrakt v angličtině
 
-\newcommand{\prohlaseni}{Prohlašuji, že jsem diplomovou práci s názvem "Vývoj QGIS zásuvného modulu pro potřeby výpočtu objemu přímého odtoku metodou SCS-CN“ vypracoval samostatně s odborným vedením pana Ing. Martina Landy, Ph.D. Použitá literatura a další podklady, které byly použity pro tuto diplomovou práci, jsou uvedeny v seznamu literatury. 
+\newcommand{\prohlaseni}{Prohlašuji, že jsem diplomovou práci s názvem "Vývoj QGIS zásuvného modulu pro potřeby výpočtu objemu přímého odtoku metodou SCS-CN“ vypracoval samostatně s odborným vedením pana Ing. Martina Landy, Ph.D a doc. Ing. Petra Kavky, Ph.D. Použitá literatura a další podklady, které byly použity pro tuto diplomovou práci, jsou uvedeny v seznamu literatury. 
 } % text prohlášení můžete mírně upravit :-)
 
 \newcommand{\podekovani}{Tímto bych chtěl poděkovat } % NAPIŠTE poděkování, např. svému vedoucímu:
@@ -142,6 +143,7 @@
     \begin{tabular}{ll}
     Vypracoval: & \autor\\
     Vedoucí práce: & \vedouci\\
+    & \druhyvedouci \\
     Rok: & \rok
     \end{tabular}
    }
@@ -205,7 +207,7 @@
 
 \section*{ABSTRAKT}
 \begin{flushleft}
-Tato práce popisuje vývoj zásuvného modulu open-source softwaru QGIS, který provádí přípravu dat a následnou analýzu odtoků SCS-CN  na automatizovaně získávaných volně dostupných geo datech v ČR jako jsou ZABAGED, LPIS, RÚIAN a data poskytovaná projektem rain.fsv.cvut.cz. Data jsou ohodnocena podle způsobu využití území a v kombinaci s daty hydrologických skupin půd a hodnotou úhrnu návrhové srážky vstupují do následné analýzy. 
+Tato práce popisuje vývoj zásuvného modulu open-source softwaru QGIS, který provádí přípravu dat a následnou analýzu odtoků SCS-CN  na automatizovaně získávaných volně dostupných geo datech v ČR jako jsou ZABAGED, LPIS, RÚIAN a data poskytovaná projektem rain.fsv.cvut.cz. Data jsou ohodnocena podle způsobu využití území a v kombinaci s daty hydrologických skupin půd a hodnotou úhrnu návrhové srážky vstupují do následné analýzy.
 \end{flushleft}
 
 
@@ -495,15 +497,74 @@ Zdroje hydrologických skupin půd v České republice existují celkem čtyři[
 \end{itemize}
 Volba zdroje půdních dat může ovlivnit výsledky analýz, nicméně neexistuje způsob, jak určit spolehlivost těchto rozdílných zdrojů dat, i přestože se poměrně značně liší.[16] To je vizualizováno níže.
 
-\begin{figure}[ht] \label{obr3}
+\begin{figure}[ht] \label{obr4}
 \centering
 \includegraphics[height=12cm]{pictures/HSPmapa.png}
 \caption{Plošné rozdělení jednotlivých HSP na povodí Hruškovice podle různých podkladů [16]}
-\label{fig:OSGEO}
+\label{fig:hsp}
 \end{figure}
 
 \newpage
 \newpage
+
+\chapter{Použité technologie} \label{tehcnologie}
+
+\section{Web Feature Service (WFS)} \label{wfs}
+Web Feature Service je internetová služba pro šíření geografických informací, která nahradila šíření celých datových souborů například pomocí File Transporn Protocol (FTP). Služba je standardizována organizací Open Geospatial Consortium (OGC) v dokumentu  ISO 19119. [17] WFS je napsáno v jazyce XML a data jsou reprezentována primárně v jazyce GML. [18]
+
+Na rozdíl od Web Map Service (WMS), která připojuje vrstvy jako needitovatelné rastrové podkladové vrstvy, WFS slouží ke sdílení vektorových dat s možností následné editace. Uživatel zašle požadavek ve formátu XML na WFS server, který vrátí odpověď opět V XML. [18]
+
+\begin{figure}[ht] \label{obr5}
+\centering
+\includegraphics[height=6cm]{pictures/XML.png}
+\caption{Schéma služby WFS [19]}
+\label{fig:xml}
+\end{figure}
+
+Pro komunikaci se serverem poskytující WFS službu může uživatel využít následujících jedenáct operací:
+
+\begin{table}[htbp]
+  \centering
+  \caption{Tabulka WFS operací} 
+  \label{tab:WFS}
+  \begin{tabular}{|c|c|p{7cm}|}
+    \hline
+    \textbf{Operace} & \textbf{Volitelný} & \textbf{Popis} \\
+    \hhline{=|=|=}
+    GetCapabilities & NE & Načte metadata o službě, včetně podporovaných operací a parametrů, a seznam dostupných typů prvků. \\
+    \hline
+    DescribeFeatureType & NE & Vrací popis struktury typů prvků a jejich vlastností, které WFS poskytuje nebo přijímá. \\
+    \hline
+    GetFeature & NE & Vrací výběr instancí prvků z datového úložiště publikovaného prostřednictvím WFS. \\
+    \hline
+    ListStoredQueries & NE & Vrací seznam dotazů, které byly uloženy v instanci WFS. \\
+    \hline
+    DescribeStoredQueries & NE & Vrací popis dotazů, které byly uloženy v instanci WFS. \\
+    \hline
+    GetPropertyValue & ANO & Načítá hodnotu vlastnosti prvku nebo část hodnoty složité vlastnosti pro sadu prvků. \\
+    \hline
+    GetFeatureWithLock & ANO & Podobné jako GetFeature, ale s možností uzamknout prvek pro následné úpravy. \\
+    \hline
+    LockFeature & ANO & Uzamkne sadu instancí prvků tak, aby je jiné operace nemohly měnit, dokud je zámek aktivní. \\
+    \hline
+    Transaction & ANO & Umožňuje modifikaci nebo odstranění instancí prvků a jejich vlastností. \\
+    \hline
+    CreateStoredQuery & ANO & Vytvoří a uloží dotaz, který může klient snadno vyvolat později. \\
+    \hline
+    DropStoredQuery & ANO & Odstraní dříve uložený dotaz ze serveru. \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\section{YAML formát} \label{yaml}
+
+\section{Python knihovna PyQt} \label{pyqt}
+\section{Python knihovna pytest} \label{pytest}
+
+\chapter{Postup implementace} \label{implementace}
+\section{Tvorba grafického uživatelského rozhraní} \label{gui}
+\section{Získávání vrstvy využití území (land use)} \label{landuse}
+\section{analýza odtoků SCS-CN} \label{CN}
 \clearpage  % SEM NESAHEJTE!
 \addcontentsline{toc}{chapter}{Seznam použité literatury}  \label{zdroje}
 
@@ -566,8 +627,17 @@ KOCUR-BERA, Katarzyna. Data compatibility between the Land and Building Cadaster
 \bibitem{Strouhal2022}
 STROUHAL, Luděk a KAVKA, Petr. Hydrologické skupiny půd --- rozevřené nůžky hydrologických výpočtů (2. část). \textit{Vodní hospodářství}. 2022, roč. 72, č. 9, s.~7-12.
 
+\bibitem{Vretanos2014}
+VRETANOS, Panagiotis (Peter) A. \textit{OpenGIS Web Feature Service 2.0 Interface Standard --- With Corrigendum}. 2.0.2. Open Geospatial Consortium, 2014.
 
+\bibitem{Zhang2005}
+ZHANG, Chuanrong a LI, Weidong. The Roles of Web Feature and Web Map Services in Real-time Geospatial Data Sharing for Time-critical Applications. Online. \textit{Cartography and Geographic Information Science}. 2005, roč. 32, č. 4, s.~269-283. ISSN 1523-0406. Dostupné z: \url{https://doi.org/10.1559/152304005775194728}. [cit. 2025-02-25].
 
+\bibitem{Schall2009}  
+SCHALL, Gerhard, MENDEZ, Erick, KRUIJFF, Ernst, VEAS, Eduardo, JUNGHANNS, Sebastian, REITINGER, Bernhard a SCHMALSTIEG, Dieter.  
+Handheld Augmented Reality for underground infrastructure visualization.  
+\textit{Personal and Ubiquitous Computing}, 2009, roč. 13, s. 281-291.  
+DOI: 10.1007/s00779-008-0204-5.  
 
 \end{thebibliography}
 \end{document}
