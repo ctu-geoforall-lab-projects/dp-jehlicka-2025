@@ -207,7 +207,7 @@
 
 \section*{ABSTRAKT}
 \begin{flushleft}
-Tato práce popisuje vývoj zásuvného modulu open-source softwaru QGIS, který provádí přípravu dat a následnou analýzu odtoků SCS-CN  na automatizovaně získávaných volně dostupných geo datech v ČR jako jsou ZABAGED, LPIS, RÚIAN a data poskytovaná projektem rain.fsv.cvut.cz. Data jsou ohodnocena podle způsobu využití území a v kombinaci s daty hydrologických skupin půd a hodnotou úhrnu návrhové srážky vstupují do následné analýzy.
+Tato práce popisuje vývoj zásuvného modulu open-source softwaru QGIS, který provádí přípravu dat a následnou analýzu odtoků SCS-CN  na automatizovaně získávaných volně dostupných geo datech v ČR jako jsou ZABAGED, LPIS a data poskytovaná projektem rain.fsv.cvut.cz. Data jsou ohodnocena podle způsobu využití území a v kombinaci s daty hydrologických skupin půd a hodnotou úhrnu návrhové srážky vstupují do následné analýzy.
 \end{flushleft}
 
 
@@ -219,7 +219,7 @@ QGIS, SCS-CN, využití území, zásuvný modul, Python, odtok, povodí, GIS, Z
 
 \section*{ABSTRACT}
 \begin{flushleft}
-This master's thesis describes the development of a plugin for the open-source software QGIS, which performs data preparation and subsequent runoff analysis using the SCS-CN method on automatically acquired freely available geodata in the Czech Republic, such as ZABAGED, LPIS, RÚIAN, and data provided by the rain.fsv.cvut.cz project. The data are evaluated based on land use and, in combination with data on hydrologic soil groups and the total design rainfall amount, serve as inputs for the subsequent analysis.
+This master's thesis describes the development of a plugin for the open-source software QGIS, which performs data preparation and subsequent runoff analysis using the SCS-CN method on automatically acquired freely available geodata in the Czech Republic, such as ZABAGED, LPIS  and data provided by the rain.fsv.cvut.cz project. The data are evaluated based on land use and, in combination with data of hydrologic soil groups and the total design rainfall amount, serve as inputs for the subsequent analysis.
 \end{flushleft}
 
 
@@ -297,6 +297,17 @@ V \kde\ dne .................... &........................................ \\	% 
 
 \newpage
 \chapter*{Úvod} \label{uvod}
+Technologie GIS usnadňuje práci v nejrůznějších odvětví průmyslu od precizního zemědělství až po působení bezpečnostních složek. Což může být motivací pro ušlechtilé úsilí určité skupiny vývojářů, takovou pomoc poskytnout zdarma jako otevřený software s možností dodatečného přizpůsobení nebo integrace do externích aplikací. 
+
+Tvorbou zásuvného modulu (pluginu) pro GIS s otevřeným zdrojovým kódem QGIS se zabývá i tato práce. Zmíněný zásuvný modul poskytuje možnost usnadnit práci uživatelům působícím v oblasti hydrologie, konkrétně při výpočtu objemu přímého odtoku metodou SCS-CN na území České Republiky. Takové modelování může například být využito při vymezování záplavových území nebo návrzích protipovodňových opatření.
+
+Cílem bylo vytvořit nástroj pro získání dat, ohodnocení území dle jeho využití, kombinaci těchto dat s vrstvou hydrologických skupin půd, doplnění hodnot CN z tabulky a z nich získání objemu přímého odtoku. Uživateli je umožněno v každé části procesu editovat jakékoliv vstupní hodnoty, či upravit nebo použít vlastní geo data. Tento zásuvný modul realizovaný pomocí programovacího jazyka Python je doplněn o dokumentaci a softwarové testy. 
+
+Ačkoliv existují komerční nástroje pro modelování odtokových poměrů metodou SCS-CN, v prostředí volně dostupných GIS řešení chybí specializovaný nástroj, který by kombinoval snadnou použitelnost, integraci s českými datovými zdroji a možnost úprav vstupních parametrů.
+
+Samotná práce popisuje metodu odtokových křivek SCS-CN, software QGIS a další použité softwarové nástroje jako jsou WFS, WPS, jazyk YAML, knihovna PyQt a další. Následně se pak zaměřuje na  datové zdroje volně dostupně v České Republice, kterými jsou ZABAGED a LPIS. Obsahuje též popis prací při vývoji zásuvného modulu. Závěrečná část shrnuje dosažené výsledky, zhodnocuje přínos práce a nabízí možnosti dalšího rozšíření.
+
+
 
 \newpage
 \chapter{Meotda SCS-CN} \label{SCSCN}
@@ -412,7 +423,7 @@ hranici potenciální retence, což by znamenalo, že takové povodí je nekone�
 
 
 \chapter{Datové zdroje} \label{data}
-\hspace{10mm} Vstupem pro metodu SCS-CN .... 
+\hspace{10mm} Vstupem pro metodu SCS-CN je kombinace informací o využití území a hydrologických skupinách půd v daném území. Vrstva využití území je v zásuvném modulu získána kombinací vrstev ZABAGED a LPIS. 
 
 \section{ZABAGED\texorpdfstring{\textsuperscript{\textregistered}}{ (R)}} \label{zabaged}
 
@@ -556,15 +567,113 @@ Pro komunikaci se serverem poskytující WFS službu může uživatel využít n
   \end{tabular}
 \end{table}
 
+\section{Web Processing Service (WPS)} \label{wps}
+Web Processing Service (WPS) je služba umožňující nad poskytnutými daty provést jakoukoliv GIS operaci, a to od bufferu až po generování analytických modelů. Komunikace probíhá stejně jako u WFS pomocí XML. K tomu může být využita knihovna OWSLib.
+
+Tato služba standardizovaná OGC může komunikovat s jednou a více WFS službami, pro získání dodatečných geo dat. [20] WPS může také poskytované procesy monitorovat a případně je ukončit. [21] 
+
+\begin{figure}[ht] \label{obr6}
+\centering
+\includegraphics[height=7cm]{pictures/WPS.png}
+\caption{Konceptuální model WPS [21]}
+\label{fig:wps}
+\end{figure}
+
+
 \section{YAML formát} \label{yaml}
 
+
+
+YAML (YAML Ain’t Markup Language) je jazyk pro serializaci dat. Je tvořen tak, aby byl čitelný a pohodlný pro užívání s řadou novodobých programovacích jazyků. Informace uchovává v Unicode charakterů strukturovaných v hodnotových párech a  odrážkových seznamech.  [22]
+\begin{figure}[ht] \label{obr7}
+\centering
+\includegraphics[height=3cm]{pictures/yaml.png}
+\caption{Logo projektu YAML  (zdroj: Wikimedia Commons)}
+\label{fig:yaml}
+\end{figure}
+
+YAML se od XML liší tím, že je vytvořen hlavně pro ukládání dat, zatímco XML slouží k uložený uspořádaných dokumentů. YAML je lépe čitelný díky odsazení a chybějícím znaménkům zatímco XML používá složitější syntaxi. [22]
+
+YAML je také jednoduší pro editaci člověkem než JSON, který je vhodnější pro zpracování strojem. YAML může mít složitější datové struktury a využívá komentáře, ale JSON má jednodušší pravidla. [22]
+
+
 \section{Python knihovna PyQt} \label{pyqt}
+PyQT je sada Python příkazů pro multiplatformní aplikační vývojovou platformu, která kombinuje všechny výhody Qt a Pythonu.  [23]
+
+\begin{figure}[ht] \label{obr8}
+\centering
+\includegraphics[height=3cm]{pictures/Python_and_Qt.png}
+\caption{Kombinace log Python a Qt  (zdroj: Wikimedia Commons)}
+\label{fig:qt}
+\end{figure}
+
+Qt je aplikační rámec pro tvorbu uživatelských prostředí podporující řadu hardwaru a operačních systémů. Tvorbu uživatelského prostředí podporují softwary jako jsou QtCreator nebo QtDesigner, jehož specializovaná verze je součástí instalace QGIS.
+
+PyQt umožňuje propojit Python kód s množstvím prvků uživatelského prostředí, jako jsou tlačítka, popisky, přepínače, zaškrtávací polička, rozbalovací seznamy nebo okna pro vstup textu.
+
 \section{Python knihovna pytest} \label{pytest}
+Robustní knihovna pytest se používá pro všechny druhy testování softwarů. Od konkurenční knihovny unittest na tuto přešla spousta projektů, jakou jsou třeba Mozilla nebo Dropbox. [24]
+
+\begin{figure}[ht] \label{obr9}
+\centering
+\includegraphics[height=4cm]{pictures/Pytest_logo.png}
+\caption{Logo knihovny pytest [24]}
+\label{fig:pytest}
+\end{figure}
+
+Výhody knihovny jsou například nezávislost na verzi Pythonu, snadná čitelnost a implementace nebo otevřenost zdrojového kódu pod licencí MIT. Díky tomu byla pro knihovnu vyvinuta řada zásuvných modulů pro specifičtější použití.[24]
+
+Testy je možné spouštět přímo v příkazové řádce, přičemž je uživatel informován o prostředí ve kterém je test spuštěn, době jeho trvání a počtu procházejících a selhávajících úkonů.   
+
+\section{GitHub} \label{github}
+Tato vývojářská platforma umožňuje vzdálené uložení a editaci kódu. Na její pozadí stojí Git, což je systém pro správu verzí. Ten byl původně vytvořen Linusem Tovaldsem, aby usnadnil vývoj jádra operačního systému Linux. [25]
+
+\begin{figure}[ht] \label{obr10}
+\centering
+\includegraphics[height=4cm]{pictures/git.png}
+\caption{Logo platformy GitHub (vlevo) a systému Git (vpravo) [25]}
+\label{fig:git}
+\end{figure}
+
+Na stránkách GitHub je možné po založení účtu vytvořit repozitář pro daný projekt. Při vývoji lze vytvářet nové vývojové větve (branch), které je možné zařadit do větve hlavní. Tímto způsobem může na projektu spolupracovat více lidí najednou a nezávisle. Výhodou je také fakt, že v každé větvi je možné provedené změny vrátit do původního stavu. Tento proces lze zjednodušeně přiblížit na úpravě textového dokumentu více uživateli ve službě Google Docs. [25]
+
+Při zapojení (merge) vedlejší větve s úpravami do hlavní lze vytvořit žádost o začlenění změn (pull-request), kde může více uživatelů diskutovat o provedených změnách. [25]
+
+Github je možné propojit s velkým množstvím vývojových prostředí nebo je možné využít aplikaci GitHub Desktop pro klonování repozitářů na lokální úložiště. Nicméně stejné funkcionality lze dosáhnout užitím pouze
+příkazové řádky. [25]
+
+Pomocí služby GitHub Actions lze repozitář propojit s nějakou externí funkcionalitou, mezi které patří: vytvoření Python knihovny, vytvoření Dockeru, propojení s externími cloudovými službami, spouštění testů nebo vytvoření webových stránek ze souborů repozitáře. [25]
+
 
 \chapter{Postup implementace} \label{implementace}
+
+
+\section{Návrh pracovního postupu} \label{workflow}
+Nejprve bylo nutné zajistit způsob, jakým bude uživatel definovat zájmovou oblast pro průběh analýzy. Vhodně se jevilo, aby bylo možné zvolit oblast buď uvnitř již existujícího polygonu nebo zjednodušeně ve výřezu okna obrazovky.
+
+Geometrické a polohové vlastnosti těchto objektů bylo nutné následně předat službám WPS a WFS zajišťující získávání dat od třetích stran. Po získání vektorových dat ze služeb WFS poskytovaných správci datových sad ZABAGED a LPIS se jevilo žádoucí aplikovat buffer na liniové či bodové prvky s předpokladem že tyto buffery se budou řídit atributovými hodnotami takových vrstev (například třída nebo typ pozemní komunikace). 
+
+Všem polygonovým vrstvám je následně potřeba přiřadit kód využití území. Základní dle názvu vrstvy a detailnější hodnotu dle různých hodnot atributů (příkladem může být třeba vrstva lesa, které byla přidána základní hodnota a přírůstky k této hodnotě dle atributu druhu lesa).
+
+Po těchto úpravách následuje proces oříznutí vrstev, tak aby přesně kopírovaly definiční polygon zájmového území na vstupu a aby prvky po aplikovaném bufferu tento polygon či výřez obrazovky nepřesahovaly.
+
+Dále existuje potřeba tyto vrstvy spojit do jedné dle dané priority. Například tak, aby komunikace vedly nad vodními toky, budovy se nacházely nad zastavěnou plochou a podobně.
+
+...
+
+\begin{figure}[ht] \label{obr11}
+\centering
+\includegraphics[height=21cm]{pictures/diagram.png}
+\caption{Vývojový diagram pracovního postupu}
+\label{fig:diagram}
+\end{figure}
+
 \section{Tvorba grafického uživatelského rozhraní} \label{gui}
 \section{Získávání vrstvy využití území (land use)} \label{landuse}
-\section{analýza odtoků SCS-CN} \label{CN}
+\section{Analýza odtoků SCS-CN} \label{CN}
+\section{Testování} \label{testing}
+\section{Tvorba dokumentace} \label{docs}
+
 \clearpage  % SEM NESAHEJTE!
 \addcontentsline{toc}{chapter}{Seznam použité literatury}  \label{zdroje}
 
@@ -638,6 +747,24 @@ SCHALL, Gerhard, MENDEZ, Erick, KRUIJFF, Ernst, VEAS, Eduardo, JUNGHANNS, Sebast
 Handheld Augmented Reality for underground infrastructure visualization.  
 \textit{Personal and Ubiquitous Computing}, 2009, roč. 13, s. 281-291.  
 DOI: 10.1007/s00779-008-0204-5.  
+
+\bibitem{Stollberg2007}
+STOLLBERG, Beate a ZIPF, Alexander. OGC Web Processing Service Interface for Web Service Orchestration Aggregating Geo-processing Services in a Bomb Threat Scenario. In: J. WARE, Mark, E. TAYLOR, George (ed.). \textit{Web and Wireless Geographical Information Systems}. Anglie, Cardiff: Springer, 2007, s.~239-251. ISBN 978-3-540-76923-1.
+
+\bibitem{5Xjhvf3W3tsG6nhX}
+\textit{OGC® WPS 2.0.2 Interface Standard Corrigendum 2}. 2.0.2. Open Geospatial Consortium, 2015.
+
+\bibitem{hsOq0virmVAO85Ud}
+BEN-KIKI, Oren; EVANS, Clark a DÖT NET, Ingy. \textit{YAML Ain-t Markup Language (YAML) Version 1.2}. 3rd Edition, Patched at 2009-10-01.
+
+\bibitem{Summerfield2007}
+SUMMERFIELD, Mark. \textit{Rapid GUI Programming with Python and Qt: The Definitive Guide to PyQt Programming}. Pearson Education, 2007. ISBN 978-0132703062.
+
+\bibitem{Okken2017}
+OKKEN, Brian. \textit{Python Testing with pytest: Simple, Rapid, Effective, and Scalable}. Pragmatic Bookshelf, 2017. ISBN 9781680502404.
+
+\bibitem{Guthals2023}
+GUTHALS, Sarah. \textit{GitHub\texorpdfstring{\textsuperscript{\textregistered}}{ (R)} For Dummies \texorpdfstring{\textsuperscript{\textregistered}}{(R)}}. 2nd Edition. Hoboken, New Jersey: John Wiley \& Sons, 2023. ISBN 978-1-394-15917-8.
 
 \end{thebibliography}
 \end{document}
