@@ -7,7 +7,80 @@
 %\usepackage[cp1250]{inputenc}  % vstupní znaková sada tohoto dokumentu: Windows 1250
 %\usepackage[latin2]{inputenc}  % vstupní znaková sada tohoto dokumentu: ISO Latin 2
 \usepackage{siunitx}
-\usepackage[czech]{babel} % česky psaná práce, typografická pravidla. Překládejte pomocí "latex.exe" nebo "pdflatex.exe"
+\usepackage[czech]{babel} % česky psaná práce, typografická pravidla. 
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codeblue}{rgb}{0,0,1}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+
+\lstdefinelanguage{yaml}{
+  morekeywords={true,false,null,yes,no,code,keywords,land_use, URL,buffer_layers,input_layer_name,controlling_atr_name,buffer_levels,priority,values,distance,default_buffer, layers, name,base_use_code,controlling_attribute,value_increments, N, J, L, S, layer_name},
+  sensitive=false,
+  morecomment=[l]{\#},
+  morestring=[b]",
+  morestring=[b]',
+  alsoletter={:\-},       
+  moredelim=[s][\color{codeblue}]{:}{\ },
+  moredelim=[l][\color{codegray}]{\#}
+}
+
+\lstdefinestyle{myyaml}{
+    language=yaml,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{codeblue}\bfseries,
+    commentstyle=\color{codegray},
+    stringstyle=\color{codegreen},
+    breaklines=true,
+    numbers=left,
+    numberstyle=\tiny\color{codegray},
+    frame=single
+}
+
+\lstset{
+  inputencoding=utf8,
+  extendedchars=true,
+  literate={á}{{\'a}}1 {č}{{\v{c}}}1 {ď}{{\v{d}}}1 {é}{{\'e}}1
+           {ě}{{\v{e}}}1 {í}{{\'i}}1 {ň}{{\v{n}}}1 {ó}{{\'o}}1
+           {ř}{{\v{r}}}1 {š}{{\v{s}}}1 {ť}{{\v{t}}}1 {ú}{{\'u}}1
+           {ů}{{\r{u}}}1 {ý}{{\'y}}1 {ž}{{\v{z}}}1
+           {Á}{{\'A}}1 {Č}{{\v{C}}}1 {Ď}{{\v{D}}}1 {É}{{\'E}}1
+           {Ě}{{\v{E}}}1 {Í}{{\'I}}1 {Ň}{{\v{N}}}1 {Ó}{{\'O}}1
+           {Ř}{{\v{R}}}1 {Š}{{\v{S}}}1 {Ť}{{\v{T}}}1 {Ú}{{\'U}}1
+           {Ů}{{\r{U}}}1 {Ý}{{\'Y}}1 {Ž}{{\v{Z}}}1,
+  style=myyaml
+}
+
+\lstdefinestyle{mypython}{
+    language=Python,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{codeblue}\bfseries,
+    commentstyle=\color{codegray},
+    stringstyle=\color{codegreen},
+    breaklines=true,
+    numbers=left,
+    numberstyle=\tiny\color{codegray},
+    frame=single
+}
+\lstset{
+  inputencoding=utf8,
+  extendedchars=true,
+  literate={á}{{\'a}}1 {č}{{\v{c}}}1 {ď}{{\v{d}}}1 {é}{{\'e}}1
+           {ě}{{\v{e}}}1 {í}{{\'i}}1 {ň}{{\v{n}}}1 {ó}{{\'o}}1
+           {ř}{{\v{r}}}1 {š}{{\v{s}}}1 {ť}{{\v{t}}}1 {ú}{{\'u}}1
+           {ů}{{\r{u}}}1 {ý}{{\'y}}1 {ž}{{\v{z}}}1
+           {Á}{{\'A}}1 {Č}{{\v{C}}}1 {Ď}{{\v{D}}}1 {É}{{\'E}}1
+           {Ě}{{\v{E}}}1 {Í}{{\'I}}1 {Ň}{{\v{N}}}1 {Ó}{{\'O}}1
+           {Ř}{{\v{R}}}1 {Š}{{\v{S}}}1 {Ť}{{\v{T}}}1 {Ú}{{\'U}}1
+           {Ů}{{\r{U}}}1 {Ý}{{\'Y}}1 {Ž}{{\v{Z}}}1,
+  style=mypython
+}
+
+
+%Překládejte pomocí "latex.exe" nebo "pdflatex.exe"
 %\usepackage{czech} % česky psaná práce. Překládejte pomocí "pdfCSlatex.exe" ("cslatex.exe" asi bude mít problém s balíkem geometry)
 \usepackage{hhline} % Add the hhline package
 \usepackage[a4paper, hmarginratio=3:2]{geometry} % využití A4 stránky a nastavení okrajů (u vazby bude širší)
@@ -35,6 +108,7 @@
 %\usepackage{index} % nutno použít v případě tvorby rejstříku balíčkem makeindex
 %\newindex{default}{idx}{ind}{Rejstřík} % zavádí rejstřík v případě použití balíku index
 
+\renewcommand{\lstlistingname}{Kód}
 
 \frenchspacing % za větou bude mezislovní mezera (v anglických textech je mezera za větou delší)
 \widowpenalty=1000 % "síla" zákazu vdov (= jeden řádek ze začátku odstavce na konci stránky)
@@ -305,7 +379,7 @@ Cílem bylo vytvořit nástroj pro získání dat, ohodnocení území dle jeho 
 
 Ačkoliv existují komerční nástroje pro modelování odtokových poměrů metodou SCS-CN, v prostředí volně dostupných GIS řešení chybí specializovaný nástroj, který by kombinoval snadnou použitelnost, integraci s českými datovými zdroji a možnost úprav vstupních parametrů.
 
-Samotná práce popisuje metodu odtokových křivek SCS-CN, software QGIS a další použité softwarové nástroje jako jsou WFS, WPS, jazyk YAML, knihovna PyQt a další. Následně se pak zaměřuje na  datové zdroje volně dostupně v České Republice, kterými jsou ZABAGED a LPIS. Obsahuje též popis prací při vývoji zásuvného modulu. Závěrečná část shrnuje dosažené výsledky, zhodnocuje přínos práce a nabízí možnosti dalšího rozšíření.
+Samotná práce popisuje metodu odtokových křivek SCS-CN, software QGIS a s ním propojené softwarové nástroje jako jsou WFS, WPS, jazyk YAML, knihovna PyQt a další. Následně se pak zaměřuje na  datové zdroje volně dostupně v České Republice, kterými jsou ZABAGED a LPIS. Obsahuje též popis prací při vývoji zásuvného modulu. Závěrečná část shrnuje dosažené výsledky, zhodnocuje přínos práce a nabízí možnosti dalšího rozšíření.
 
 
 
@@ -496,7 +570,7 @@ Takové plochy obsahují údaje o druhu zemědělské kultury, a to [15]:
 Přístup k těmto datům je zprostředkován webovými službami (iLPIS a pLPIS)  a WMS či WFS službou. [14]
 
 \section{Hydrologické skupiny půd (HSP)} \label{hsp}
-Význam hydrologických skupin půd (hydrology soil groups) a jejich dělení je popsáno v první kapitole. 
+\hspace{10mm}Význam hydrologických skupin půd (hydrology soil groups) a jejich dělení je popsáno v první kapitole. 
 % Různé zdroje půd (HSP) - velký rozdíl výsledků, je tam graf https://www.vodnihospodarstvi.cz/ArchivPDF/vh2022/vh_09-2022.pdf
 
 Zdroje hydrologických skupin půd v České republice existují celkem čtyři[16]:
@@ -506,7 +580,7 @@ Zdroje hydrologických skupin půd v České republice existují celkem čtyři[
 \item HSP dle VÚMOP (2018) 
 \item HSP dle půdní zrnitosti, dle projektu "Fyzikální a hydropedologické vlastnosti půd ČR" (2021)
 \end{itemize}
-Volba zdroje půdních dat může ovlivnit výsledky analýz, nicméně neexistuje způsob, jak určit spolehlivost těchto rozdílných zdrojů dat, i přestože se poměrně značně liší.[16] To je vizualizováno níže.
+\hspace{10mm} Volba zdroje půdních dat může ovlivnit výsledky analýz, nicméně neexistuje způsob, jak určit spolehlivost těchto rozdílných zdrojů dat, i přestože se poměrně značně liší.[16] To je vizualizováno níže.
 
 \begin{figure}[ht] \label{obr4}
 \centering
@@ -521,9 +595,9 @@ Volba zdroje půdních dat může ovlivnit výsledky analýz, nicméně neexistu
 \chapter{Použité technologie} \label{tehcnologie}
 
 \section{Web Feature Service (WFS)} \label{wfs}
-Web Feature Service je internetová služba pro šíření geografických informací, která nahradila šíření celých datových souborů například pomocí File Transporn Protocol (FTP). Služba je standardizována organizací Open Geospatial Consortium (OGC) v dokumentu  ISO 19119. [17] WFS je napsáno v jazyce XML a data jsou reprezentována primárně v jazyce GML. [18]
+\hspace{10mm} Web Feature Service je internetová služba pro šíření geografických informací, která nahradila šíření celých datových souborů například pomocí File Transporn Protocol (FTP). Služba je standardizována organizací Open Geospatial Consortium (OGC) v dokumentu  ISO 19119. [17] WFS je napsáno v jazyce XML a data jsou reprezentována primárně v jazyce GML. [18]
 
-Na rozdíl od Web Map Service (WMS), která připojuje vrstvy jako needitovatelné rastrové podkladové vrstvy, WFS slouží ke sdílení vektorových dat s možností následné editace. Uživatel zašle požadavek ve formátu XML na WFS server, který vrátí odpověď opět V XML. [18]
+\hspace{10mm} Na rozdíl od Web Map Service (WMS), která připojuje vrstvy jako needitovatelné rastrové podkladové vrstvy, WFS slouží ke sdílení vektorových dat s možností následné editace. Uživatel zašle požadavek ve formátu XML na WFS server, který vrátí odpověď opět V XML. [18]
 
 \begin{figure}[ht] \label{obr5}
 \centering
@@ -532,7 +606,7 @@ Na rozdíl od Web Map Service (WMS), která připojuje vrstvy jako needitovateln
 \label{fig:xml}
 \end{figure}
 
-Pro komunikaci se serverem poskytující WFS službu může uživatel využít následujících jedenáct operací:
+\hspace{10mm} Pro komunikaci se serverem poskytující WFS službu může uživatel využít následujících jedenáct operací:
 
 \begin{table}[htbp]
   \centering
@@ -568,9 +642,9 @@ Pro komunikaci se serverem poskytující WFS službu může uživatel využít n
 \end{table}
 
 \section{Web Processing Service (WPS)} \label{wps}
-Web Processing Service (WPS) je služba umožňující nad poskytnutými daty provést jakoukoliv GIS operaci, a to od bufferu až po generování analytických modelů. Komunikace probíhá stejně jako u WFS pomocí XML. K tomu může být využita knihovna OWSLib.
+\hspace{10mm}Web Processing Service (WPS) je služba umožňující nad poskytnutými daty provést jakoukoliv GIS operaci, a to od bufferu až po generování analytických modelů. Komunikace probíhá stejně jako u WFS pomocí XML. K tomu může být využita knihovna OWSLib.
 
-Tato služba standardizovaná OGC může komunikovat s jednou a více WFS službami, pro získání dodatečných geo dat. [20] WPS může také poskytované procesy monitorovat a případně je ukončit. [21] 
+\hspace{10mm}Tato služba standardizovaná OGC může komunikovat s jednou a více WFS službami, pro získání dodatečných geo dat. [20] WPS může také poskytované procesy monitorovat a případně je ukončit. [21] 
 
 \begin{figure}[ht] \label{obr6}
 \centering
@@ -584,7 +658,7 @@ Tato služba standardizovaná OGC může komunikovat s jednou a více WFS služb
 
 
 
-YAML (YAML Ain’t Markup Language) je jazyk pro serializaci dat. Je tvořen tak, aby byl čitelný a pohodlný pro užívání s řadou novodobých programovacích jazyků. Informace uchovává v Unicode charakterů strukturovaných v hodnotových párech a  odrážkových seznamech.  [22]
+\hspace{10mm}YAML (YAML Ain’t Markup Language) je jazyk pro serializaci dat. Je tvořen tak, aby byl čitelný a pohodlný pro užívání s řadou novodobých programovacích jazyků. Informace uchovává v Unicode charakterů strukturovaných v hodnotových párech a  odrážkových seznamech.  [22]
 \begin{figure}[ht] \label{obr7}
 \centering
 \includegraphics[height=3cm]{pictures/yaml.png}
@@ -592,13 +666,13 @@ YAML (YAML Ain’t Markup Language) je jazyk pro serializaci dat. Je tvořen tak
 \label{fig:yaml}
 \end{figure}
 
-YAML se od XML liší tím, že je vytvořen hlavně pro ukládání dat, zatímco XML slouží k uložený uspořádaných dokumentů. YAML je lépe čitelný díky odsazení a chybějícím znaménkům zatímco XML používá složitější syntaxi. [22]
+\hspace{10mm}YAML se od XML liší tím, že je vytvořen hlavně pro ukládání dat, zatímco XML slouží k uložený uspořádaných dokumentů. YAML je lépe čitelný díky odsazení a chybějícím znaménkům zatímco XML používá složitější syntaxi. [22]
 
-YAML je také jednoduší pro editaci člověkem než JSON, který je vhodnější pro zpracování strojem. YAML může mít složitější datové struktury a využívá komentáře, ale JSON má jednodušší pravidla. [22]
+\hspace{10mm}YAML je také jednoduší pro editaci člověkem než JSON, který je vhodnější pro zpracování strojem. YAML může mít složitější datové struktury a využívá komentáře, ale JSON má jednodušší pravidla. [22]
 
 
 \section{Python knihovna PyQt} \label{pyqt}
-PyQT je sada Python příkazů pro multiplatformní aplikační vývojovou platformu, která kombinuje všechny výhody Qt a Pythonu.  [23]
+\hspace{10mm}PyQT je sada Python příkazů pro multiplatformní aplikační vývojovou platformu, která kombinuje všechny výhody Qt a Pythonu.  [23]
 
 \begin{figure}[ht] \label{obr8}
 \centering
@@ -607,12 +681,12 @@ PyQT je sada Python příkazů pro multiplatformní aplikační vývojovou platf
 \label{fig:qt}
 \end{figure}
 
-Qt je aplikační rámec pro tvorbu uživatelských prostředí podporující řadu hardwaru a operačních systémů. Tvorbu uživatelského prostředí podporují softwary jako jsou QtCreator nebo QtDesigner, jehož specializovaná verze je součástí instalace QGIS.
+\hspace{10mm}Qt je aplikační rámec pro tvorbu uživatelských prostředí podporující řadu hardwaru a operačních systémů. Tvorbu uživatelského prostředí podporují softwary jako jsou QtCreator nebo QtDesigner, jehož specializovaná verze je součástí instalace QGIS.
 
-PyQt umožňuje propojit Python kód s množstvím prvků uživatelského prostředí, jako jsou tlačítka, popisky, přepínače, zaškrtávací polička, rozbalovací seznamy nebo okna pro vstup textu.
+\hspace{10mm}PyQt umožňuje propojit Python kód s množstvím prvků uživatelského prostředí, jako jsou tlačítka, popisky, přepínače, zaškrtávací polička, rozbalovací seznamy nebo okna pro vstup textu.
 
 \section{Python knihovna pytest} \label{pytest}
-Robustní knihovna pytest se používá pro všechny druhy testování softwarů. Od konkurenční knihovny unittest na tuto přešla spousta projektů, jakou jsou třeba Mozilla nebo Dropbox. [24]
+\hspace{10mm}Robustní knihovna pytest se používá pro všechny druhy testování softwarů. Od konkurenční knihovny unittest na tuto přešla spousta projektů, jakou jsou třeba Mozilla nebo Dropbox. [24]
 
 \begin{figure}[ht] \label{obr9}
 \centering
@@ -621,9 +695,9 @@ Robustní knihovna pytest se používá pro všechny druhy testování softwarů
 \label{fig:pytest}
 \end{figure}
 
-Výhody knihovny jsou například nezávislost na verzi Pythonu, snadná čitelnost a implementace nebo otevřenost zdrojového kódu pod licencí MIT. Díky tomu byla pro knihovnu vyvinuta řada zásuvných modulů pro specifičtější použití.[24]
+\hspace{10mm}Výhody knihovny jsou například nezávislost na verzi Pythonu, snadná čitelnost a implementace nebo otevřenost zdrojového kódu pod licencí MIT. Díky tomu byla pro knihovnu vyvinuta řada zásuvných modulů pro specifičtější použití.[24]
 
-Testy je možné spouštět přímo v příkazové řádce, přičemž je uživatel informován o prostředí ve kterém je test spuštěn, době jeho trvání a počtu procházejících a selhávajících úkonů.   
+\hspace{10mm}Testy je možné spouštět přímo v příkazové řádce, přičemž je uživatel informován o prostředí ve kterém je test spuštěn, době jeho trvání a počtu procházejících a selhávajících úkonů.   
 
 \section{GitHub} \label{github}
 Tato vývojářská platforma umožňuje vzdálené uložení a editaci kódu. Na její pozadí stojí Git, což je systém pro správu verzí. Ten byl původně vytvořen Linusem Tovaldsem, aby usnadnil vývoj jádra operačního systému Linux. [25]
@@ -635,33 +709,38 @@ Tato vývojářská platforma umožňuje vzdálené uložení a editaci kódu. N
 \label{fig:git}
 \end{figure}
 
-Na stránkách GitHub je možné po založení účtu vytvořit repozitář pro daný projekt. Při vývoji lze vytvářet nové vývojové větve (branch), které je možné zařadit do větve hlavní. Tímto způsobem může na projektu spolupracovat více lidí najednou a nezávisle. Výhodou je také fakt, že v každé větvi je možné provedené změny vrátit do původního stavu. Tento proces lze zjednodušeně přiblížit na úpravě textového dokumentu více uživateli ve službě Google Docs. [25]
+\hspace{10mm}Na stránkách GitHub je možné po založení účtu vytvořit repozitář pro daný projekt. Při vývoji lze vytvářet nové vývojové větve (branch), které je možné zařadit do větve hlavní. Tímto způsobem může na projektu spolupracovat více lidí najednou a nezávisle. Výhodou je také fakt, že v každé větvi je možné provedené změny vrátit do původního stavu. Tento proces lze zjednodušeně přiblížit na úpravě textového dokumentu více uživateli ve službě Google Docs. [25]
 
-Při zapojení (merge) vedlejší větve s úpravami do hlavní lze vytvořit žádost o začlenění změn (pull-request), kde může více uživatelů diskutovat o provedených změnách. [25]
+\hspace{10mm}Při zapojení (\textit{merge}) vedlejší větve s úpravami do hlavní lze vytvořit žádost o začlenění změn (\textit{pull-request}), kde může více uživatelů diskutovat o provedených změnách. [25]
 
-Github je možné propojit s velkým množstvím vývojových prostředí nebo je možné využít aplikaci GitHub Desktop pro klonování repozitářů na lokální úložiště. Nicméně stejné funkcionality lze dosáhnout užitím pouze
+\hspace{10mm}Github je možné propojit s velkým množstvím vývojových prostředí nebo je možné využít aplikaci GitHub Desktop pro klonování repozitářů na lokální úložiště. Nicméně stejné funkcionality lze dosáhnout užitím pouze
 příkazové řádky. [25]
 
-Pomocí služby GitHub Actions lze repozitář propojit s nějakou externí funkcionalitou, mezi které patří: vytvoření Python knihovny, vytvoření Dockeru, propojení s externími cloudovými službami, spouštění testů nebo vytvoření webových stránek ze souborů repozitáře. [25]
+\hspace{10mm}Pomocí služby GitHub Actions lze repozitář propojit s nějakou externí funkcionalitou, mezi které patří: vytvoření Python knihovny, vytvoření Dockeru, propojení s externími cloudovými službami, spouštění testů nebo vytvoření webových stránek ze souborů repozitáře. [25]
 
 
 \chapter{Postup implementace} \label{implementace}
-
+\hspace{10mm}Všechny kroky implementace byly uskutečněny v rámci GitHub repozitáře v spadající pod organizaci GeoForAll Lab at CTU in Prague.
 
 \section{Návrh pracovního postupu} \label{workflow}
-Nejprve bylo nutné zajistit způsob, jakým bude uživatel definovat zájmovou oblast pro průběh analýzy. Vhodně se jevilo, aby bylo možné zvolit oblast buď uvnitř již existujícího polygonu nebo zjednodušeně ve výřezu okna obrazovky.
+\hspace{10mm}Nejprve bylo nutné zajistit způsob, jakým bude uživatel definovat zájmovou oblast pro průběh analýzy. Vhodně se jevilo, aby bylo možné zvolit oblast buď uvnitř již existujícího polygonu nebo zjednodušeně ve výřezu okna obrazovky.
 
-Geometrické a polohové vlastnosti těchto objektů bylo nutné následně předat službám WPS a WFS zajišťující získávání dat od třetích stran. Po získání vektorových dat ze služeb WFS poskytovaných správci datových sad ZABAGED a LPIS se jevilo žádoucí aplikovat buffer na liniové či bodové prvky s předpokladem že tyto buffery se budou řídit atributovými hodnotami takových vrstev (například třída nebo typ pozemní komunikace). 
+\hspace{10mm}Geometrické a polohové vlastnosti těchto objektů bylo nutné následně předat službám WPS a WFS zajišťující získávání dat od třetích stran. Po získání vektorových dat ze služeb WFS poskytovaných správci datových sad ZABAGED a LPIS se jevilo žádoucí aplikovat buffer na liniové či bodové prvky s předpokladem že tyto buffery se budou řídit atributovými hodnotami takových vrstev (například třída nebo typ pozemní komunikace). 
 
-Všem polygonovým vrstvám je následně potřeba přiřadit kód využití území. Základní dle názvu vrstvy a detailnější hodnotu dle různých hodnot atributů (příkladem může být třeba vrstva lesa, které byla přidána základní hodnota a přírůstky k této hodnotě dle atributu druhu lesa).
+\hspace{10mm}Všem polygonovým vrstvám je následně potřeba přiřadit kód využití území. Základní dle názvu vrstvy a detailnější hodnotu dle různých hodnot atributů (příkladem může být třeba vrstva lesa, které byla přidána základní hodnota a přírůstky k této hodnotě dle atributu druhu lesa).
 
-Po těchto úpravách následuje proces oříznutí vrstev, tak aby přesně kopírovaly definiční polygon zájmového území na vstupu a aby prvky po aplikovaném bufferu tento polygon či výřez obrazovky nepřesahovaly.
+\hspace{10mm}Po těchto úpravách následuje proces oříznutí vrstev, tak aby přesně kopírovaly definiční polygon zájmového území na vstupu a aby prvky po aplikovaném bufferu tento polygon či výřez obrazovky nepřesahovaly.
 
-Dále existuje potřeba tyto vrstvy spojit do jedné dle dané priority. Například tak, aby komunikace vedly nad vodními toky, budovy se nacházely nad zastavěnou plochou a podobně.
+\hspace{10mm}Dále existuje potřeba tyto vrstvy spojit do jedné dle dané priority. Například tak, aby komunikace vedly nad vodními toky, budovy se nacházely nad zastavěnou plochou a podobně.
+
+\hspace{10mm}Druhou potřebnou vrstvou vstupující do výpočtu je vrstva obsahující hydrologické skupiny půd (HSG). Ta je získávána z WPS služby umístěné na adrese rain.fsv.cvut.cz. Tato služba umožňuje získávat půdní data v rastrové podobě, a proto následuje proces jejich polygonizace. Taková vrstva je také oříznuta dle zájmového území.
+
+\hspace{10mm}Pomocí geometrického sjednocení vstupních prvků jsou obě vrstvy spojeny do jedné se zachovanými atributy o hydrologických skupinách půd a využití území.
+Z jejich kombinace se poté dle zvolené tabulky přiřadí hodnoty CN.
 
 ...
 
-\begin{figure}[ht] \label{obr11}
+\begin{figure}[H] \label{obr11}
 \centering
 \includegraphics[height=21cm]{pictures/diagram.png}
 \caption{Vývojový diagram pracovního postupu}
@@ -669,8 +748,245 @@ Dále existuje potřeba tyto vrstvy spojit do jedné dle dané priority. Napří
 \end{figure}
 
 \section{Tvorba grafického uživatelského rozhraní} \label{gui}
+\begin{figure}[H] \label{obr12}
+\centering
+\includegraphics[height=2cm]{pictures/icon.png}
+\caption{Ikona zásuvného modulu}
+\label{fig:icon}
+\end{figure}
+
 \section{Získávání vrstvy využití území (land use)} \label{landuse}
+\hspace{10mm}Nejprve je nutné získat územní rozsah ve kterém se budou získávat potřebné vrstvy. Podle volby uživatele v grafickém uživatelském rozhraní se použije buď výřez obrazovky nebo ohraničující obdélník vybraného polygonu.  
+\begin{lstlisting}[style=mypython, caption={Získání územního rozsahu}, label={kod:extent}]
+if not self.AreaFlag:
+    extent = iface.mapCanvas().extent()
+elif self.polygon and self.polygon.isValid():
+    extent = self.polygon.extent()
+else:
+    QgsMessageLog.logMessage("Invalid polygon layer!", 
+    "CzLandUseCN", level=Qgis.Warning, notifyUser=True)
+\end{lstlisting}
+
+\hspace{10mm}Z konfiguračních souborů je poté načten seznam názvů a URL adresy WFS služeb stahovaných vrstev. Všechny tyto parametry jsou přesunuty do jiného vlákna QGISU, kvůli zachování responsivity samotné aplikace QGIS při procesu stahování. Na pozadí je potom stažena z WFS služby každá vrstva z dříve získaného seznamu vrstev v požadovaném rozsahu. Každou získanou vrstvou se také přiřadí nová hodnota v ukazateli průběhu v uživatelském rozhraní.
+
+\begin{lstlisting}[style=mypython, caption={Stažení vrstvy z WFS služby}, label={kod:wfs}]
+def process_wfs_layer(self, layer_name: str, ymin: float, xmin: float, ymax: float, xmax: float,
+  extent: QgsGeometry,
+  URL: str) -> Optional[QgsVectorLayer]:
+""" Load and clip a WFS layer to the given extent"""
+uri = (
+f"{URL}?"
+f"&version=2.0.0&request=GetFeature&typename={layer_name}"
+f"&bbox={xmin},{ymin},{xmax},{ymax},EPSG:5514"
+)
+
+vlayer = QgsVectorLayer(uri, f"Layer: {layer_name}", "WFS")
+
+clipped_layer = self.clip_layer(vlayer, extent, layer_name)
+if clipped_layer.isValid():
+	return clipped_layer
+\end{lstlisting}
+\hspace{10mm}Takto získané vrstvy se uchovají v paměti počítače a nyní je potřeba provést kroky, aby jednotlivé vrstvy reprezentovaly využití území. K jednoznačné identifikaci typu využití území se využije kód, který se zároveň bude vyskytovat v tabulce pozdější funkcionality určení hodnoty CN. V první fázi přiřazení se u každé vrstvy vytvoří atribut pro hodnotu kódu využití území a doplní se jeho základní hodnota dle názvu vrstvy. Rozlišné vrstvy mohou mít i totožný kód využití území, jako například silnice a parkoviště, jelikož se v obou případech jedná o antropogenní nepropustné povrchy. Tato hodnota je přiřazena pomocí klíčového slova v názvu vrstvy, ke kterému je v konfiguračním souboru přiřazena hodnota kódu využití území. Díky tomu bude tato funkcionalita zachována i v případě, že správce WFS služby obmění názvy poskytovaných vrstev.
+
+\begin{lstlisting}[style=mypython, caption={Přiřazení kódu využití území}, label={kod:landusecode}]
+for entry in data["land_use"]:
+    names = entry["keywords"]  # Get keyword list
+    code = entry["code"]  # Get land use code
+
+    if any(name.lower() in layer_name.lower() for name in names):
+        layer.startEditing()
+        for feature in layer.getFeatures():
+            feature["LandUse_code"] = code
+            layer.updateFeature(feature)
+        layer.commitChanges()
+
+updated_layers.append(layer)  # Always append the layer
+return updated_layers
+\end{lstlisting}
+
+\hspace{10mm}Některé stahované vrstvy jsou liniové nebo bodové a právě na ty je aplikován buffer. Pro mnohé je aplikován jen pouze dle názvu vrstvy a pro některé je hodnota bufferu přiřazena dle vybraného řídícího atributu. Pokud řídící atribut obsahuje nečekané hodnoty nebo neobsahuje hodnotu žádnou, je zvolena definovaná implicitní velikost bufferu.
+
+\begin{lstlisting}[style=mypython, caption={Přiřazení velikosti bufferu}, label={kod:buffer}]
+for feature in layer.getFeatures():
+    value = feature[controlling_atr_name]
+    if value in flat_values:
+        index = flat_values.index(value)
+        buffer_distance = distances[index // len(values[0])]
+    else:
+        buffer_distance = default_buffer
+\end{lstlisting}
+
+\hspace{10mm}Další implementovanou funkcí pluginu je zpřesnit kód využití území dle nějakého atributu vrstvy. Jelikož atribut u vrstvy nemění přiřazený kód z názvu vrstvy, tak se k již přiřazené hodnotě pouze přičte žádané číslo. Jestliže atribut obsahuje neočekávanou hodnotu, zůstane u prvku pouze základní kód.
+
+ \hspace{10mm}Po těchto úpravách je na řadě oříznutí vrstev tak, aby po aplikovaném bufferu nezasahovaly mimo zájmové území. Následně je potřeba všechny vrstvy spojit do jedné podle požadovaného pořadí. Na finální spojenou vrstvu využití území je pak aplikována tabulka symbologie a je přidána do projektu.
+ 
+\section{Získání vrstvy HSP a její propojení s vrstvou využití území} \label{intersection}
+ \hspace{10mm}Data hydrologických skupin půd využitých v zásuvném modulu jsou získávány z WPS služby umístěné na doméně \textit{rain.fsv.cvut.cz} . Tato služba má na vstupu polygonovou vrstvu s maximálním rozsahem 20 km a názvy požadovaných vrstev. Tato služba totiž nabízí kromě dat hydrologických skupin půd i míru zastoupení písku, naplavenin, jílu a texturu půdy podle USDA. Nicméně tyto další poskytované vrstvy nejsou ve výpočtu využity. Všechny tyto vrstvy poskytovány v rastrové podobě byly vytvořeny v rámci projektu Fyzikální a hydropedologické vlastnosti půd ČR.
+
+ \hspace{10mm}Zájmová oblast je uživatelem zadávána stejně jako u dat získávaných pro vrstvu využití území buď polygonem nebo výřezem obrazovky, a proto musí být v druhém případě tento vstup převeden do polygonu.  
+\begin{lstlisting}[style=mypython, caption={Převod výřezu obrazovky na polygon},label={kod:extenttoplg}]
+rect = QgsRectangle(xmin, ymin, xmax, ymax)
+layer = QgsVectorLayer("Polygon?crs=EPSG:5514", "Rectangle Layer", "memory")
+provider = layer.dataProvider()
+fields = QgsFields() # Define attributes
+fields.append(QgsField("id", QVariant.Int))
+provider.addAttributes(fields)
+layer.updateFields()
+feature = QgsFeature() # Create a feature with rectangle geometry
+feature.setGeometry(QgsGeometry.fromRect(rect))
+feature.setAttributes([1])  # Assign an ID
+provider.addFeature(feature)
+layer.updateExtents()# Refresh the layer
+return layer
+\end{lstlisting}
+
+ \hspace{10mm}Tato služba WPS vrací pouze matici pixelů, které jsou v celém rozsahu uvnitř definičního polygonu, proto aby byly použity pixely na obvodu polygonu je na vstupní polygon aplikován buffer o hodnotě dvojnásobném rozlišení rastrové vrstvy. 
+
+ \hspace{10mm} Jelikož po předání vektorové vrstvy WPS službě tato služba stahuje data uvnitř geometrií každého prvků této vrstvy je pro urychlení procesu na vrstvu aplikována funkce sloučení \textit{(dissolve)}, tak aby byly předány pouze souřadnice vrcholových bodů celé vrstvy, což také zjednodušuje kontrolu celkového rozsahu zájmového území.
+
+  \hspace{10mm} Pro komunikaci se službou je potřeba jí předat požadavek ve formátu XML. To se vytvoří doplněním ohraničujícího obdélníku, body a atributy definičního polygonu do XML šablony uložené ve složce s konfiguračními soubory. Toto XML se předá s identifikátorem pro stažení vrstvy hydrologických skupin půd funkci \textit{(execute)} knihovny OWSLib.
+\begin{lstlisting}[style=mypython, caption={Spuštění kominukace s WPS službou},label={kod:wps}]
+execution = wps.execute(self.process_identifier, [], request=requestXML.encode('utf-8'))
+monitorExecution(execution)
+\end{lstlisting}
+
+\hspace{10mm}Výstupem služby je rastrová vrstva v komprimované složce, ta je uložena do dočasné složky vytvořené v systému. Ta je poté extrahována a soubor formátu TIF je uložen do paměti počítače. Ten je polygonizací převeden do vektorové podoby a uložen do stejné dočasné složky ve formátu GeoPackage.
+
+\begin{lstlisting}[style=mypython, caption={Polygonizace rastrové vrstvy},label={kod:polygonizace}]
+temp_output = tempfile.NamedTemporaryFile(suffix=".gpkg").name
+result = processing.run("gdal:polygonize", {
+    'INPUT': raster_path,
+    'BAND': 1,
+    'FIELD': 'HSG',
+    'EIGHT_CONNECTEDNESS': False,
+    'OUTPUT': temp_output })
+\end{lstlisting}
+
+\hspace{10mm}Vektorová vrstva je poté oříznuta dle původního polygonu na vstupu, na který nebyl aplikován buffer. Nicméně tato vrstva HSP může obsahovat díry. To nastává hlavně na místech, kde se nachází nějaká vodní plocha. Takové díry jsou poté vyplněny hodnotou 0 a je s nimi nakládáno jako s vodní plochou. Na výslednou vrstvu je aplikován barevný styl.
+
+\hspace{10mm}Po přidání vrstvy využití území i vrstvy hydrologických skupin se tyto vrstvy zároveň propojí s rozevíracími seznamy na druhé záložce v grafickém uživatelském rozhraní. Odtud je potom možné obě vrstvy propojit do jedné.
+
+\hspace{10mm}Pokud je jedna z vrstev rozsahem větší než druhá, je ta větší oříznuta dle té menší. Vrstvy jsou potom i s atributy spojeny do jedné a je na ně aplikována symbologie.
+
+\begin{lstlisting}[style=mypython, caption={Propojení vrstev využití území a HSP},label={kod:intersection}]
+combined_layer = processing.run("native:union", {
+                'INPUT': self.LandUse_layer,
+                'OVERLAY': self.Soil_layer,
+                'OUTPUT': 'memory:'
+            })['OUTPUT']
+\end{lstlisting}
+
+
+
 \section{Analýza odtoků SCS-CN} \label{CN}
+\section{Výpočet objemu přímého odtoku} \label{runoff}
+\section{Popis konfiguračních souborů} \label{config}
+\subsection{layers\_merging\_order.csv} \label{layers_merging_order.csv}
+\hspace{10mm}Tento jednoduchý csv soubor obsahuje v každém řádku název vrstvy poskytované ZABAGED WFS službou. Jejich pořadí určuje pořadí, ve kterém budou spojeny do jedné vrstvy využití území. Vrstvy uvedené dříve budou připojeny nad vrstvy pod nimi. označení \textit{LPIS\_layer} neslouží ke stažení vrstvy, ale pouze určuje pořadí vrstvy z WFS LPIS služby.
+
+\begin{lstlisting}[style=mypython, caption={Ukázka layers\_merging\_order.csv},label={kod:layers_merging_order.csv}]
+ZABAGED_POLOHOPIS:Heliport
+ZABAGED_POLOHOPIS:Budova_jednotlivá_nebo_blok_budov__plocha_
+ZABAGED_POLOHOPIS:Silnice__dálnice
+LPIS_layer
+ZABAGED_POLOHOPIS:Okrasná_zahrada__park
+\end{lstlisting}
+
+
+\subsection{zabaged\_to\_LandUseCode\_table.yaml} \label{zabaged_to_LandUseCode_table.yaml}
+\hspace{10mm}Toto je YAML soubor, který obsahuje seznam obsahující mapy vždy s dvěma stejnými klíči \textit{keywords} a \textit{code}. \textit{Keywords} obsahuje seznam řetězců a \textit{code} jedno celé číslo.
+
+\hspace{10mm}Soubor je využit k mapování kódů využití území. Pokud se alespoň jedne řetězec uvnitř seznamu \textit{keywords} nachází v názvu získané ZABAGED vrstvy, je takové vrstvě přiřazen kód využití území z korespondujícího klíče \textit{code}.
+
+\hspace{10mm}Tento postup je volen tak, aby při změně názvů vrstev poskytovatelem bylo toto přiřazení stále funkční.
+
+\begin{lstlisting}[style=myyaml, caption={Ukázka zabaged\_to\_LandUseCode\_table.yaml},label={kod:zabaged_to_LandUseCode_table.yaml}]
+land_use:
+  - keywords: [Orná, orná, Orna, orna]
+    code: 10000
+  - keywords: [Travní, travní, Travni, travni]
+    code: 20000
+  - keywords: [Lesní, lesní, Lesni, lesni]
+    code: 30000
+\end{lstlisting}
+
+\subsection{ZABAGED.yaml} \label{ZABAGED.yaml}
+\hspace{10mm} Tento soubor obsahuje informace o vrstvách stahovaných ze ZABAGED WFS služby a slouží k jejich úpravě. Jmenovitě to je aplikace bufferu a zpřesnění kódu využití území.
+
+\hspace{10mm}Na prvním řádku soubor obsahuje URL adresu v řetězci pod klíčem \textit{URL}, kde se nachází WFS služba poskytující ZABAGED data.Dále seznam vrstev, pro které se mají vytvářet buffery podle určitých hodnot v atributech. Každý objekt obsahuje sadu klíčů.
+
+\hspace{10mm}První \textit{input\_layer\_name} obsahuje název stažené WFS vrstvy, \newline \textit{controlling\_atr\_name} název atributu dané vrstvy podle kterého se řídí přiřazení bufferu, \textit{default\_buffer} který se přiřazuje pokud žádný atribut vrstvy neodpovídá žádnému v tomto souboru a \textit{buffer\_levels} obsahující tři úrovně \textit{priority}, \textit{values} a \textit{distance}.
+
+\hspace{10mm}Klíč \textit{priority} obsahuje číselný řetězec pro určení pořadí při výběru hodnot, klíč \textit{values} hodnoty v atributu, které spadají do této úrovně a \textit{distance} obsahuje vzdálenost bufferu v metrech.
+
+\hspace{10mm}Pokud \textit{controlling\_atr\_name} není poskytnut, potom se všem objektům vrstvy přiřadí velikost buffer z hodnoty \textit{default\_buffer}.
+
+\hspace{10mm}Další seznam obsahuje názvy vrstev, pro které je žádoucí zpřesnit hodnotu kódu pod klíčem \textit{name}. Dále pak základní hodnotu kódu využití území \textit{base\_use\_code}. Ten je zde znovu přiřazen pro případ, že není přiřazen ze souboru  \newline \textit{zabaged\_to\_LandUseCode\_table.yaml}. Opět se tu nachází název \textit{controlling\_attribute}, který musí vrstva na vstupu obsahovat a dle jeho hodnot se přičte celočíselná hodnota ze seznamu \textit{value\_increments}, kde se nachází pod klíčem totožným s hodnotou atributu vrstvy. 
+
+\begin{lstlisting}[style=myyaml, caption={Ukázka ZABAGED.yaml},label={kod:ZABAGED.yaml}]
+URL: "https://ags.cuzk.cz/arcgis/services/ZABAGED_POLOHOPIS/MapServer/WFSServer"
+
+buffer_layers:
+  - input_layer_name: "ZABAGED_POLOHOPIS:Silnice__dálnice"
+    controlling_atr_name: "typsil_k"
+    buffer_levels:
+      - priority: "1"
+        values: ["D1", "D2", "M", "D1p", "Mp", "Mv"]
+        distance: 20
+      - priority: "2"
+        values: ["S1", "S1v", "S1p"]
+        distance: 12.5
+      - priority: "3"
+        values: ["S2", "S3", "D2p", "S2p", "S2v", "S3p", "S3v"]
+        distance: 10
+    default_buffer: 7.5
+
+  - input_layer_name: "ZABAGED_POLOHOPIS:Silnice_neevidovaná"
+    controlling_atr_name: "NaN"
+    default_buffer: 7.5
+
+layers:
+  - name: "ZABAGED_POLOHOPIS:Lesní_půda_se_stromy_kategorizovaná__plocha_"
+    base_use_code: 30000
+    controlling_attribute: "druh_k"
+    value_increments:
+      N: 0
+      J: 3200 # jehlicnaty
+      L: 3100 # listnaty
+      S: 3300 # smiseny
+\end{lstlisting}
+
+\subsection{LPIS.yaml} \label{LPIS.yaml}
+\hspace{10mm} \textit{LPIS.yaml} obsahuje informace o vrstvě stahované z LPIS WFS služby. Pod klíčem \textit{URL} se obdobně jako u souboru \textit{ZABAGED.yaml} nachází adresa k LPIS WFS. Z té je stahována pouze jedna vrstva a její název je uložen pod klíčem \textit{layer\_name}.
+
+\hspace{10mm} Aby bylo možné použít totožný proces editace kódu využití území jako u ZABAGED vrstev, je dále v listu \textit{layers}  uložen název vrstvy v klíči \textit{name}. Ten je definován jako \textit{LPIS\_layer}, který je stahované vrstvě dříve přiřazen, aby byla spojena s ostatními vrstvami ve správném pořadí dle souboru popsaném v části 5.7.2.
+
+\hspace{10mm}Ze stejného důvodu je také přiřazena základní hodnota kódu využití území pod klíčem \textit{base\_use\_code}, název řídícího atributu \textit{controlling\_attribute}, který je očekáván ve stahované vrstvě a dále seznam \textit{value\_increments} s hodnotovými páry, kde klíčem je hodnota atributu vrstvy. Dle klíče je přiřazen přírůstek k základní hodnotě \textit{base\_use\_code}.
+
+\begin{lstlisting}[style=myyaml, caption={Ukázka LPIS.yaml},label={kod:LPIS.yaml}]
+URL: "https://mze.gov.cz/public/app/wms/plpis_wfs.fcgi"
+layer_name: "LPIS_DPB_UCINNE"
+
+layers:
+  - name: "LPIS_layer"
+    base_use_code: 10000
+    controlling_attribute: "kultura"
+    value_increments:
+      "standartní orná půda": 0
+      "chmelnice": 3100
+      "vinice": 3200
+\end{lstlisting}
+
+\subsection{Soil.yaml} \label{Soil.yaml}
+Tento soubor obsahuje pouze dvě hodnotové páry, a to \textit{URL} s adresou WPS služby poskytující data HSP a \textit{process\_identifier} který obsahuje řetězec , který obsahuje název požadované vrstvy stahované z této služby.
+
+
+\subsection{Soil\_template.xml} \label{Soil_template.xml}
+\hspace{10mm} Tento soubor obsahuje šablonu XML souboru pro komunikaci s WPS službou stahující vrstvu hydrologických skupin půd.
+Do této šablony jsou před odesláním WPS službě doplněny hodnoty souřadnic definičního polygonu, souřadnice jeho ohrazujícího obdélníku a jeho atributy.
+
+
+\section{Kontroly} \label{checks}
 \section{Testování} \label{testing}
 \section{Tvorba dokumentace} \label{docs}
 
