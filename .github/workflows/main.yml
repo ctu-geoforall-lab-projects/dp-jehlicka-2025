@@ -1,0 +1,48 @@
+name: Build & Publish LaTeX PDF
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+    
+      - name: Mark workspace safe
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+          args: >
+            -pdf
+            -file-line-error
+            -halt-on-error
+            -interaction=nonstopmode
+            -jobname=josef-jehlicka-dp-2025
+
+      
+      - name: List workspace
+        run: ls -R ${{ github.workspace }}
+
+   
+      - name: Commit compiled PDF
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: auto-update compiled PDF"
+          file_pattern: "josef-jehlicka-dp-2025.pdf"
+          disable_globbing: true
