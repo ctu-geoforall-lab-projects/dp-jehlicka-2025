@@ -628,12 +628,21 @@ Zdroje hydrologických skupin půd v České republice existují celkem čtyři 
 \end{itemize}
 \hspace{10mm} Volba zdroje půdních dat může ovlivnit výsledky analýz, nicméně neexistuje způsob, jak určit spolehlivost těchto rozdílných zdrojů dat, přestože se poměrně liší.[16] To je vizualizováno níže.
 
-\begin{figure}[ht] \label{obr4}
+\begin{figure}[H] \label{obr4}
 \centering
 \includegraphics[height=12cm]{pictures/HSPmapa.png}
 \caption{Plošné rozdělení jednotlivých HSP na povodí Hruškovice podle různých podkladů \cite{Strouhal2022}}
 \label{fig:hsp}
 \end{figure}
+
+\section{Srážková data} \label{rain}
+\hspace{10mm} Dle metodiky \textit{Krátkodobé srážky pro hydrologické modelování a navrhování drobných vodohospodářských staveb v krajině} \cite{MNYDGwleJOjKLRU2} je žádoucí navrhovat protipovodňová opatření pro velikost návrhového šestihodinového úhrnu srážek v šesti alternativách jejich průběhu, vyjádřených sestavou šesti syntetických hyetogramů. 
+
+\hspace{10mm} Pokud je tedy návrhová srážka odvozena pro nějakou dobu opakování, je možné z ní vypočtený objem přímého odtoku v kombinaci se šesti tvary  hyetogramů a pravděpodobností abnormálního předchozího nasycení vážit.
+
+\hspace{10mm} To znamená, že výsledný objem je vypočten z hodnot \textit{CN2} i \textit{CN3} (viz Kapitola 1), s uvážením pravděpodobnosti obou scénářů počátečního nasycení.
+
+\hspace{10mm} Návrhové srážky, tvary hyetogramů a pravděpodobnosti abnormálního předchozího nasycení pro různé doby opakování se šestihodinovými úhrny jsou poskytovány portálem \textit{rain.fsv.cvut.cz}.
 
 \newpage
 \newpage
@@ -779,6 +788,7 @@ příkazové řádky.
 
 \hspace{10mm}V tomto formátu lze tvořit nejrůznější úpravy textu jako nadpisy, tučné písmo, kurzívu, odrážkové seznamy a spoustu dalších. Je umožněno také vkládat obrázky a kombinovat Markdown s HTML. \cite{Cone2020}
 
+\begin{figure}[H]
 \begin{pythoncode}[style=mypython, caption={Ukázka Markdown syntaxe},label={kod:md}]
 # Nadpis nejvyšší úrovně
 Odstavec s **tučným** a *šikmým textem*
@@ -794,6 +804,7 @@ Zdrojový kód může být `v řádku` nebo jako blok:
 - nečíslovaný
 - seznam
 \end{pythoncode}
+\end{figure}
 
 \hspace{10mm} MkDocs je nástroj, který z Markdown souborů dokáže generovat statické webové stránky se zaměřením na tvorbu dokumentace různých projektů. Uživatel má možnost si vybrat z řady grafických šablon vyvíjených komunitou.
 
@@ -835,9 +846,11 @@ Z objemů přímých odtoků pro tyto doby opakování a z hodnot CN2 a CN3 se p
 
 \section{Tvorba grafického uživatelského rozhraní} \label{gui}
 
-\hspace{10mm} 
+\hspace{10mm} Pro generaci základních souborů pluginu, nutné pro otevření okna Qt objektu \textit{QDockWidget} a další užitečné integrace se softwarem QGIS, byl využit zásuvný modul \textit{Plugin Builder}. 
 
+\hspace{10mm} Zde bylo možné nastavit název modulu, jenž byl zvolen jako \textit{Czech Land Use and CN Analyzer}, jeho krátký popis, číslo jeho verze, jméno autora, kontaktní email nebo odkazy na domovskou stránku a repozitář. Tyto popisující prvky se následně ukáží u pluginu v QGIS správci zásuvných modulů.
 
+\hspace{10mm} Pluginu byla též vytvořena ikona a pomocí nástroje \textit{pb\_tool} byl adresář pluginu překompilován pro její implementaci.
 
 \begin{figure}[H] \label{obr12}
 \centering
@@ -846,9 +859,43 @@ Z objemů přímých odtoků pro tyto doby opakování a z hodnot CN2 a CN3 se p
 \label{fig:icon}
 \end{figure}
 
+\hspace{10mm} Následně byl upraven panel zásuvného modulu v softwaru Qt Designer, který je možné stáhnout společně s instalací softwaru QGIS. Tato jeho verze obsahuje nástavbu s speciálními objekty specifické pro GIS prostředí. Prvně byl do okna pluginu přidán panel se záložkami.
+
+\hspace{10mm} Záložky byly vytvořeny čtyři: první pro stažení dat, druhá pro výběr a propojení vrstev využití území a hydrologických skupin půd, třetí pro vytvoření vrstvy s hodnotami CN a čtvrtá pro výpočet objemu přímého odtoku.
+
+\hspace{10mm} První záložka umožňuje uživateli vybrat, zda stažení dat proběhne uvnitř výřezu obrazovky nebo uvnitř polygonu. V případě stažení uvnitř polygonu si uživatel může zvolit vrstvu, kterou chce pro definici zájmového území využít. Na toto okno je nastaven filtr, aby zobrazovalo pouze vektorové vrstvy.
+
+\hspace{10mm} Dále si může vybrat, zda chce stáhnout vrstvu využití území, vrstvu hydrologických skupin půd nebo obě.  Proces stahování je možné zahájit tlačítkem, jeho postup se zobrazuje v ukazateli průběhu a je možně jej ukončit tlačítkem (\textit{Abort}) mezi jednotlivými vrácenými vrstvami.  
+
+\hspace{10mm} V druhé záložce jsou dvě rozbalovací okna s filtry pro zobrazení pouze vektorových vrstev, kde je možné vybrat z projektu vrstvy využití území a hydrologických skupin půd. Tlačítkem níže je možné tyto vrstvy propojit do jedné. Obě vrstvy jsou po stažení automaticky přidávány do daných rozbalovacích oken.
+
+\begin{figure}[H] \label{obr12a}
+\centering
+\includegraphics[height=9cm]{pictures/UI1.png}
+\caption{Ukázka první (vlevo) a druhé (vpravo) záložky modulu }
+\label{fig:UI1}
+\end{figure}
+
+\hspace{10mm} Uvnitř třetí záložky je rozbalovací okno pro výběr propojené vrstvy využití území a hydrologických skupin půd, která je do něj automaticky vložena po jejím vytvoření v předchozí záložce. Dále je zde cesta k základní tabulce CN hodnot, která může být změněna dialogem výběru souboru spustitelným bočním tlačítkem.
+
+\hspace{10mm} Čtvrtá záložka opět obsahuje rozbalovací okno pro výběr CN vrstvy. Dále se zde nachází pole pro vstup textu, kde je nutné vložit poměrový koeficient počáteční ztráty ($\lambda$), v němž je nastavena základní hodnota 0,2.
+
+\hspace{10mm} Poté si uživatel může pomocí přepínače vybrat, zda chce pro výpočet použít vlastní návrhovou výšku úhrnu nebo využít návrhové výšky úhrnu pro jednotlivé doby opakování. Vlastní výšku úhrnu může zadat do textového pole a pro výpočet z více výšek úhrnu zároveň může tyto hodnoty oddělit symbolem středníku. Při výpočtu pro různé doby opakování si může uživatel ty, pro které požaduje výsledek, zvolit zaškrtávacími tlačítky.
+
+\hspace{10mm} Pod panelem se záložkami se nachází modré tlačítko, kterým je možné zobrazit dokumentaci ve webovém prohlížeči.
+
+\begin{figure}[H] \label{obr12b}
+\centering
+\includegraphics[height=9cm]{pictures/UI2.png}
+\caption{Ukázka třetí (vlevo) a čtvrté (vpravo) záložky modulu }
+\label{fig:UI2}
+\end{figure}
+
+
 \section{Získávání vrstvy využití území (land use)} \label{landuse}
 \hspace{10mm}Nejprve je nutné získat územní rozsah, ve kterém se budou získávat potřebné vrstvy. Podle volby uživatele v grafickém uživatelském rozhraní se použije buď výřez obrazovky, nebo ohraničující obdélník vybraného polygonu. 
 
+\begin{figure}[H]
 \begin{pseudocode}[style=mypseudocode, caption={Získání územního rozsahu}, label={kod:extent}]
 POKUD uživatel zadal výřez obrazovky
     rozsah @ souřadnice rohů výřezu obrazovky
@@ -862,9 +909,11 @@ KONEC PODMINKY
 VRATIT rozsah
 
 \end{pseudocode}
+\end{figure}
 
 \hspace{10mm}Z konfiguračních souborů je poté načten seznam názvů a URL adresy WFS služeb stahovaných vrstev. Všechny tyto parametry jsou přesunuty do jiného vlákna softwaru QGIS, kvůli zachování responsivity samotné aplikace QGIS při procesu stahování. Na pozadí je potom stažena z WFS služby každá vrstva z dříve získaného seznamu vrstev v požadovaném rozsahu. Každou získanou vrstvou se také přiřadí nová hodnota v ukazateli průběhu v uživatelském rozhraní.
 
+\begin{figure}[H]
 \begin{pseudocode}[style=mypseudocode, caption={Stažení vrstvy z WFS služby}, label={kod:wfs}]
 URI @ kombinace z URL, požadavku GetFeature, název vrszvy, rozsah, EPSG
 vektorová vrstva @ Načtení URI do vektorové vrstvy v paměti
@@ -876,6 +925,8 @@ JINAK
     VRATIT 
 KONEC PODMINKY
 \end{pseudocode}
+\end{figure}
+
 \hspace{10mm}Takto získané vrstvy se uchovají v paměti počítače a nyní je potřeba provést kroky, aby jednotlivé vrstvy reprezentovaly využití území. K jednoznačné identifikaci typu využití území se využije kód, který se zároveň bude vyskytovat v tabulce pozdější funkcionality určení hodnoty CN. V první fázi přiřazení se u každé vrstvy vytvoří atribut pro hodnotu kódu využití území a doplní se jeho základní hodnota dle názvu vrstvy. Rozlišné vrstvy mohou mít i totožný kód využití území, jako například silnice a parkoviště, jelikož se v obou případech jedná o antropogenní nepropustné povrchy. Tato hodnota je přiřazena pomocí klíčového slova v názvu vrstvy, ke kterému je v konfiguračním souboru přiřazena hodnota kódu využití území. Díky tomu bude tato funkcionalita zachována i v případě, že správce WFS služby obmění názvy poskytovaných vrstev.
 
 \begin{figure}[H] \label{obr17}
@@ -887,6 +938,7 @@ KONEC PODMINKY
 
 \hspace{10mm}Některé stahované vrstvy jsou liniové nebo bodové a právě na ně je aplikován buffer. Pro mnohé je aplikován jen pouze dle názvu vrstvy a pro některé je hodnota bufferu přiřazena dle vybraného řídícího atributu. Pokud řídící atribut obsahuje nečekané hodnoty nebo neobsahuje hodnotu žádnou, je zvolena definovaná implicitní velikost bufferu.
 
+\begin{figure}[H]
 \begin{pseudocode}[style=mypseudocode, caption={Přiřazení velikosti bufferu}, label={kod:buffer}]
 PRO KAŽDÝ prvek v kolekci prvků vrstvy:
     Získej hodnotu řídícího atributu prvku
@@ -901,6 +953,7 @@ PRO KAŽDÝ prvek v kolekci prvků vrstvy:
     
 KONEC CYKLU
 \end{pseudocode}
+\end{figure}
 
 \hspace{10mm}Další implementovanou funkcí pluginu je  zpřesnění kódu využití území dle nějakého atributu vrstvy. Jelikož atribut u vrstvy nemění přiřazený kód z názvu vrstvy, tak se k již přiřazené hodnotě pouze přičte žádané číslo. Jestliže atribut obsahuje neočekávanou hodnotu, zůstane u prvku pouze základní kód.
 
@@ -913,7 +966,9 @@ KONEC CYKLU
 \section{Získání vrstvy HSP a její propojení s vrstvou využití území} \label{intersection}
  \hspace{10mm}Data hydrologických skupin půd využitých v zásuvném modulu jsou získávány z WPS služby umístěné na doméně \textit{rain.fsv.cvut.cz} . Tato služba má na vstupu polygonovou vrstvu s maximálním rozsahem 20 $km^2$ a názvy požadovaných vrstev. Tato služba totiž nabízí kromě dat hydrologických skupin půd i míru zastoupení písku, naplavenin, jílu a texturu půdy podle USDA. Nicméně tyto další poskytované vrstvy nejsou ve výpočtu využity. Všechny tyto vrstvy poskytovány v rastrové podobě byly vytvořeny v rámci projektu Fyzikální a hydropedologické vlastnosti půd ČR.
 
- \hspace{10mm}Zájmová oblast je uživatelem zadávána stejně jako u dat získávaných pro vrstvu využití území buď polygonem nebo výřezem obrazovky, a proto musí být v druhém případě tento vstup převeden do polygonu.  
+ \hspace{10mm}Zájmová oblast je uživatelem zadávána stejně jako u dat získávaných pro vrstvu využití území buď polygonem nebo výřezem obrazovky, a proto musí být v druhém případě tento vstup převeden do polygonu.
+ 
+ \begin{figure}[H]
 \begin{pythoncode}[style=mypython, caption={Převod výřezu obrazovky na polygon},label={kod:extenttoplg}]
 rect = QgsRectangle(xmin, ymin, xmax, ymax)
 layer = QgsVectorLayer("Polygon?crs=EPSG:5514", "Rectangle Layer", "memory")
@@ -929,19 +984,24 @@ provider.addFeature(feature)
 layer.updateExtents()# Refresh the layer
 return layer
 \end{pythoncode}
+\end{figure}
 
  \hspace{10mm}Tato služba WPS vrací pouze matici pixelů, které jsou v celém rozsahu uvnitř definičního polygonu proto, aby byly použity pixely na obvodu polygonu je na vstupní polygon aplikován buffer o hodnotě dvojnásobného rozlišení rastrové vrstvy. 
 
  \hspace{10mm} Jelikož po předání vektorové vrstvy WPS službě tato služba stahuje data uvnitř geometrií každého prvku této vrstvy, je pro urychlení procesu na vrstvu aplikována funkce sloučení \textit{(dissolve)}, tak aby byly předány pouze souřadnice vrcholových bodů celé vrstvy, což také zjednodušuje kontrolu celkového rozsahu zájmového území.
 
   \hspace{10mm} Pro komunikaci se službou je potřeba jí předat požadavek ve formátu XML. To se vytvoří doplněním ohraničujícího obdélníku, body a atributy definičního polygonu do XML šablony uložené ve složce s konfiguračními soubory. Toto XML se předá s identifikátorem pro stažení vrstvy hydrologických skupin půd funkci \textit{(execute)} knihovny OWSLib.
+
+\begin{figure}[H]
 \begin{pythoncode}[style=mypython, caption={Spuštění komunikace s WPS službou},label={kod:wps}]
 execution = wps.execute(self.process_identifier, [], request=requestXML.encode('utf-8'))
 monitorExecution(execution)
 \end{pythoncode}
+\end{figure}
 
 \hspace{10mm}Výstupem služby je rastrová vrstva v komprimované složce, která je uložena do dočasné složky vytvořené v systému. Poté je extrahována a soubor formátu TIF je uložen do paměti počítače. Ten je polygonizací převeden do vektorové podoby a uložen do stejné dočasné složky ve formátu GeoPackage.
 
+\begin{figure}[H]
 \begin{pythoncode}[style=mypython, caption={Polygonizace rastrové vrstvy},label={kod:polygonizace}]
 feedback = QgsProcessingFeedback()  # Add feedback for processing
         temp_dir = tempfile.mkdtemp()
@@ -955,6 +1015,7 @@ feedback = QgsProcessingFeedback()  # Add feedback for processing
                 'OUTPUT': output_path
             }, feedback=feedback)
 \end{pythoncode}
+\end{figure}
 
 \hspace{10mm}Vektorová vrstva je poté oříznuta dle původního polygonu na vstupu, na který nebyl aplikován buffer. Nicméně tato vrstva HSP může obsahovat díry. To nastává hlavně na místech, kde se nachází nějaká vodní plocha. Takové díry jsou poté vyplněny hodnotou 0 a je s nimi nakládáno jako s vodní plochou. Na výslednou vrstvu je aplikován barevný styl.
 
@@ -980,6 +1041,7 @@ combined_layer = processing.run("native:union", {
 
 \hspace{10mm} Dále je potřeba pro převod načíst tabulku CN2 hodnot z konfiguračního CSV souboru definovanou v uživatelském rozhraní. Takové hodnoty je vhodné uložit ve slovníku s korespondujícími kódy využití území a ignorovat hlavičku souboru, pokud ji obsahuje.  \newline
 
+\begin{figure}[H]
 \begin{pseudocode}[style=mypseudocode, caption={Vytvoření slovníku z CSV souboru},label={kod:cncsv}]
 otevři textový soubor na cestě z UI s kódováním UTF-8
 vytvoř prázdný slovník CN hodnot
@@ -1001,15 +1063,53 @@ KONEC CYKLU
 
 VRATIT slovník CN hodnot
 \end{pseudocode}
+\end{figure}
+
 \hspace{10mm}Následně je vytvořena nová vrstva v paměti počítače, která si převezme všechny objekty z vrstvy na vstupu. K této nové vrstvě je následně připojena hodnota CN2 ze slovníku a z ní je vypočtena i hodnota CN3 ze vzorce uvedeném v první kapitole.
 
 \hspace{10mm}Této vrstvě je také automaticky generován styl symbologie. Jelikož odstupňovaný typ symbologie nepodporuje stylizaci NULL hodnot, proto jsou nejprve vypočteny hranice kvantilů a z nich jsou vytvořeny pravidla pro kategorizovanou symbologii doplněnou o pravidlo pro prázdné hodnoty.
 
 \section{Výpočet objemu přímého odtoku} \label{runoff}
+
+\hspace{10mm}Jeden ze vstupů pro tento výpočet je vrstva CN. Pokud v této vrstvě existuje pouze atribut \textit{CN2}, jsou z něj dopočteny i hodnoty atributu \textit{CN3} (viz první kapitola). Všem prvkům vrstvy je poté znovu určena výměra.
+
+\hspace{10mm} Dále je získána výška úhrnu a poměrový koeficient počáteční ztráty definované uživatelem. Z nich jsou vypočítány výšky přímého odtoku zvlášť pro hodnoty \textit{CN2} a \textit{CN3}. Pro každý z nich jsou poté v kombinaci s výměrou každého prvku získány objemy přímých odtoků.
+
+\hspace{10mm} Uživatel má volbu zadat několik výšek úhrnů, načež mu výpočet vrátí více výsledků výšek a objemů přímého odtoku pro každou takto zadanou hodnotu.
+
+\hspace{10mm} Další variantou je provést výpočet pro vybrané doby opakování. To je možné pro doby opakování 2, 5, 10, 20, 50 a 100 let, což jsou doby podporované WPS službou. 
+
+\hspace{10mm}Pro tento přístup je následně nutné navázat kontakt se zmíněnou WPS službou, která pro daný polygon, kterým je zde vrstva CN hodnot, vrátí CSV soubor s návrhovými srážkami, tvary hyetogramů (A-F) a pravděpodobnostmi abnormálního předchozího nasycení pro každou dobu opakování. CSV soubory jsou přidány do QGIS projektu pro eventuální kontrolu. 
+
+\hspace{10mm} Pro každou dobu opakování jsou potom z návrhových srážek zprostředkovaných WPS službou vypočteny výšky a objemy přímých odtoků stejným způsobem, jako pro případ jejich opatření z uživatelského vstupu.
+
+\hspace{10mm}Z těchto hodnot je možné získat vážený objem odtoku, který zahrnuje pravděpodobnosti pro normální počáteční podmínky (\textit{CN2}) a vlhké počáteční podmínky (\textit{CN3}). Ten se spočte jako \cite{MNYDGwleJOjKLRU2}:
+
+\begin{equation}
+V_{N} = \sum_{i = A}^{F} \mathit{V}_{CN2} . Ptvar_{i} . Pcn_{2} + \mathit{V}_{CN3} . Ptvar_{i} . Pcn_{3}
+\end{equation}
+
+kde:
+\begin{tabbing}
+    \hspace{10mm} \= $\mathit{V}_{CN2}$ \hspace{5mm} \= Objem přímého odtoku pro \textit{CN2} \\
+    \> $\mathit{V}_{CN3}$ \> Objem přímého odtoku pro \textit{CN3} \\ 
+    \> $Pcn_{2}$  \> Pravděpodobnost normálního nasycení \\
+    \> $Pcn_{3}$ \> Pravděpodobnost abnormálního nasycení \\
+    \> $Ptvar_{i}$ \> Pravděpodobnost zastoupení tvaru hyetogramu \textit{i} \\
+    \> $V_{N}$ \> Vážený objem odtoku pro danou dobu opakování 
+\end{tabbing}
+odkud: 
+\begin{equation}
+Pcn_{2} = 1 -  Pcn_{3}
+\end{equation}
+
+\hspace{10mm} Takto vypočtený vážený objem přímého odtoku je pro každý prvek přidán do atributové tabulky, společně s výškami a neváženým objemy přímého odtoku  pro každou dobu opakování. Přesný popis a názvy výsledných atributů se nachází v dokumentaci zásuvného modulu. % jaká příloha?
+
 \section{Popis konfiguračních souborů} \label{config}
 \subsection{layers\_merging\_order.csv} \label{layers_merging_order.csv}
 \hspace{10mm}Tento jednoduchý CSV soubor obsahuje v každém řádku název vrstvy poskytované ZABAGED WFS službou. Jejich pořadí určuje pořadí, ve kterém budou spojeny do jedné vrstvy využití území. Vrstvy uvedené dříve budou připojeny nad vrstvy pod nimi. Označení \textit{LPIS\_layer} neslouží ke stažení vrstvy, ale pouze určuje pořadí vrstvy z WFS LPIS služby.
 
+\begin{figure}[H]
 \begin{lstlisting}[style=mypython, caption={Ukázka layers\_merging\_order.csv},label={kod:layers_merging_order.csv}]
 ZABAGED_POLOHOPIS:Heliport
 ZABAGED_POLOHOPIS:Budova_jednotlivá_nebo_blok_budov__plocha_
@@ -1017,6 +1117,7 @@ ZABAGED_POLOHOPIS:Silnice__dálnice
 LPIS_layer
 ZABAGED_POLOHOPIS:Okrasná_zahrada__park
 \end{lstlisting}
+\end{figure}
 
 \subsection{zabaged\_to\_LandUseCode\_table.yaml} \label{zabaged_to_LandUseCode_table.yaml}
 \hspace{10mm}Toto je YAML soubor, který obsahuje seznam obsahující mapy vždy s dvěma stejnými klíči \textit{keywords} a \textit{code}. \textit{Keywords} obsahuje seznam řetězců a \textit{code} jedno celé číslo.
@@ -1025,7 +1126,8 @@ ZABAGED_POLOHOPIS:Okrasná_zahrada__park
 
 \hspace{10mm}Tento postup je volen tak, aby při změně názvů vrstev poskytovatelem bylo toto přiřazení stále funkční.
 
-\begin{lstlisting}[style=myyaml, caption={Ukázka zabaged\_to\_LandUseCode\_table.yaml},label={kod:zabaged_to_LandUseCode_table.yaml}]
+\begin{figure}[H]
+\begin{pythoncode}[style=myyaml, caption={Ukázka zabaged\_to\_LandUseCode\_table.yaml},label={kod:zabaged_to_LandUseCode_table.yaml}]
 land_use:
   - keywords: [Orná, orná, Orna, orna]
     code: 10000
@@ -1033,7 +1135,8 @@ land_use:
     code: 20000
   - keywords: [Lesní, lesní, Lesni, lesni]
     code: 30000
-\end{lstlisting}
+\end{pythoncode}
+\end{figure}
 
 \subsection{ZABAGED.yaml} \label{ZABAGED.yaml}
 \hspace{10mm} Tento soubor obsahuje informace o vrstvách stahovaných ze ZABAGED WFS služby a slouží k jejich úpravě. Jmenovitě to je aplikace bufferu a zpřesnění kódu využití území.
@@ -1048,7 +1151,8 @@ land_use:
 
 \hspace{10mm}Další seznam obsahuje názvy vrstev, pro které je žádoucí zpřesnit hodnotu kódu pod klíčem \textit{name}. Dále pak základní hodnotu kódu využití území \textit{base\_use\_code}. Ten je zde znovu přiřazen pro případ, že není přiřazen ze souboru  \newline \textit{zabaged\_to\_LandUseCode\_table.yaml}. Opět se tu nachází název \textit{controlling\_attribute}, který musí vrstva na vstupu obsahovat a dle jeho hodnot se přičte celočíselná hodnota ze seznamu \textit{value\_increments}, kde se nachází pod klíčem totožným s hodnotou atributu vrstvy. 
 
-\begin{lstlisting}[style=myyaml, caption={Ukázka ZABAGED.yaml},label={kod:ZABAGED.yaml}]
+\begin{figure}[H]
+\begin{pythoncode}[style=myyaml, caption={Ukázka ZABAGED.yaml},label={kod:ZABAGED.yaml}]
 URL: "https://ags.cuzk.cz/arcgis/services/ZABAGED_POLOHOPIS/MapServer/WFSServer"
 
 buffer_layers:
@@ -1079,7 +1183,8 @@ layers:
       J: 3200 # jehlicnaty
       L: 3100 # listnaty
       S: 3300 # smiseny
-\end{lstlisting}
+\end{pythoncode}
+\end{figure}
 
 \subsection{LPIS.yaml} \label{LPIS.yaml}
 \hspace{10mm} \textit{LPIS.yaml} obsahuje informace o vrstvě stahované z LPIS WFS služby. Pod klíčem \textit{URL}, obdobně jako u souboru \textit{ZABAGED.yaml}, se nachází adresa k LPIS WFS. Z té je stahována pouze jedna vrstva a její název je uložen pod klíčem \textit{layer\_name}.
@@ -1088,7 +1193,8 @@ layers:
 
 \hspace{10mm}Ze stejného důvodu je také přiřazena základní hodnota kódu využití území pod klíčem \textit{base\_use\_code}, název řídícího atributu \textit{controlling\_attribute}, který je očekáván ve stahované vrstvě a dále seznam \textit{value\_increments} s hodnotovými páry, kde klíčem je hodnota atributu vrstvy. Dle klíče je přiřazen přírůstek k základní hodnotě \textit{base\_use\_code}.
 
-\begin{lstlisting}[style=myyaml, caption={Ukázka LPIS.yaml},label={kod:LPIS.yaml}]
+\begin{figure}[H]
+\begin{pythoncode}[style=myyaml, caption={Ukázka LPIS.yaml},label={kod:LPIS.yaml}]
 URL: "https://mze.gov.cz/public/app/wms/plpis_wfs.fcgi"
 layer_name: "LPIS_DPB_UCINNE"
 
@@ -1100,47 +1206,50 @@ layers:
       "standartní orná půda": 0
       "chmelnice": 3100
       "vinice": 3200
-\end{lstlisting}
+\end{pythoncode}
+\end{figure}
 
 \subsection{Soil.yaml} \label{Soil.yaml}
-Tento soubor obsahuje pouze dva hodnotové páry, a to \textit{URL} s adresou WPS služby poskytující data HSP a \textit{process\_identifier} který obsahuje řetězec, který obsahuje název požadované vrstvy stahované z této služby.
+Tento soubor obsahuje pouze dva hodnotové páry a to \textit{URL} s adresou WPS služby poskytující data HSP a \textit{process\_identifier} který obsahuje řetězec uchovávající název požadované vrstvy stahované z této služby.
 
 
 \subsection{Soil\_template.xml} \label{Soil_template.xml}
-\hspace{10mm} Tento soubor obsahuje šablonu XML souboru pro komunikaci s WPS službou, stahující vrstvu hydrologických skupin půd.
+\hspace{10mm} Tento soubor obsahuje šablonu XML souboru pro komunikaci s WPS službou stahující vrstvu hydrologických skupin půd.
 Do této šablony jsou před odesláním WPS službě doplněny hodnoty souřadnic definičního polygonu, souřadnice jeho ohrazujícího obdélníku a jeho atributy.
 
 \subsection{CN\_table.csv} \label{CN_table.csv}
-\hspace{10mm} Tato CSV tabulka je využita pro přiřazení hodnoty CN pro kombinaci hodnot kódu využití území a typu hydrologických skupin půd. Pro každou hodnotu kódu využití území je dedikován jeden řádek. V každém řádku existuje pět sloupců. V prvním sloupci je definován kód využití území a v dalších čtyřech číselné hodnoty CN pro typy hydrologických skupin půd A,B,C a D. V některých řádcích se u hodnot CN vyskytují desetinná čísla, což značí jejich větší přesnost.
+\hspace{10mm} Tato CSV tabulka je využita pro přiřazení hodnoty CN pro kombinaci hodnot kódu využití území a typu hydrologických skupin půd. Pro každou hodnotu kódu využití území je dedikován jeden řádek. V každém řádku existuje pět sloupců. V prvním sloupci je definován kód využití území a v dalších čtyřech číselné hodnoty CN pro typy hydrologických skupin půd A, B, C a D. V některých řádcích se u hodnot CN vyskytují desetinná čísla, což značí jejich větší přesnost.
 
 \hspace{10mm} Tabulku není nutné využít pro přiřazení hodnot CN a uživatel má možnost si vybrat jinou stejně strukturovanou tabulku.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%              ZDROJ                  %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{lstlisting}[style=mypython, caption={Ukázka CN\_table.csv},label={kod:CN_table.csv}]
+\begin{figure}[H]
+\begin{pythoncode}[style=mypython, caption={Ukázka CN\_table.csv},label={kod:CN_table.csv}]
 LANDUSE_CODE,CN_A,CN_B,CN_C,CN_D
 10000,65,75,82,86
 20000,52,62,75,81
 33100,40.5,59.5,69.5,76
-\end{lstlisting}
+\end{pythoncode}
+\end{figure}
 
 \subsection{WPS\_config.yaml} \label{WPS_config.yaml}
-\hspace{10mm} Tento soubor obsahuje, podobně jako\textit{Soil.yaml}, dva hodnotové páry, a to \textit{URL} s adresou WPS služby poskytující data o šestihodinových srážkách a \textit{process\_identifier} který obsahuje řetězec obsahující název požadovaného procesu této služby.
+\hspace{10mm} Tento soubor obsahuje, podobně jako\textit{Soil.yaml} dva hodnotové páry, a to \textit{URL} s adresou WPS služby poskytující data o šestihodinových srážkách a \textit{process\_identifier}, který obsahuje řetězec obsahující název požadovaného procesu této služby.
 
 \section{Kontroly} \label{checks}
-\hspace{10mm} Všechny kontroly, které nejsou splněny ukončí právě probíhající proces. Ty obecné vypíšou do uživatelského rozhraní QGIS. Více detailní chybové hlášky se objeví ve zprávách výpisu prostředí QGIS.
+\hspace{10mm} Všechny kontroly, které nejsou splněny, ukončí právě probíhající proces. Ty obecné vypíšou do uživatelského rozhraní QGIS. Více detailní chybové hlášky se objeví ve zprávách výpisu prostředí QGIS.
 
 \subsection{Kontroly při stahování dat} \label{download_checks}
-\hspace{10mm} Pokud stahování dat probíhá uvnitř polygonu získaného z uživatelského rozhraní je zkontrolováno, že tento polygon je validní.
+\hspace{10mm} Pokud stahování dat probíhá uvnitř polygonu získaného z uživatelského rozhraní, je zkontrolováno, že tento polygon je validní.
 
-\hspace{10mm} Pro následující kontroly je vytvořen objekt \textit{InputChecker}, pro který jsou vstupem již zmíněný polygon, souřadnice jeho ohrazujícího obdélníku, názvy stahovaných ZABAGED vrstev z konfiguračního souboru, právě aktivní QGIS projekt a příznaky označující pro jaký proces se kontroly provádí.
+\hspace{10mm} Pro následující kontroly je vytvořen objekt \textit{InputChecker}, pro který jsou vstupem již zmíněný polygon, souřadnice jeho ohrazujícího obdélníku, názvy stahovaných ZABAGED vrstev z konfiguračního souboru, právě aktivní QGIS projekt a příznaky označující, pro jaký proces se kontroly provádí.
 
-\hspace{10mm} Skrz něj se provede několik kontrol vstupů. Nejdříve zda je v projektu, a případně polygon definující zájmové území, nastaven souřadnicový systém S-JTSK se směry os východ / sever (EPSG: 5514). Dále zda se zájmové území, definováno polygonem nebo výřezem obrazovky, nachází na území České republiky. Dále se provede kontrola  zda existuje daný konfigurační soubor s názvy vrstev požadovaných po WFS službách. 
+\hspace{10mm} Skrz něj se provede několik kontrol vstupů. Nejdříve zda je v projektu, a případně u polygonu definující zájmové území, nastaven souřadnicový systém S-JTSK se směry os východ / sever (EPSG: 5514). Dále zda se zájmové území, definováno polygonem nebo výřezem obrazovky, nachází na území České republiky. Dále se provede kontrola,  zda existuje daný konfigurační soubor s názvy vrstev požadovaných po WFS službách. 
 
-\hspace{10mm} Poslední kontrolou zprostředkovanou tímto objektem před zahájením stahování vrstev je zda plocha zájmového území nepřesahuje 20 $km^{2}$. Tento limit je nastaven, jelikož je maximální rozlohou přijatelnou pro WPS službu poskytující data o typech půd. Také je na místě dobré zmínit, že metoda SCS-CN je vhodná pro povodí rozlohou menší než 10 $km^{2}$ \cite{MNYDGwleJOjKdRUp}, ale i přesto je uživateli umožněno ji provést na území dvakrát větším.
+\hspace{10mm} Poslední kontrolou zprostředkovanou tímto objektem před zahájením stahování vrstev je, jestli plocha zájmového území nepřesahuje 20 $km^{2}$. Tento limit je nastaven, jelikož je maximální rozlohou přijatelnou pro WPS službu poskytující data o typech půd. Také je na místě dobré zmínit, že metoda SCS-CN je vhodná pro povodí rozlohou menší než 10 $km^{2}$ \cite{MNYDGwleJOjKdRUp}, ale i přesto je uživateli umožněno ji provést na území dvakrát větším.
 
+\begin{figure}[H]
 \begin{pseudocode}[style=mypseudocode, caption={Ukázka kontroly umístění zájmového území v ČR},label={kod:CR_check}]
     xmin, xmax, ymin, ymax @ souřadnice výřezu okna
     
@@ -1158,14 +1267,15 @@ LANDUSE_CODE,CN_A,CN_B,CN_C,CN_D
     
     VRATIT USPECH (True)
 \end{pseudocode}
-
+\end{figure}
 \subsection{Kontroly při propojení vrstev} \label{intersection_checks}
-\hspace{10mm}  První kontrolou při propojení vrstev využití území a vrstvy hydrologických skupin půd je zda tyto dvě vrstvy zvolené v uživatelském rozhraní existují a zda jsou vladními vrstvami.
+\hspace{10mm}  První kontrolou při propojení vrstev využití území a vrstvy hydrologických skupin půd je zda tyto dvě vrstvy zvolené v uživatelském rozhraní existují a zda jsou validními vrstvami.
 
-\hspace{10mm} Dále je nutné zaručit že vrstva využití území obsahuje povinný celočíselný atribut \textit{LandUse\_code} a vrstvy hydrologických skupin půd  celočíselný atribut \textit{HSG}, jelikož oba dva jsou nutné pro určení hodnoty CN.
+\hspace{10mm} Dále je nutné zaručit, že vrstva využití území obsahuje povinný celočíselný atribut \textit{LandUse\_code} a vrstvy hydrologických skupin půd  celočíselný atribut \textit{HSG}, jelikož oba jsou nutné pro určení hodnoty CN.
 
 \hspace{10mm} Dalším podstatným kritériem je, zda se tyto dvě vrstvy aspoň v nějaké části překrývají, aby bylo možné jejich informace propojit.
 
+\begin{figure}[H]
 \begin{pseudocode}[style=mypseudocode, caption={Ukázka kontroly překrytí obou vrstev},label={kod:overlap_check}]
 příznak průniku @ NEPRAVDA
 
@@ -1173,7 +1283,7 @@ PRO KAZDY prvek_1 V vrstva_a:
     geo_1 @ získání geometrie prvku_1
 
     PRO KAZDY prvek_2 V vrstva_b:
-        geo_1 @ získání geometrie prvku_2
+        geo_2 @ získání geometrie prvku_2
         
         POKUD geo_1 a geo_2 mají společný průnik:
             příznak průniku @  PRAVDA
@@ -1187,20 +1297,21 @@ VRATIT příznak průniku
 
 
 \end{pseudocode}
+\end{figure}
 
-\hspace{10mm} Po propojení vrstev funkcí \textit{merge} přichází na řadu kontrola poslední, a to zda neobsahuje nevalidní prvky vzniklé tímto propojením, které při něm přijdou o atribut názvu původní stažené vrstvy z WFS služby, které v malém množstvím případů vznikají nad velkým množstvím prvků vrstvy využití území, které protíná více prvků hydrologických skupin půd. Odstranění takových prvků neohrozí konzistenci výsledné vrstvy.
+\hspace{10mm} Po propojení vrstev funkcí \textit{merge} přichází na řadu kontrola poslední, a to zda neobsahuje nevalidní prvky vzniklé tímto propojením, které při něm přijdou o atribut názvu původní stažené vrstvy z WFS služby. Ty v malém množstvím případů vznikají nad velkým množstvím prvků vrstvy využití území, které protíná více prvků hydrologických skupin půd. Odstranění takových prvků neohrozí konzistenci výsledné vrstvy.
 
 \subsection{Kontroly při tvorbě CN vrstvy} \label{CN_checks}
-\hspace{10mm} Na vstupu do funkcionality přiřazení hodnoty CN je propojená vrstva, která v každém svém prvku obsahuje hodnotu využití území a určení hydrologické skupiny půdy, proto je nutné zkontrolovat zda takové atributy obsahuje.
+\hspace{10mm} Na vstupu do funkcionality přiřazení hodnoty CN je propojená vrstva, která v každém svém prvku obsahuje hodnotu využití území a určení hydrologické skupiny půdy, proto je nutné zkontrolovat, zda takové atributy obsahuje.
 
-\hspace{10mm} Dale do procesu vstupuje CSV tabulka hodnot definovaná cestou k takovému souboru v uživatelském rozhraní, kvůli tom je potřeba zjistit, zda soubor na uvedené cestě existuje.
+\hspace{10mm} Dále do procesu vstupuje CSV tabulka hodnot definovaná cestou k takovému souboru v uživatelském rozhraní, kvůli tom je potřeba zjistit, zda soubor na uvedené cestě existuje.
 
-\hspace{10mm} Pro případ, že uživatel volí CSV tabulku vlastní, či vlastnoručně editovanou je zapotřebí zjistit zda taková tabulka splňuje požadavky jejího formátovaní. 
+\hspace{10mm} Pro případ, že uživatel volí CSV tabulku vlastní či vlastnoručně editovanou, je zapotřebí zjistit zda taková tabulka splňuje požadavky jejího formátovaní. 
 
-\hspace{10mm} Taková tabulka by měla mýt zachovanou hlavičku a první hodnoty na každém řádku musí být celočíselné, jelikož se jedná o kód využití území. Další čtyři hodnoty řádku musí být čísla celá nebo čísla s desetinou čárkou, jelikož se jedná o hodnoty CN pro dané hydrologické skupiny půd. každý řádek zároveň nesmí obsahovat více než pět čísel.
+\hspace{10mm} Taková tabulka by měla mít zachovanou hlavičku a první hodnoty na každém řádku musí být celočíselné, jelikož se jedná o kód využití území. Další čtyři hodnoty řádku musí být čísla celá nebo čísla s desetinnou čárkou, jelikož se jedná o hodnoty CN pro dané hydrologické skupiny půd. každý řádek zároveň nesmí obsahovat více než pět čísel.
 
 
-
+\begin{figure}[H]
 \begin{pseudocode}[style=mypseudocode, caption={Ukázka kontroly CSV souboru},label={kod:csv_check}]
 otevři textový soubor na zadané cestě s kódováním UTF-8
 vytvoř objekt čtečky CSV řádků
@@ -1228,19 +1339,20 @@ KONEC CYKLU
 
 VRATIT USPECH
 \end{pseudocode}
+\end{figure}
 
-\hspace{10mm} Při přiřazení hodnot CN je kontrováno zda každý prvek obsahuje číselnou hodnotu vetší než nula, a pokud tomu tak není je z procesu vyřazen.
+\hspace{10mm} Při přiřazení hodnot CN je kontrováno, zda každý prvek obsahuje číselnou hodnotu větší než nula, a pokud tomu tak není je z procesu vyřazen.
 
 \subsection{Kontroly při výpočtu objemu přímého odtoku} 
 \label{runoff_checks}
-\hspace{10mm} Zde je prvním vstupem vrstva hodnot CN. Zde je kontrolováno jestli tato vrstva existuje, je validní a zda obsahuje číselný atribut \textit{CN2}, který je minimálním požadavkem této vrstvy.
+\hspace{10mm} Zde je prvním vstupem vrstva hodnot CN. Zde je kontrolováno, jestli tato vrstva existuje, je validní a zda obsahuje číselný atribut \textit{CN2}, který je minimálním požadavkem této vrstvy.
 
-\hspace{10mm} Požadovaným atributem je také hodnota \textit{CN3}, nicméně pokud tento atribut ve vstupní vrstvě neexistuje, je dopočten ze vzorce uvedeném v první kapitole.
+\hspace{10mm} Požadovaným atributem je také hodnota \textit{CN3}, nicméně pokud ve vstupní vrstvě neexistuje, je dopočten ze vzorce uvedeném v první kapitole.
 
 \hspace{10mm} Dále je potřeba zjistit zda hodnoty poměrového koeficientu počáteční ztráty a případně vlastního jednoho či více úhrnů srážky jsou čísly uvedeném v korektním formátu. U poměrového koeficientu počáteční ztráty je také provedena kontrola zda se pohybuje v rozmezí mezi jednou až třemi desetinami, což je jednak rozmezí uvedeno v metodice Krátkodobé srážky pro hydrologické modelování a navrhování drobných vodohospodářských staveb v krajině \cite{MNYDGwleJOjKLRU2} a také poviným rozmezím této hodnoty pro komunikaci s WPS službou poskytující data o šestihodinových srážkách.
 
-\hspace{10mm} U hodnot vlastnoručně určených hodnot úhrnů srážky je potřeba zajistit že na vstupu je pouze číslo popřípadě více čísel oddělených středníkem.
-
+\hspace{10mm} U hodnot vlastnoručně určených úhrnů srážky je potřeba zajistit, že na vstupu je pouze číslo popřípadě více čísel oddělených středníkem.
+\begin{figure}[H] 
 \begin{pseudocode}[style=mypseudocode, caption={Ukázka kontroly uživatelského vstupu výšky úhrnu srážky},label={kod:runoff_check}]
  získej řetězec z UI
  nahraď všechny , za . ve vstupním textu
@@ -1265,16 +1377,16 @@ KONEC CYKLU
 VRATIT seznam hloubek
 
 \end{pseudocode}
-
+\end{figure}
 
 \hspace{10mm} Jednou z dalších kontrol je existence konfiguračního souboru obsahující informace o WPS službě a existenci těchto požadovaných informací.
 
 \hspace{10mm} Při procesu určování rozlohy každého prvku CN vrstvy je kontrolováno, zda má takový prvek validní geometrie, pro toto určení.
 
 \section{Testování} \label{testing}
-\hspace{10mm} Testy kódu jsou implementovány pomocí knihovny \textit{pytest} pro každou třídu jazyka Python relevantní pro správnou funkci zásuvného modulu. Testy jsou automaticky prováděny v dedikovaném repozitáři platformy GitHub pomocí Github Actions funkce při každém zapojení \textit{(merge)} a vytvoření žádosti o začlenění změn  \textit{(pull-request)}.
+\hspace{10mm} Testy kódu jsou implementovány pomocí knihovny \textit{pytest} pro každou třídu jazyka Python relevantní pro správnou funkci zásuvného modulu. Testy jsou automaticky prováděny v dedikovaném repozitáři platformy GitHub pomocí GitHub Actions funkce při každém zapojení \textit{(merge)} a vytvoření žádosti o začlenění změn  \textit{(pull-request)}.
 
-\hspace{10mm} Komunikace se službou GitHub Actions probíhá pomocí YAML souboru, který spouští automatizovaný proces\textit{ (workflow)}. V tomto procesu se na Ubuntu operačním systému nainstaluje QGIS a Python včetně potřebných balíčků. Poté se spustí soubory s testy a při selhání se zapíší vybrané systémové logy. Tyto testy využívají i některé testovací soubory, vlastní konfigurační soubory a referenční data pro porovnávání výsledků.
+\hspace{10mm} Komunikace se službou GitHub Actions probíhá pomocí YAML souboru, který spouští automatizovaný proces\textit{ (workflow)}. V tomto procesu se na Ubuntu operačním systému nainstaluje QGIS a Python včetně potřebných balíčků. Poté se spustí soubory s testy, a při selhání se zapíší vybrané systémové logy. Tyto testy využívají i některé testovací soubory, vlastní konfigurační soubory a referenční data pro porovnávání výsledků.
 
 \subsection{Testování stahování dat z WFS služeb} \label{test_WFS}
 \hspace{10mm} Pro potřeby testování této funkcionality je třeba využít polygon pro určení zájmové oblasti. Nejprve je zjištěno zda tento GeoPackage soubor existuje a je možné ho načíst do paměti počítače. 
@@ -1282,10 +1394,10 @@ VRATIT seznam hloubek
 \hspace{10mm} Dalšími potřebnými soubory jsou soubory konfigurační, a to soubor obsahující názvy
 a pořadí vrstev \textit{(popsán v části 5.7.1)}, soubor obsahující URL adresu ZABAGED WFS služby \textit{(popsán v části 5.7.3)} a soubor obsahující URL adresu LPIS WFS \textit{(popsán v části 5.7.4)}. Testována je jejich existence v očekávaném adresáři.
 
-\hspace{10mm} Nejprve se z konfiguračního souboru získají názvy vrstev a zaručí se, že existují.
+\hspace{10mm} Nejprve se z konfiguračního souboru načtou názvy vrstev a ověří jejich existence.
 Stejně se získají a validují řetězce URL adres služeb. Poté se vyzkouší pomocí vrstvy uložené v paměti získat funkcí zásuvného modulu její ohraničující obdélník.
 
-\hspace{10mm} Díky všem doposud načtených parametrů se stáhnou vrstvy ze ZABAGED WFS služby a ověří se zda existují v paměti a jsou validní. U LPIS WFS služby se podobně ověří konektivita s touto službou.
+\hspace{10mm} Díky všem doposud načteným parametrům se stáhnou vrstvy ze ZABAGED WFS služby a ověří se zda existují v paměti a jsou validní. U LPIS WFS se podobně ověří konektivita s touto službou.
 
 \begin{figure}[H] \label{obr18}
 \centering
@@ -1297,7 +1409,7 @@ Stejně se získají a validují řetězce URL adres služeb. Poté se vyzkouš�
 \subsection{Testování editace vrstev} \label{test_edit}
 \hspace{10mm} Při testu editování vrstev jsou využity tři vstupní vrstvy. Jedna slouží ke kontrole přiřazení kódu využití území z jejího názvu, ta druhá k přiřazení kódu využití území z jejího řídícího atributu a třetí vrstva slouží ke kontrole aplikace bufferu. Pro tyto aplikace také existují tři konfigurační soubory vytvořené speciálně pro ně, které syntaxí mimikují potřebné konfigurační soubory.
 
-\hspace{10mm} K těmto souborům také existující tři korespondující referenční soubory, které slouží pro porovnání výsledků procesů editace vrstev. Existence všech souborů a validita z nich získaných vektorových vrstev v paměti počítače jsou ověřeny.
+\hspace{10mm} K těmto souborům také existují tři korespondující referenční soubory, které slouží pro porovnání výsledků procesů editace vrstev. Existence všech souborů a validita z nich získaných vektorových vrstev v paměti počítače jsou ověřeny.
 
 \hspace{10mm} Pomocí konfiguračních souborů jsou všechny tři vstupní vektorové vrstvy upraveny a po těchto úpravách jsou porovnány s vrstvami referenčními. 
 
@@ -1310,7 +1422,7 @@ Stejně se získají a validují řetězce URL adres služeb. Poté se vyzkouš�
 
 
 \subsection{Testování získávání dat hydrologických skupin půd} \label{test_soil}
-\hspace{10mm} Pro tento test je nutné z konfiguračních souborů načíst URL adresu WPS služby zprostředkující data HSP a identifikátor pro tuto službu. Dále bylo potřeba načíst vzor XML dotazu pro tuto službu a polygon, který slouží pro definici zájmového území a je také nutným vstupem WPS služby.
+\hspace{10mm} Pro tento test je nutné z konfiguračních souborů načíst URL adresu WPS služby, která zprostředkovává data HSP, a identifikátor pro tuto službu. Dále je potřeba načíst vzor XML dotazu pro tuto službu a polygon, který slouží pro definici zájmového území a je také nutným vstupem WPS služby.
 
 \hspace{10mm} Z polygonu na vstupu jsou získány souřadnice jeho ohrazujícího obdélníku a s dalšími informacemi jsou vloženy do vzorového XML. S WPS službou je následně navázáno spojení.
 
@@ -1321,18 +1433,90 @@ Stejně se získají a validují řetězce URL adres služeb. Poté se vyzkouš�
 \begin{figure}[H] \label{obr20}
 \centering
 \includegraphics[height=14cm]{pictures/test3.png}
-\caption{Vývojový diagram testování stahování dat HSP }
+\caption{Vývojový diagram testování stahování dat HSP}
 \label{fig:test3}
 \end{figure}
 
 \subsection{Testování přiřazení CN hodnot} \label{test_CN}
 
-\hspace{10mm} 
+\hspace{10mm} Pro tento test existuje GeoPackage soubor s potřebnými atributy pro získání CN hodnoty (kód využití území, hydrologická skupina půdy). Také je využita kopie CN tabulky z konfiguračních souborů, aby případná úprava tohoto souboru uživatelem neovlivnila jeho výsledek.
+
+\hspace{10mm} Existence obou souborů a validita vektorové vrstvy jsou ověřeny. Vektorové vrstvě jsou přiřazeny atributy \textit{CN2} a \textit{CN3}. Následně je výsledek porovnán s referenční vektorovou vrstvou získanou z jiného GeoPackage souboru.
+
+\begin{figure}[H] \label{obr21}
+\centering
+\includegraphics[height=10cm]{pictures/tst4.png}
+\caption{Vývojový diagram testování přiřazení CN hodnot}
+\label{fig:test4}
+\end{figure}
 
 
 \subsection{Testování získávání vrstev objemů přímých odtoků} \label{test_runoff}
+\hspace{10mm} Zde se nejprve ověří správnost vzorců zprostředkovávající hodnoty efektivních srážkových výšek a z nich vypočtených objemů. Na vstup jsou vloženy fiktivní čísla, které jsou po dosazení a výpočtu porovnány s očekávanými čísly.
+
+\hspace{10mm} Další testovanou funkcí je získávání hodnot z CSV souborů. Jednoduchý CSV soubor na vstupu není načítán, ale automatizovaně vytvářen v dočasné složce. Čísla z něj jsou potom načteny funkcí používanou při výpočtu objemů přímých odtoků pomocí WPS služby a porovnány s hodnotami, z nichž byl dočasný soubor vytvořen.
+
+\hspace{10mm} Dále je testována funkce získávající všechny výšky úhrnů srážek v různých dobách opakování. Opět je vytvořen fiktivní CSV soubor s hodnotami ve stejném formátu, který poskytuje WPS služba. Tato funkce vrací, na rozdíl od té předchozí, místo jednotlivých hodnot celý seznam z polí CSV souboru označených dobami opakování, které jsou funkci poskytnuty na vstupu.
+
+\hspace{10mm} Naposledy je testována funkce tvořící atributy vrstvy dle uživatelského vstupu. Testu je poskytnut opět GeoPackage soubor(stejný jako v kapitole \textit{5.9.2}), a tomu jsou přiřazeny atributová pole, dle mimikovaného uživatelského vstupu. Existence nově vytvořených atributových polí je ověřena.
+
+\begin{figure}[H] \label{obr22}
+\centering
+\includegraphics[height=14cm]{pictures/test5.png}
+\caption{Vývojový diagram testování při získávání objemů přímých odtoků}
+\label{fig:test5}
+\end{figure}
 
 \section{Tvorba dokumentace} \label{docs}
+
+\hspace{10mm} Dokumentace je k zásuvnému modulu vyhotovena pomocí MkDocs s využitím šablony 
+Material for MkDocs. Pro jednotlivé části jsou vytvořeny Markdown soubory. Na úvodní stránce si uživatel vybere, zda chce dokumentaci zobrazit v české či anglickém jazyce. V dokumentaci je popsán postup instalace, ovládání zásuvného modulu, popis atributových tabulek generovaných vrstev, popis konfiguračních souborů a postupy generování symbologií.
+
+\hspace{10mm} V konfiguračních souborech MkDocs je nastavena hlavní barva prostředí, přepínání tmavého a světlého režimu zobrazení stránky, přepínač jazyka, ikona s odkazem na GitHub repozitář a zápatí stránky s přepínačem vedoucím na předchozí a nadcházející kapitolu.
+
+\begin{figure}[H] \label{obr23}
+\centering
+\includegraphics[height=7cm]{pictures/docs.png}
+\caption{Ukázka úvodní stránky české části dokumentace}
+\label{fig:docs}
+\end{figure}
+
+\hspace{10mm} Pomocí GitHub Actions jsou z konfiguračních a Markdown souborů generovány HTML stránky při každé úpravě hlavní větve GitHub repozitáře. Generované soubory jsou vždy vloženy do dedikované větve \textit{gh-pages} a z ní jsou publikovány na web pomocí služby GitHub Pages. Odkaz s dokumentací byl vložen do README souboru repozitáře a také byl propojen s tlačítkem v uživatelském rozhraní zásuvného modulu, které po kliknutí otevře okno ve výchozím prohlížeči.
+
+\chapter*{Diskuze} \label{discusion}
+\hspace{10mm} V České republice je metoda SCS-CN hojně využívána pro výpočet úhrnu efektivní srážky. Není tedy divu, že existuje řada nástrojů, která v současnosti toto úsilí ulehčuje. Mezi takové patří například softwary HEC-HMS, Atlas HYDROLOGIE, HydroRAIN nebo komerční DesQ-Max-Q. \cite{MNYDGwleJOjKLRU2}
+
+\hspace{10mm} Na rozdíl od těchto nástrojů umožňuje vyvinutý zásuvný modul tvořit vrstvu využití území z aktuálních ZABAGED a LPIS dat, což považuji za jeho největší přínos. 
+
+\hspace{10mm} I díky tomu by se výsledek této práce dal zařadit mezi QGIS zásuvné moduly sloužící na poli hydrologie, jakými jsou také SMODERP2D \cite{Kavka2024}, což je fyzikálně orientovaný model, který na základě hydrologické bilance a výpočtu proudění povrchového odtoku určuje míru erozního ohrožení.
+
+\hspace{10mm} Mezi zahraniční QGIS zásuvné moduly s podobnou funkcí patří například řecký GWAT \cite{lymperis2024} nebo americký plugin \cite{siddiqui2020} popsán v části této práce 2.1 . Nicméně ty pro určení informací o využití území používají pouze neaktualizovaná rastrová data jako je Corine Land Cover s velikostmi pixelů v řádu desítek metrů.
+
+\hspace{10mm} Generace vrstvy využití území z dat ZABAGED a LPIS má určitě potenciál být rozšířena o přiřazení kódu využití území a bufferu dle více hodnot než jednoho atributového pole, což by mohlo například u kategorizované lesní plochy mohlo znamenat kombinovat informace o výškové i druhové kategorii zároveň. 
+
+\hspace{10mm} Dále by bylo možné detekovat, které prvky se nacházejí v intravilánu a které v extravilánů obcí, což by mohlo mít u některých z nich vliv na zpřesnění informace o využití území.
+
+\hspace{10mm} Využití YAML formátu u konfiguračních souborů přispívá k uživatelsky přívětivé úpravě, nicméně by určitě nebylo na škodu implementovat jejich editaci zprostředkovaně skrz uživatelské rozhraní. K zjednodušení jakýchkoliv úprav jak samotných tvořených vrstev či právě konfiguračních souborů slouží dokumentace.
+
+\hspace{10mm} Stažení vrstev LPIS a ZABAGED s jejich následnou editací může v složitějších územích trvat okolo tří minut. Nicméně je nutno zmínit, že třetinu tohoto času trvá navrácení pouze jediné LPIS vrstvy z WFS služby. Celý tento postup je jako většina dalších přesunuta do vedlejšího vlákna QGIS pro zachování responsivity softwaru. 
+
+\hspace{10mm} Pro zjednodušení instalace by také bylo vhodné v budoucnu zásuvný modul publikovat v oficiálním QGIS repozitáři. Po tomto kroku by již nebylo modul nutné instalovat ze ZIP archivu, ale přímo ze správce zásuvných modulů v QGIS.
+
+\chapter*{Závěr} \label{results}
+
+\hspace{10mm} Výsledkem práce je zásuvný modul softwaru QGIS, který umožňuje automatizované stahování českých geodat, jejich ohodnocení atributy a vzájemné propojení. Dle zvolené tabulky umožňuje přiřazení CN hodnot a takovou vrstvu použít jako vstup do výpočtu objemu přímého odtoku pro projektované výšky úhrnů získaných buď uživatelskou definicí nebo pomocí WPS služby pro vybrané doby opakování.
+
+\hspace{10mm} Uživateli je umožněno pomocí konfiguračních souborů editovat, jaké vrstvy budou využity pro vytvoření vrstvy využití území a v jakém pořadí budou spojeny. Také je možné definovat prvkům vlastní šířky bufferu či zpřesnění kódu využití území dle hodnoty jejího vybraného atributu. Je také možné definovat uživatelskou tabulku pro získání CN hodnot či jednoduše změnit URL adresy poskytovatelů dat v případě jejich změny.
+
+\hspace{10mm} Uživatelské vstupy jsou před každým procesem kontrolovány, zda splňují potřebné parametry a zásuvný modul je také doplněn o softwarové testy a dokumentaci, která je, včetně odkazu na GitHub repozitář, uvedena jako příloha této práce. Každá vytvořená vrstva má také vlastní definovanou symbologii uchovávanou v barevných tabulkách nebo automaticky přiřazenou.
+
+\hspace{10mm} Zásuvný modul poskytuje výsledky s velkou mírou automatizace nicméně je vhodné, aby byl využíván odborně způsobilými osobami s uvážením vhodnosti základně zvolených parametrů této generace a samotných výsledků. Tomuto je uzpůsobena i volená symbologie zvýrazňující prvky s chybějícími či nevhodnými hodnotami.
+
+\hspace{10mm} Zásuvný modul je publikován pod licencí \textit{GNU General Public License verze 3}, která je převzata z využití QGIS Python API (\textit{PyQGIS}).
+
+\hspace{10mm} Jako možná rozšíření zásuvného modulu bych uvedl například filtrování symbologie tak, aby se zobrazovaly pouze třídy přítomné v aktuální vrstvě, nebo doplnění konfiguračních souborů o buffery a kódy využití území pro více ZABAGED prvků. Jakékoliv další zjištěné nedostatky je možné zmínit v GitHub repozitáři v záložce \textit{"Issues"}.
+
+\hspace{10mm} Dle mého názoru byly stanovené cíle práce celkově splněny.
 
 \clearpage  % SEM NESAHEJTE!
 \addcontentsline{toc}{chapter}{Seznam použité literatury}  \label{zdroje}
@@ -1449,7 +1633,20 @@ CONE, Matt. \textit{The Markdown Guide}. Matt Cone, 2020. ISBN 979-8656504492.
 \bibitem{Christie2014}
 CHRISTIE, Tom. \textit{MkDocs Team}. Online. MkDocs.~2014. Dostupné z: \url{https://www.mkdocs.org/}. [cit. 2025-05-06].
 
+\bibitem{Kavka2024}
+KAVKA, Petr; LANDA, Martin; JEŘÁBEK, Jakub; PEŠEK, Ondřej. \textit{SMODERP – Distributed event-based model for surface and subsurface runoff and erosion}, version 2.0.1. Sep. 2024. [cit. 2025-05-12]. Dostupné z: \url{https://github.com/storm-fsv-cvut/smoderp2d}.
+
+\bibitem{lymperis2024}
+LYMPERIS, Efstathios. \textit{GWAT – Watershed Analysis Toolbox}, version 3.0.0. 11 Nov. 2024. [cit. 2025-05-12]. Dostupné z: \url{https://plugins.qgis.org/plugins/gwat/}.
+
 
 \end{thebibliography}
+
+\chapter*{Seznam obrázků} \label{list_pics}
+\chapter*{Seznam tabulek} \label{list_tables}
+\chapter*{Seznam ukázek kódu} \label{list_code}
+\chapter*{Seznam zkratek} \label{list_abr}
+\chapter*{Seznam příloh} \label{list_attach}
+
 \end{document}
 
