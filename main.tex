@@ -406,6 +406,7 @@ V \kde\ dne .................... &........................................ \\	% 
 
 \newpage
 \chapter*{Úvod} \label{uvod}
+\addcontentsline{toc}{chapter}{Úvod}
 Technologie GIS usnadňuje práci v nejrůznějších odvětvích průmyslu od precizního zemědělství až po působení bezpečnostních složek. Což může být motivací pro ušlechtilé úsilí určité skupiny vývojářů, takovou pomoc poskytnout zdarma jako otevřený software s možností dodatečného přizpůsobení nebo integrace do externích aplikací. 
 
 Tvorbou zásuvného modulu (pluginu) pro GIS s otevřeným zdrojovým kódem QGIS se zabývá i tato práce. Zmíněný zásuvný modul poskytuje možnost usnadnit práci uživatelům působícím v oblasti hydrologie, konkrétně při výpočtu objemu přímého odtoku metodou SCS-CN na území České republiky. Takové modelování může například být využito při vymezování záplavových území nebo návrzích protipovodňových opatření.
@@ -417,10 +418,10 @@ Ačkoliv existují nástroje pro modelování odtokových poměrů metodou SCS-C
 Samotná práce popisuje metodu odtokových křivek SCS-CN, software QGIS a s ním propojené softwarové nástroje jako jsou WFS, WPS, jazyk YAML, knihovna PyQt a další. Následně se pak zaměřuje na  datové zdroje volně dostupně v České republice, které jsou ZABAGED a LPIS. Obsahuje též popis prací při vývoji zásuvného modulu. Závěrečná část shrnuje dosažené výsledky, zhodnocuje přínos práce a nabízí možnosti dalšího rozšíření.
 
 
+\chapter{Metodologie}
 
-\newpage
-\chapter{Metoda SCS-CN} \label{SCSCN}
-\hspace{10mm} Metoda odtokových křivek (SCS-CN) se používá pro určení objemu přímého odtoku při návrhových přívalových deštích. Výhody této metody spočívají v její jednoduchosti a schopnosti reagovat na vlastnosti povodí, jako je typ půdy či využití pozemku (land use). Metoda byla vyvinuta v roce 1954 a publikována v roce 1986 organizací USDA Natural Resources Conservation Service (dříve nazývána Soil Conservation Service). \cite{MNYDGwleJOjKLRUp} Vývoj probíhal na empirických datech získaných v USA, nicméně později byla modifikována na různé typy využití pozemku typické i pro jiné podmínky. \cite{Holman2003}\cite{Lian2020}
+\section{Metoda SCS-CN} \label{SCSCN}
+\hspace{10mm} Metoda odtokových křivek (SCS-CN) se používá pro určení objemu přímého odtoku. Výhody této metody spočívají v její jednoduchosti a schopnosti reagovat na vlastnosti povodí, jako je typ půdy či využití pozemku (land use). Metoda byla vyvinuta v roce 1954 a publikována v roce 1986 organizací USDA Natural Resources Conservation Service (dříve nazývána Soil Conservation Service). \cite{MNYDGwleJOjKLRUp} Vývoj probíhal na empirických datech získaných v USA, nicméně později byla modifikována na různé typy využití pozemku typické i pro jiné podmínky. \cite{Holman2003}\cite{Lian2020}
 
 \hspace{10mm} Tato metoda může být využita i v menších částech jednotlivých povodí, jejichž rozloha by neměla překročit 10 $km^{2}$ a není vhodná pro výpočet odtoku z tání sněhu. V České republice se využívá hlavně pro návrhy protierozních opatření, a to v souladu s ČSN 75 1300. \cite{MNYDGwleJOjKdRUp}
 
@@ -462,7 +463,7 @@ hranici potenciální retence, což by znamenalo, že takové povodí je nekone�
 
  \hspace{10mm} Tato čísla jsou tabelována pro dvojici jevů. Těmi jsou hydrologické skupiny půd (HSP) a způsob využití území (land use). [6][7]. V České republice existuje několik tabulek CN hodnot odvozených z originálních USDA hodnot, a to hodnoty dle metodiky Ochrana zemědělské půdy před erozí (rain.fsv.cvut.cz) \cite{MNYDGwleJOjKdRUp}, hodnoty CN křivek doporučené v softwaru HydroCad nebo hodnoty CN křivek z projektu QD1368 \cite{Kulasova2004}.
 
- \hspace{10mm} CN hodnoty jsou také děleny pro více počátečních podmínek nasycenosti, a to CN1 pro suché podmínky, CN2 (také pouze CN) pro průměrné podmínky a CN3 pro podmínky vlhké. \cite{dile2016} Hodnoty CN1 a CN3 lze získat z hodnoty CN2 následovně \cite{Batvari2021}:
+ \hspace{10mm} CN hodnoty jsou také stanoveny pro více počátečních podmínek nasycenosti, a to CN1 pro suché podmínky, CN2 (také pouze CN) pro průměrné podmínky a CN3 pro podmínky vlhké. \cite{dile2016} Hodnoty CN1 a CN3 lze získat z hodnoty CN2 následovně \cite{Batvari2021}:
  
 \begin{equation}
 \text{CN}_{1} = \frac{4.2 \, \text{CN}_{2}}{10 - 0.058 \, \text{CN}_{2}}, \quad
@@ -494,7 +495,7 @@ hranici potenciální retence, což by znamenalo, že takové povodí je nekone�
 
 % Různé zdroje půd (HSP) - velký rozdíl výsledků, je tam graf https://www.vodnihospodarstvi.cz/ArchivPDF/vh2022/vh_09-2022.pdf
 \newpage
-\chapter{QGIS} \label{qgis}
+\section{QGIS} \label{qgis}
 \hspace{10mm} QGIS (dříve známý jako Quantum GIS) je jeden z geografických informačních systémů (GIS), tj.  informační systém zabývající se informacemi, které se týkají jevů přidružených k místu vztaženému k Zemi. \cite{dONaeOjXanl1W2md}
 
 \begin{figure}[ht] \label{obr2}
@@ -527,7 +528,7 @@ hranici potenciální retence, což by znamenalo, že takové povodí je nekone�
 
 \hspace{10mm} QGIS funguje pod licencí GNU GPL a je postaven na knihovně Qt jazyka C++. QGIS vznikal iniciativou Garyho Shermana, který ji započal v roce 2002 jako prohlížecí software geoprostorových dat pro operační systém Linux. Jeho první verze vyšla až v roce 2009. \cite{Matejova2019}
 
- \section{Zásuvné moduly} \label{moduly}
+ \subsection{Zásuvné moduly} \label{moduly}
 
 \hspace{10mm} QGIS je pravidelně jeho vývojáři rozšiřován o nejrůznější funkce, často přejímané z dalších otevřených softwarů jako je například GRASS GIS, GDAL nebo SAGA GIS.\cite{Baghdadi2018}
 
@@ -540,10 +541,11 @@ hranici potenciální retence, což by znamenalo, že takové povodí je nekone�
 \hspace{10mm} V prostředí QGIS již existuje zásuvný modul pro analýzu SCS-CN zvaný \textit{Curve Number Generator}, který vytvořil Abdul Raheem Siddiqui. Ten umožňuje volit vstupní datové sady pro Spojené státy americké, globální, či si uživatel může zvolit vlastní rastrová data. Americká datová sada využívá National Land Cover Database, což je rastrová vrstva využití území s rozlišením pixelu 30m a půdní data Soil Survey Geographic Database v měřítku 1:12 000. I dataset pro globální výpočet má na vstupu pouze rastrové vrstvy ESA Land Cover 2021 a ORNL Hydrologic Soil Group dataset. Tento zásuvný modul neobsahuje dokumentaci a neumožňuje navázat výpočtem objemu přímého odtoku. \cite{siddiqui2020}
 
 
-\chapter{Datové zdroje} \label{data}
+\section{Datové zdroje} \label{data}
 \hspace{10mm} Vstupem pro metodu SCS-CN je kombinace informací o využití území a hydrologických skupinách půd v daném území. Vrstva využití území je v zásuvném modulu získána kombinací vrstev ZABAGED a LPIS. 
 
-\section{ZABAGED\texorpdfstring{\textsuperscript{\textregistered}}{ (R)}} \label{zabaged}
+\newpage
+\subsection{ZABAGED\texorpdfstring{\textsuperscript{\textregistered}}{ (R)}} \label{zabaged}
 
 \hspace{10mm} Základní báze geografických dat České republiky (ZABAGED\texorpdfstring{\textsuperscript{\textregistered}}{ (R)}) je vektorová geografická datová sada ve správě Zeměměřického úřadu ve veřejném zájmu. Skládá se z 140 různých polohopisných geografických objektů, které spadají do následujících kategorií \cite{nEFEg7XpI9hVQCiO} :
 \begin{itemize}
@@ -573,7 +575,7 @@ hranici potenciální retence, což by znamenalo, že takové povodí je nekone�
 skenování či data od externích subjektů. \cite{nEFEg7XpI9hVQCiO} 
 
 
-\section{LPIS} \label{lpis}
+\subsection{LPIS} \label{lpis}
 \hspace{10mm} LPIS (Land Parcel Identification System) je geografický informační systém sloužící hlavně k evidenci zemědělské půdy, za něž je odpovědné Ministerstvo zemědělství. Jeho obsahem jsou zemědělské parcely zobrazující vlastnické vztahy. Ty jsou výchozí pro udělování dotací pro zemědělskou půdu.\cite{Devaty2018}
 
 \hspace{10mm} Základní datovou jednotkou je díl půdního bloku (DPB), které jsou zcelovány do souvislých obhospodařovaných ploch tzv. půdních bloků (PB). \cite{Devaty2018}
@@ -633,21 +635,22 @@ Zdroje hydrologických skupin půd v České republice existují celkem čtyři 
 \label{fig:hsp}
 \end{figure}
 
-\section{Srážková data} \label{rain}
+\newpage
+\subsection{Srážková data} \label{rain}
 \hspace{10mm} Dle metodiky \textit{Krátkodobé srážky pro hydrologické modelování a navrhování drobných vodohospodářských staveb v krajině} \cite{MNYDGwleJOjKLRU2} je žádoucí navrhovat protipovodňová opatření pro velikost návrhového šestihodinového úhrnu srážek v šesti alternativách jejich průběhu, vyjádřených sestavou šesti syntetických hyetogramů. 
 
 \hspace{10mm} Pokud je tedy návrhová srážka odvozena pro nějakou dobu opakování, je možné z ní vypočtený objem přímého odtoku v kombinaci se šesti tvary  hyetogramů a pravděpodobností abnormálního předchozího nasycení vážit.
 
-\hspace{10mm} To znamená, že výsledný objem je vypočten z hodnot \textit{CN2} i \textit{CN3} (viz Kapitola 1), s uvážením pravděpodobnosti obou scénářů počátečního nasycení.
+\hspace{10mm} To znamená, že výsledný objem je vypočten z hodnot \textit{CN2} i \textit{CN3} (viz Kapitola 1.1), s uvážením pravděpodobnosti obou scénářů počátečního nasycení.
 
-\hspace{10mm} Návrhové srážky, tvary hyetogramů a pravděpodobnosti abnormálního předchozího nasycení pro různé doby opakování se šestihodinovými úhrny jsou poskytovány portálem \textit{rain.fsv.cvut.cz}.
+\hspace{10mm} Úhrny návrhových srážek, tvary hyetogramů a pravděpodobnosti abnormálního předchozího nasycení pro různé doby opakování se šestihodinovými úhrny jsou poskytovány portálem \textit{rain.fsv.cvut.cz}.
 
 \newpage
 \newpage
 
-\chapter{Použité technologie} \label{tehcnologie}
+\section{Použité technologie} \label{tehcnologie}
 
-\section{Web Feature Service (WFS)} \label{wfs}
+\subsection{Web Feature Service (WFS)} \label{wfs}
 \hspace{10mm} Web Feature Service je internetová služba pro šíření geografických informací, která nahradila šíření celých datových souborů například pomocí File Transfer Protocol (FTP). Služba je standardizována organizací Open Geospatial Consortium (OGC) v dokumentu  ISO 19119. \cite{Vretanos2014} WFS je implementována v jazyce XML a data jsou reprezentována primárně v jazyce GML. \cite{Zhang2005}
 
 \hspace{10mm} Na rozdíl od Web Map Service (WMS), která připojuje vrstvy jako needitovatelné rastrové podkladové vrstvy, WFS slouží ke sdílení vektorových dat s možností následné editace. Uživatel zašle požadavek ve formátu XML na WFS server, který vrátí odpověď opět v XML. \cite{Zhang2005}
@@ -694,7 +697,7 @@ Zdroje hydrologických skupin půd v České republice existují celkem čtyři 
   \end{tabular}
 \end{table}
 
-\section{Web Processing Service (WPS)} \label{wps}
+\subsection{Web Processing Service (WPS)} \label{wps}
 \hspace{10mm}Web Processing Service (WPS) je služba umožňující nad poskytnutými daty provést jakoukoliv GIS operaci, a to od bufferu až po generování analytických modelů. Komunikace probíhá stejně jako u WFS pomocí XML. K tomu může být využita knihovna OWSLib.
 
 \hspace{10mm}Tato služba standardizovaná OGC může komunikovat s jednou a více WFS službami, pro získání dodatečných geo dat. \cite{Stollberg2007} WPS může také poskytované procesy monitorovat a případně je ukončit. \cite{5Xjhvf3W3tsG6nhX} 
@@ -707,7 +710,7 @@ Zdroje hydrologických skupin půd v České republice existují celkem čtyři 
 \end{figure}
 
 
-\section{YAML formát} \label{yaml}
+\subsection{YAML formát} \label{yaml}
 
 
 
@@ -724,7 +727,7 @@ Zdroje hydrologických skupin půd v České republice existují celkem čtyři 
 \hspace{10mm}YAML je také jednoduší pro editaci člověkem než JSON, který je vhodnější pro zpracování strojem. YAML může mít složitější datové struktury a využívá komentáře, ale JSON má jednodušší pravidla. \cite{hsOq0virmVAO85Ud}
 
 
-\section{Python knihovna PyQt} \label{pyqt}
+\subsection{Python knihovna PyQt} \label{pyqt}
 \hspace{10mm}PyQt je sada Python příkazů pro multiplatformní aplikační vývojovou platformu, která kombinuje všechny výhody Qt a Pythonu.  \cite{Summerfield2007}
 
 \begin{figure}[ht] \label{obr8}
@@ -738,7 +741,7 @@ Zdroje hydrologických skupin půd v České republice existují celkem čtyři 
 
 \hspace{10mm}PyQt umožňuje propojit Python kód s množstvím prvků uživatelského prostředí, jako jsou tlačítka, popisky, přepínače, zaškrtávací políčka, rozbalovací seznamy nebo okna pro vstup textu.
 
-\section{Python knihovna pytest} \label{pytest}
+\subsection{Python knihovna pytest} \label{pytest}
 \hspace{10mm}Robustní knihovna pytest se používá pro všechny druhy testování softwaru. Od konkurenční knihovny unittest na tuto přešla spousta projektů, jako jsou třeba Mozilla nebo Dropbox. \cite{Okken2017}
 
 \begin{figure}[ht] \label{obr9}
@@ -752,7 +755,8 @@ Zdroje hydrologických skupin půd v České republice existují celkem čtyři 
 
 \hspace{10mm}Testy je možné spouštět přímo v příkazové řádce, přičemž je uživatel informován o prostředí, ve kterém je test spuštěn, době jeho trvání a počtu procházejících a selhávajících úkonů.   
 
-\section{GitHub} \label{github}
+\newpage
+\subsection{GitHub} \label{github}
 Tato vývojářská platforma umožňuje vzdálené uložení a editaci kódu. Na její pozadí stojí Git, což je systém pro správu verzí. Ten byl původně vytvořen Linusem Torvaldsem, aby usnadnil vývoj jádra operačního systému Linux. \cite{Guthals2023}
 
 \begin{figure}[ht] \label{obr10}
@@ -770,8 +774,8 @@ Tato vývojářská platforma umožňuje vzdálené uložení a editaci kódu. N
 příkazové řádky. 
 
 \hspace{10mm}Pomocí služby GitHub Actions lze repozitář propojit s nějakou externí funkcionalitou, mezi které patří: vytvoření Python knihovny, vytvoření Dockeru, propojení s externími cloudovými službami, spouštění testů nebo vytvoření webových stránek ze souborů repozitáře. 
-
-\section{Markdown a MkDocs} \label{markdown}
+\newpage
+\subsection{Markdown a MkDocs} \label{markdown}
 
 \begin{figure}[H] \label{obrmd}
 \centering
@@ -1104,7 +1108,7 @@ Pcn_{2} = 1 -  Pcn_{3}
 \hspace{10mm} Takto vypočtený vážený objem přímého odtoku je pro každý prvek přidán do atributové tabulky, společně s výškami a neváženým objemy přímého odtoku  pro každou dobu opakování. Přesný popis a názvy výsledných atributů se nachází v dokumentaci zásuvného modulu. % jaká příloha?
 
 \section{Popis konfiguračních souborů} \label{config}
-\subsection{layers\_merging\_order.csv} \label{layers_merging_order.csv}
+\subsection*{layers\_merging\_order.csv} \label{layers_merging_order.csv}
 \hspace{10mm}Tento jednoduchý CSV soubor obsahuje v každém řádku název vrstvy poskytované ZABAGED WFS službou. Jejich pořadí určuje pořadí, ve kterém budou spojeny do jedné vrstvy využití území. Vrstvy uvedené dříve budou připojeny nad vrstvy pod nimi. Označení \textit{LPIS\_layer} neslouží ke stažení vrstvy, ale pouze určuje pořadí vrstvy z WFS LPIS služby.
 
 \begin{figure}[H]
@@ -1117,7 +1121,7 @@ ZABAGED_POLOHOPIS:Okrasná_zahrada__park
 \end{lstlisting}
 \end{figure}
 
-\subsection{zabaged\_to\_LandUseCode\_table.yaml} \label{zabaged_to_LandUseCode_table.yaml}
+\subsection*{zabaged\_to\_LandUseCode\_table.yaml} \label{zabaged_to_LandUseCode_table.yaml}
 \hspace{10mm}Toto je YAML soubor, který obsahuje seznam obsahující mapy vždy s dvěma stejnými klíči \textit{keywords} a \textit{code}. \textit{Keywords} obsahuje seznam řetězců a \textit{code} jedno celé číslo.
 
 \hspace{10mm}Soubor je využit k mapování kódů využití území. Pokud se alespoň jeden řetězec uvnitř seznamu \textit{keywords} nachází v názvu získané ZABAGED vrstvy, je takové vrstvě přiřazen kód využití území z korespondujícího klíče \textit{code}.
@@ -1136,7 +1140,7 @@ land_use:
 \end{pythoncode}
 \end{figure}
 
-\subsection{ZABAGED.yaml} \label{ZABAGED.yaml}
+\subsection*{ZABAGED.yaml} \label{ZABAGED.yaml}
 \hspace{10mm} Tento soubor obsahuje informace o vrstvách stahovaných ze ZABAGED WFS služby a slouží k jejich úpravě. Jmenovitě to je aplikace bufferu a zpřesnění kódu využití území.
 
 \hspace{10mm}Na prvním řádku soubor obsahuje URL adresu v řetězci pod klíčem \textit{URL}, kde se nachází WFS služba poskytující ZABAGED data. Dále seznam vrstev, pro které se mají vytvářet buffery podle určitých hodnot v atributech. Každý objekt obsahuje sadu klíčů.
@@ -1184,7 +1188,7 @@ layers:
 \end{pythoncode}
 \end{figure}
 
-\subsection{LPIS.yaml} \label{LPIS.yaml}
+\subsection*{LPIS.yaml} \label{LPIS.yaml}
 \hspace{10mm} \textit{LPIS.yaml} obsahuje informace o vrstvě stahované z LPIS WFS služby. Pod klíčem \textit{URL}, obdobně jako u souboru \textit{ZABAGED.yaml}, se nachází adresa k LPIS WFS. Z té je stahována pouze jedna vrstva a její název je uložen pod klíčem \textit{layer\_name}.
 
 \hspace{10mm} Aby bylo možné použít totožný proces editace kódu využití území jako u ZABAGED vrstev, je dále v seznamu \textit{layers} uložen název vrstvy v klíči \textit{name}. Ten je definován jako \textit{LPIS\_layer}, který byl stahované vrstvě dříve přiřazen, aby byla spojena s ostatními vrstvami ve správném pořadí dle souboru popsaném v části 5.7.2.
@@ -1207,15 +1211,15 @@ layers:
 \end{pythoncode}
 \end{figure}
 
-\subsection{Soil.yaml} \label{Soil.yaml}
+\subsection*{Soil.yaml} \label{Soil.yaml}
 Tento soubor obsahuje pouze dva hodnotové páry a to \textit{URL} s adresou WPS služby poskytující data HSP a \textit{process\_identifier} který obsahuje řetězec uchovávající název požadované vrstvy stahované z této služby.
 
 
-\subsection{Soil\_template.xml} \label{Soil_template.xml}
+\subsection*{Soil\_template.xml} \label{Soil_template.xml}
 \hspace{10mm} Tento soubor obsahuje šablonu XML souboru pro komunikaci s WPS službou stahující vrstvu hydrologických skupin půd.
 Do této šablony jsou před odesláním WPS službě doplněny hodnoty souřadnic definičního polygonu, souřadnice jeho ohrazujícího obdélníku a jeho atributy.
 
-\subsection{CN\_table.csv} \label{CN_table.csv}
+\subsection*{CN\_table.csv} \label{CN_table.csv}
 \hspace{10mm} Tato CSV tabulka je využita pro přiřazení hodnoty CN pro kombinaci hodnot kódu využití území a typu hydrologických skupin půd. Pro každou hodnotu kódu využití území je dedikován jeden řádek. V každém řádku existuje pět sloupců. V prvním sloupci je definován kód využití území a v dalších čtyřech číselné hodnoty CN pro typy hydrologických skupin půd A, B, C a D. V některých řádcích se u hodnot CN vyskytují desetinná čísla, což značí jejich větší přesnost.
 
 \hspace{10mm} Tabulku není nutné využít pro přiřazení hodnot CN a uživatel má možnost si vybrat jinou stejně strukturovanou tabulku.
@@ -1232,7 +1236,7 @@ LANDUSE_CODE,CN_A,CN_B,CN_C,CN_D
 \end{pythoncode}
 \end{figure}
 
-\subsection{WPS\_config.yaml} \label{WPS_config.yaml}
+\subsection*{WPS\_config.yaml} \label{WPS_config.yaml}
 \hspace{10mm} Tento soubor obsahuje, podobně jako\textit{Soil.yaml} dva hodnotové páry, a to \textit{URL} s adresou WPS služby poskytující data o šestihodinových srážkách a \textit{process\_identifier}, který obsahuje řetězec obsahující název požadovaného procesu této služby.
 
 \section{Kontroly} \label{checks}
@@ -1390,7 +1394,7 @@ VRATIT seznam hloubek
 \hspace{10mm} Pro potřeby testování této funkcionality je třeba využít polygon pro určení zájmové oblasti. Nejprve je zjištěno zda tento GeoPackage soubor existuje a je možné ho načíst do paměti počítače. 
 
 \hspace{10mm} Dalšími potřebnými soubory jsou soubory konfigurační, a to soubor obsahující názvy
-a pořadí vrstev \textit{(popsán v části 5.7.1)}, soubor obsahující URL adresu ZABAGED WFS služby \textit{(popsán v části 5.7.3)} a soubor obsahující URL adresu LPIS WFS \textit{(popsán v části 5.7.4)}. Testována je jejich existence v očekávaném adresáři.
+a pořadí vrstev, soubor obsahující URL adresu ZABAGED WFS služby  a soubor obsahující URL adresu LPIS WFS \textit{(popsaných v části 2.7)}. Testována je jejich existence v očekávaném adresáři.
 
 \hspace{10mm} Nejprve se z konfiguračního souboru načtou názvy vrstev a ověří jejich existence.
 Stejně se získají a validují řetězce URL adres služeb. Poté se vyzkouší pomocí vrstvy uložené v paměti získat funkcí zásuvného modulu její ohraničující obdélník.
@@ -1482,9 +1486,10 @@ Material for MkDocs. Pro jednotlivé části jsou vytvořeny Markdown soubory. N
 \hspace{10mm} Pomocí GitHub Actions jsou z konfiguračních a Markdown souborů generovány HTML stránky při každé úpravě hlavní větve GitHub repozitáře. Generované soubory jsou vždy vloženy do dedikované větve \textit{gh-pages} a z ní jsou publikovány na web pomocí služby GitHub Pages. Odkaz s dokumentací byl vložen do README souboru repozitáře a také byl propojen s tlačítkem v uživatelském rozhraní zásuvného modulu, které po kliknutí otevře okno ve výchozím prohlížeči.
 
 \chapter*{Diskuze} \label{discusion}
+\addcontentsline{toc}{chapter}{Diskuze}
 \hspace{10mm} V České republice je metoda SCS-CN hojně využívána pro výpočet úhrnu efektivní srážky. Není tedy divu, že existuje řada nástrojů, která v současnosti toto úsilí ulehčuje. Mezi takové patří například softwary HEC-HMS, Atlas HYDROLOGIE, HydroRAIN nebo komerční DesQ-Max-Q. \cite{MNYDGwleJOjKLRU2}
 
-\hspace{10mm} Na rozdíl od těchto nástrojů umožňuje vyvinutý zásuvný modul tvořit vrstvu využití území z aktuálních ZABAGED a LPIS dat, což považuji za jeho největší přínos. 
+\hspace{10mm} Na rozdíl od těchto nástrojů umožňuje vyvinutý zásuvný modul tvořit vrstvu využití území z aktuálních otevřených dat ZABAGED a LPIS, což považuji za jeho největší přínos. 
 
 \hspace{10mm} I díky tomu by se výsledek této práce dal zařadit mezi QGIS zásuvné moduly sloužící na poli hydrologie, jakými jsou také SMODERP2D \cite{Kavka2024}, což je fyzikálně orientovaný model, který na základě hydrologické bilance a výpočtu proudění povrchového odtoku určuje míru erozního ohrožení.
 
@@ -1501,10 +1506,10 @@ Material for MkDocs. Pro jednotlivé části jsou vytvořeny Markdown soubory. N
 \hspace{10mm} Pro zjednodušení instalace by také bylo vhodné v budoucnu zásuvný modul publikovat v oficiálním QGIS repozitáři. Po tomto kroku by již nebylo modul nutné instalovat ze ZIP archivu, ale přímo ze správce zásuvných modulů v QGIS.
 
 \chapter*{Závěr} \label{results}
-
+\addcontentsline{toc}{chapter}{Závěr}
 \hspace{10mm} Výsledkem práce je zásuvný modul softwaru QGIS, který umožňuje automatizované stahování českých geodat, jejich ohodnocení atributy a vzájemné propojení. Dle zvolené tabulky umožňuje přiřazení CN hodnot a takovou vrstvu použít jako vstup do výpočtu objemu přímého odtoku pro projektované výšky úhrnů získaných buď uživatelskou definicí nebo pomocí WPS služby pro vybrané doby opakování.
 
-\hspace{10mm} Uživateli je umožněno pomocí konfiguračních souborů editovat, jaké vrstvy budou využity pro vytvoření vrstvy využití území a v jakém pořadí budou spojeny. Také je možné definovat prvkům vlastní šířky bufferu či zpřesnění kódu využití území dle hodnoty jejího vybraného atributu. Je také možné definovat uživatelskou tabulku pro získání CN hodnot či jednoduše změnit URL adresy poskytovatelů dat v případě jejich změny.
+\hspace{10mm} Uživateli je umožněno pro hydrologické analýzy pomocí konfiguračních souborů editovat, jaké vrstvy budou využity pro vytvoření vrstvy využití území a v jakém pořadí budou spojeny. Také je možné definovat prvkům vlastní šířky bufferu či zpřesnění kódu využití území dle hodnoty jejího vybraného atributu. Je také možné definovat uživatelskou tabulku pro získání CN hodnot či jednoduše změnit URL adresy poskytovatelů dat v případě jejich změny.
 
 \hspace{10mm} Uživatelské vstupy jsou před každým procesem kontrolovány, zda splňují potřebné parametry a zásuvný modul je také doplněn o softwarové testy a dokumentaci, která je, včetně odkazu na GitHub repozitář, uvedena jako příloha této práce. Každá vytvořená vrstva má také vlastní definovanou symbologii uchovávanou v barevných tabulkách nebo automaticky přiřazenou.
 
@@ -1514,7 +1519,8 @@ Material for MkDocs. Pro jednotlivé části jsou vytvořeny Markdown soubory. N
 
 \hspace{10mm} Jako možná rozšíření zásuvného modulu bych uvedl například filtrování symbologie tak, aby se zobrazovaly pouze třídy přítomné v aktuální vrstvě, nebo doplnění konfiguračních souborů o buffery a kódy využití území pro více ZABAGED prvků. Jakékoliv další zjištěné nedostatky je možné zmínit v GitHub repozitáři v záložce \textit{"Issues"}.
 
-\hspace{10mm} Dle mého názoru byly stanovené cíle práce celkově splněny.
+\hspace{10mm} Dle mého názoru byly stanovené cíle práce celkově splněny a další vývoj bude probíhat na pracovištích Katedry geomatiky \textit{(K155)} a Katedry hydromeliorací a krajinného inženýrství \textit{(K143)}.
+
 
 \clearpage  % SEM NESAHEJTE!
 \addcontentsline{toc}{chapter}{Seznam použité literatury}  \label{zdroje}
@@ -1532,8 +1538,7 @@ HOLMAN, I.P.; HOLLIS, J.M.; BAMLEY, M.E. a THOMPSON, T.R.E. The contribution of 
 LIAN, Huishu; YEN, Haw; HUANG, Jr-Chuan; FENG, Qingyu; QIN, Lihuan et al. CN-China: Revised runoff curve number by using rainfall-runoff events data in China. \textit{Water Research}. 2020, roč. 2020, č. 177, s.~115767. ISSN 0043-1354. Dostupné také z: \url{https://www.sciencedirect.com/science/article/pii/S0043135420303043}.
 
 \bibitem{MNYDGwleJOjKdRUp}
-JANEČEK, Miloslav. Ochrana zemědělské půdy před erozí: metodika.
-\textit{ Praha: Powerprint, 2012. ISBN 978-80-87415-42-9. }
+PODHRÁZSKÁ, Jana; BEDNÁŘ, Marek; DOSTÁL, Tomáš; DUMBROVSKÝ, Miroslav; HANEL, Martin et al. \textit{Ochrana zemědělské půdy před erozí: metodika}. Praha: Výzkumný ústav meliorací a ochrany půdy, 2024. ISBN 978-80-7212-667-5.
 
 \bibitem{MNYDGwleJOjKLRU2}
 KAVKA, Petr a KAŠPAR, Marek. Krátkodobé srážky pro hydrologické modelování a navrhování drobných vodohospodářských staveb v krajině: Certifikovaná metodika.
@@ -1641,13 +1646,18 @@ LYMPERIS, Efstathios. \textit{GWAT – Watershed Analysis Toolbox}, version 3.0.
 \end{thebibliography}
 
 \label{list_pics}
+\addcontentsline{toc}{chapter}{Seznam obrázků}  
 \listoffigures
 
 \label{list_tables}
+\addcontentsline{toc}{chapter}{Seznam tabulek}  
 \listoftables
 \chapter*{Seznam ukázek kódu} \label{list_code}
+\addcontentsline{toc}{chapter}{Seznam ukázek kódu}  
 \chapter*{Seznam zkratek} \label{list_abr}
+\addcontentsline{toc}{chapter}{Seznam zkratek}  
 \chapter*{Seznam příloh} \label{list_attach}
+\addcontentsline{toc}{chapter}{Seznam příloh}  
 
 \end{document}
 
