@@ -423,9 +423,9 @@ Samotná práce popisuje metodu odtokových křivek SCS-CN, software QGIS a s n�
 \section{Metoda SCS-CN} \label{SCSCN}
 \hspace{10mm} Metoda odtokových křivek (SCS-CN) se používá pro určení objemu přímého odtoku. Výhody této metody spočívají v její jednoduchosti a schopnosti reagovat na vlastnosti povodí, jako je typ půdy či využití pozemku (land use). Metoda byla vyvinuta v roce 1954 a publikována v roce 1986 organizací USDA Natural Resources Conservation Service (dříve nazývána Soil Conservation Service). \cite{MNYDGwleJOjKLRUp} Vývoj probíhal na empirických datech získaných v USA, nicméně později byla modifikována na různé typy využití pozemku typické i pro jiné podmínky. \cite{Holman2003}\cite{Lian2020}
 
-\hspace{10mm} Tato metoda může být využita i v menších částech jednotlivých povodí, jejichž rozloha by neměla překročit 10 $km^{2}$ a není vhodná pro výpočet odtoku z tání sněhu. V České republice se využívá hlavně pro návrhy protierozních opatření, a to v souladu s ČSN 75 1300. \cite{MNYDGwleJOjKdRUp}
+\hspace{10mm} Tato metoda může být využita i v menších částech jednotlivých povodí, jejichž rozloha by neměla překročit 10 $km^{2}$ a není vhodná pro výpočet odtoku z tání sněhu. V České republice se využívá hlavně pro návrhy protierozních opatření, a to v souladu s ČSN 75 1400. \cite{MNYDGwleJOjKdRUp}
 
-Výstupem metody CN křivek je hodnota efektivní srážkové výšky dle vzorce (1) \cite{MNYDGwleJOjKLRU2}:
+Výstupem metody CN křivek je hodnota efektivní srážkové výšky dle vzorce (1) \cite{MNYDGwleJOjKdRUp} \cite{MNYDGwleJOjKLRU2} :
 
 
 \begin{equation}
@@ -445,7 +445,7 @@ Hodnota počáteční ztráty ($I_{a}$) se určí jako:
 I_{a} = \lambda A
 \end{equation}
 
-\hspace{10mm} Kde $\lambda$ je poměrový koeficient, který se v základu volí $0.2$. Tato hodnota byla empiricky odvozena na povodích na území USA. \cite{Lian2020}\cite{MNYDGwleJOjKLRU2} Takto zvolená hodnota se stala jedním důvodem pro kritiku této metody. \cite{MNYDGwleJOjKLRUp} \\
+\hspace{10mm} Kde $\lambda$ je poměrový koeficient, který se v základu volí $0.2$. Tato hodnota byla empiricky odvozena na povodích na území USA. \cite{Lian2020}\cite{MNYDGwleJOjKLRU2} Takto zvolená hodnota se stala jedním důvodem pro kritiku této metody. \cite{MNYDGwleJOjKLRUp} \cite{MNYDGwleJOjKLRU3} \\
 
 \hspace{10mm} Maximální potenciální retence ($A$) je dále určena na základě CN (curvature number) křivek ze vztahu \cite{MNYDGwleJOjKdRUp} : 
 \begin{equation}
@@ -456,14 +456,14 @@ hranici potenciální retence, což by znamenalo, že takové povodí je nekone�
 
 \begin{figure}[ht] \label{obr1}
 \centering
-\includegraphics[height=12cm]{pictures/CNcurves.jpg}
-\caption{ Závislost výšky přímého odtoku ($H_{o}$) na úhrnu deště($H_{S}$) a číslech odtokových křivek (CN) \cite{MNYDGwleJOjKdRUp}}
+\includegraphics[height=11cm]{pictures/CNcurves.jpg}
+\caption{ Závislost výšky přímého odtoku ($H_{o}$) na úhrnu deště($H_{S}$) a číslech odtokových křivek (CN) \textit{(zdroj: Ochrana zemědělské půdy před erozí, Janeček, 2012)}}
 \label{fig:example}
 \end{figure}
 
- \hspace{10mm} Tato čísla jsou tabelována pro dvojici jevů. Těmi jsou hydrologické skupiny půd (HSP) a způsob využití území (land use). [6][7]. V České republice existuje několik tabulek CN hodnot odvozených z originálních USDA hodnot, a to hodnoty dle metodiky Ochrana zemědělské půdy před erozí (rain.fsv.cvut.cz) \cite{MNYDGwleJOjKdRUp}, hodnoty CN křivek doporučené v softwaru HydroCad nebo hodnoty CN křivek z projektu QD1368 \cite{Kulasova2004}.
+ \hspace{10mm} Tato čísla jsou tabelována pro dvojici jevů. Těmi jsou hydrologické skupiny půd (HSP) a způsob využití území (land use).[4][5][6][7]. V České republice existuje několik tabulek CN hodnot odvozených z originálních USDA hodnot, a to hodnoty dle metodiky Ochrana zemědělské půdy před erozí (rain.fsv.cvut.cz), která je nejnovější platnou metodikou\cite{MNYDGwleJOjKdRUp}. Dříve byly též odvozeny hodnoty CN křivek doporučené v softwaru HydroCad nebo hodnoty CN křivek z projektu QD1368 \cite{Kulasova2004}.
 
- \hspace{10mm} CN hodnoty jsou také stanoveny pro více počátečních podmínek nasycenosti, a to CN1 pro suché podmínky, CN2 (také pouze CN) pro průměrné podmínky a CN3 pro podmínky vlhké. \cite{dile2016} Hodnoty CN1 a CN3 lze získat z hodnoty CN2 následovně \cite{Batvari2021}:
+ \hspace{10mm} CN hodnoty jsou také stanoveny pro více počátečních podmínek nasycenosti, a to CN1 pro suché podmínky, CN2 (také pouze CN) pro průměrné podmínky a CN3 pro podmínky vlhké. \cite{dile2016} Nicméně suché podmínky (CN1) na území České republiky prakticky nenastávají \cite{MNYDGwleJOjKdRUp}. Hodnoty CN1 a CN3 lze získat z hodnoty CN2 následovně \cite{Batvari2021}:
  
 \begin{equation}
 \text{CN}_{1} = \frac{4.2 \, \text{CN}_{2}}{10 - 0.058 \, \text{CN}_{2}}, \quad
@@ -471,23 +471,23 @@ hranici potenciální retence, což by znamenalo, že takové povodí je nekone�
 \end{equation}
 
 
-\hspace{10mm} Hydrologické skupiny půd (HSP) existují čtyři: A,B,C a D. Do těchto skupin se řadí půda dle minimálních rychlostí infiltrace vody do půdy bez pokryvu a po dlouhodobém nasycení.\cite{MNYDGwleJOjKdRUp}
+\hspace{10mm} Hydrologické skupiny půd (HSP) existují čtyři: A,B,C a D. Do těchto skupin se řadí půda dle minimálních rychlostí infiltrace vody do půdy bez pokryvu a po dlouhodobém nasycení.\cite{MNYDGwleJOjKdRUp}\cite{MNYDGwleJOjKLRU2}
 \begin{table}[htbp]
   \centering
-  \caption{Tabulka rozdělení do hydrologických skupin půd (HSP) \cite{MNYDGwleJOjKdRUp}} 
+  \caption{Tabulka rozdělení do hydrologických skupin půd (HSP) \cite{MNYDGwleJOjKLRU2}} 
   \label{tab:HSP}
   \begin{tabular}{|c|p{6cm}|p{2.5cm}|p{2.5cm}|}
     \hline
     Skupina & Charakteristika hydrologických vlastností [m] & 
     Rychlost infiltrace [mm.min\textsuperscript{-1}] & Rychlost infiltrace [mm.den\textsuperscript{-1}] \\
     \hhline{=|=|=|=|}
-    A & Půdy s vysokou rychlostí infiltrace i při úplném nasycení, zahrnující převážně hluboké, dobře až nadměrně odvodněné písky nebo štěrky. & > 0,12 & > 172 \\
+    A & Půdy s vysokou rychlostí infiltrace i při úplném nasycení, zahrnující převážně hluboké, dobře až nadměrně odvodněné písky nebo štěrky. & > 0,20 & > 288 \\
     \hline
-    B & Půdy se střední rychlostí infiltrace i při úplném nasycení, zahrnující převážně půdy středně hluboké až hluboké, středně až dobře odvodněné, hlinitopísčité až jílovitohlinité. & 0,06–0,12 & 86,4–172 \\
+    B & Půdy se střední rychlostí infiltrace i při úplném nasycení, zahrnující převážně půdy středně hluboké až hluboké, středně až dobře odvodněné, hlinitopísčité až jílovitohlinité. & 0,10–0,20 & 144–288 \\
     \hline
-    C & Půdy s nízkou rychlostí infiltrace i při úplném nasycení, zahrnující převážně půdy s málo propustnou vrstvou v půdním profilu a půdy jílovitohlinité až jílovité. & 0,02–0,06 & 28,8–86,4 \\
+    C & Půdy s nízkou rychlostí infiltrace i při úplném nasycení, zahrnující převážně půdy s málo propustnou vrstvou v půdním profilu a půdy jílovitohlinité až jílovité. & 0,05–0,10 & 72–144 \\
     \hline
-    D & Půdy s velmi nízkou rychlostí infiltrace i při úplném nasycení, zahrnující především jíly s vysokou bobtnavostí, půdy s trvale vysokou hladinou podzemní vody, půdy s vrstvou jílu na povrchu nebo těsně pod ním a mělké půdy nad téměř nepropustným podložím. & < 0,02 & < 28,8 \\
+    D & Půdy s velmi nízkou rychlostí infiltrace i při úplném nasycení, zahrnující především jíly s vysokou bobtnavostí, půdy s trvale vysokou hladinou podzemní vody, půdy s vrstvou jílu na povrchu nebo těsně pod ním a mělké půdy nad téměř nepropustným podložím. & < 0,05 & < 72 \\
     \hline
   \end{tabular}
   
@@ -542,7 +542,7 @@ hranici potenciální retence, což by znamenalo, že takové povodí je nekone�
 
 
 \section{Datové zdroje} \label{data}
-\hspace{10mm} Vstupem pro metodu SCS-CN je kombinace informací o využití území a hydrologických skupinách půd v daném území. Vrstva využití území je v zásuvném modulu získána kombinací vrstev ZABAGED a LPIS. 
+\hspace{10mm} Vstupem pro metodu SCS-CN je kombinace informací o využití území a hydrologických skupinách půd v daném území. Vrstva využití území je v zásuvném modulu získána kombinací vrstev ZABAGED a LPIS. Pro výpočet objemu přímého odtoku je nutno využít i dat srážkových.
 
 \newpage
 \subsection{ZABAGED\texorpdfstring{\textsuperscript{\textregistered}}{ (R)}} \label{zabaged}
@@ -615,7 +615,7 @@ Takové plochy obsahují údaje o druhu zemědělské kultury, a to \cite{sSYEwL
 \hspace{10mm} Databáze také obsahuje ekologicky významné prvky a další objekty. \cite{sSYEwLE0rNKoWGYk}
 Přístup k těmto datům je zprostředkován webovými službami (iLPIS a pLPIS)  a WMS či WFS službou. \cite{Devaty2018}
 
-\section{Hydrologické skupiny půd (HSP)} \label{hsp}
+\subsection{Hydrologické skupiny půd (HSP)} \label{hsp}
 \hspace{10mm}Význam hydrologických skupin půd (Hydrologic Soil Groups) a jejich dělení je popsáno v první kapitole. 
 % Různé zdroje půd (HSP) - velký rozdíl výsledků, je tam graf https://www.vodnihospodarstvi.cz/ArchivPDF/vh2022/vh_09-2022.pdf
 
@@ -626,7 +626,7 @@ Zdroje hydrologických skupin půd v České republice existují celkem čtyři 
 \item HSP dle VÚMOP (2018) 
 \item HSP dle půdní zrnitosti dle projektu „Fyzikální a hydropedologické vlastnosti půd ČR" (2021)
 \end{itemize}
-\hspace{10mm} Volba zdroje půdních dat může ovlivnit výsledky analýz, nicméně neexistuje způsob, jak určit spolehlivost těchto rozdílných zdrojů dat, přestože se poměrně liší.[16] To je vizualizováno níže.
+\hspace{10mm} Volba zdroje půdních dat může ovlivnit výsledky analýz, nicméně neexistuje způsob, jak určit spolehlivost těchto rozdílných zdrojů dat, přestože se poměrně liší.\cite{Strouhal2022} Proto je doporučeno volit vždy data s méně přívětivými podmínkami v daném území. \cite{MNYDGwleJOjKdRUp} To je vizualizováno níže.
 
 \begin{figure}[H] \label{obr4}
 \centering
@@ -637,7 +637,7 @@ Zdroje hydrologických skupin půd v České republice existují celkem čtyři 
 
 \newpage
 \subsection{Srážková data} \label{rain}
-\hspace{10mm} Dle metodiky \textit{Krátkodobé srážky pro hydrologické modelování a navrhování drobných vodohospodářských staveb v krajině} \cite{MNYDGwleJOjKLRU2} je žádoucí navrhovat protipovodňová opatření pro velikost návrhového šestihodinového úhrnu srážek v šesti alternativách jejich průběhu, vyjádřených sestavou šesti syntetických hyetogramů. 
+\hspace{10mm} Dle metodik \textit{Krátkodobé srážky pro hydrologické modelování a navrhování drobných vodohospodářských staveb v krajině} \cite{MNYDGwleJOjKLRU2} a \textit{Ochrana zemědělské půdy před erozí} \cite{MNYDGwleJOjKdRUp} je žádoucí navrhovat protipovodňová opatření pro velikost návrhového šestihodinového úhrnu srážek v šesti alternativách jejich průběhu, vyjádřených sestavou šesti syntetických hyetogramů. 
 
 \hspace{10mm} Pokud je tedy návrhová srážka odvozena pro nějakou dobu opakování, je možné z ní vypočtený objem přímého odtoku v kombinaci se šesti tvary  hyetogramů a pravděpodobností abnormálního předchozího nasycení vážit.
 
@@ -1036,9 +1036,7 @@ combined_layer = processing.run("native:union", {
 
 
 \section{Analýza odtoků SCS-CN} \label{CN}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%              ZDROJ                  %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \hspace{10mm}Vstupem do vyhodnocení vrstvy hodnot CN je vrstva obsahující kódy využití území a hodnoty hydrologických skupin půd pro jednotlivé prvky. Z této vrstvy jsou odstraněny atributy původních ZABAGED atributů, jelikož se předpokládá, že jejich případnou kontrolu uživatel již provedl. Ponechané základní atributy jsou uvedeny v dokumentaci.
 
 \hspace{10mm} Dále je potřeba pro převod načíst tabulku CN2 hodnot z konfiguračního CSV souboru definovanou v uživatelském rozhraní. Takové hodnoty je vhodné uložit ve slovníku s korespondujícími kódy využití území a ignorovat hlavičku souboru, pokud ji obsahuje.  \newline
@@ -1085,7 +1083,7 @@ VRATIT slovník CN hodnot
 
 \hspace{10mm} Pro každou dobu opakování jsou potom z návrhových srážek zprostředkovaných WPS službou vypočteny výšky a objemy přímých odtoků stejným způsobem, jako pro případ jejich opatření z uživatelského vstupu.
 
-\hspace{10mm}Z těchto hodnot je možné získat vážený objem odtoku, který zahrnuje pravděpodobnosti pro normální počáteční podmínky (\textit{CN2}) a vlhké počáteční podmínky (\textit{CN3}). Ten se spočte jako \cite{MNYDGwleJOjKLRU2}:
+\hspace{10mm}Z těchto hodnot je možné získat vážený objem odtoku, který zahrnuje pravděpodobnosti pro normální počáteční podmínky (\textit{CN2}) a vlhké počáteční podmínky (\textit{CN3}). Ten se spočte jako  \cite{MNYDGwleJOjKdRUp} \cite{MNYDGwleJOjKLRU2}:
 
 \begin{equation}
 V_{N} = \sum_{i = A}^{F} \mathit{V}_{CN2} . Ptvar_{i} . Pcn_{2} + \mathit{V}_{CN3} . Ptvar_{i} . Pcn_{3}
@@ -1112,13 +1110,13 @@ Pcn_{2} = 1 -  Pcn_{3}
 \hspace{10mm}Tento jednoduchý CSV soubor obsahuje v každém řádku název vrstvy poskytované ZABAGED WFS službou. Jejich pořadí určuje pořadí, ve kterém budou spojeny do jedné vrstvy využití území. Vrstvy uvedené dříve budou připojeny nad vrstvy pod nimi. Označení \textit{LPIS\_layer} neslouží ke stažení vrstvy, ale pouze určuje pořadí vrstvy z WFS LPIS služby.
 
 \begin{figure}[H]
-\begin{lstlisting}[style=mypython, caption={Ukázka layers\_merging\_order.csv},label={kod:layers_merging_order.csv}]
+\begin{pythoncode}[style=mypython, caption={Ukázka layers\_merging\_order.csv},label={kod:layers_merging_order.csv}]
 ZABAGED_POLOHOPIS:Heliport
 ZABAGED_POLOHOPIS:Budova_jednotlivá_nebo_blok_budov__plocha_
 ZABAGED_POLOHOPIS:Silnice__dálnice
 LPIS_layer
 ZABAGED_POLOHOPIS:Okrasná_zahrada__park
-\end{lstlisting}
+\end{pythoncode}
 \end{figure}
 
 \subsection*{zabaged\_to\_LandUseCode\_table.yaml} \label{zabaged_to_LandUseCode_table.yaml}
@@ -1222,11 +1220,9 @@ Do této šablony jsou před odesláním WPS službě doplněny hodnoty souřadn
 \subsection*{CN\_table.csv} \label{CN_table.csv}
 \hspace{10mm} Tato CSV tabulka je využita pro přiřazení hodnoty CN pro kombinaci hodnot kódu využití území a typu hydrologických skupin půd. Pro každou hodnotu kódu využití území je dedikován jeden řádek. V každém řádku existuje pět sloupců. V prvním sloupci je definován kód využití území a v dalších čtyřech číselné hodnoty CN pro typy hydrologických skupin půd A, B, C a D. V některých řádcích se u hodnot CN vyskytují desetinná čísla, což značí jejich větší přesnost.
 
-\hspace{10mm} Tabulku není nutné využít pro přiřazení hodnot CN a uživatel má možnost si vybrat jinou stejně strukturovanou tabulku.
+\hspace{10mm} Tabulku není nutné využít pro přiřazení hodnot CN a uživatel má možnost si vybrat jinou stejně strukturovanou tabulku. Zdrojem hodnot v základním souboru je web \href{http://rain.fsv.cvut.cz}{\textit{rain.fsv.cvut.cz}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%              ZDROJ                  %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{figure}[H]
 \begin{pythoncode}[style=mypython, caption={Ukázka CN\_table.csv},label={kod:CN_table.csv}]
 LANDUSE_CODE,CN_A,CN_B,CN_C,CN_D
@@ -1495,9 +1491,9 @@ Material for MkDocs. Pro jednotlivé části jsou vytvořeny Markdown soubory. N
 
 \hspace{10mm} Mezi zahraniční QGIS zásuvné moduly s podobnou funkcí patří například řecký GWAT \cite{lymperis2024} nebo americký plugin \cite{siddiqui2020} popsán v části této práce 2.1 . Nicméně ty pro určení informací o využití území používají pouze neaktualizovaná rastrová data jako je Corine Land Cover s velikostmi pixelů v řádu desítek metrů.
 
-\hspace{10mm} Generace vrstvy využití území z dat ZABAGED a LPIS má určitě potenciál být rozšířena o přiřazení kódu využití území a bufferu dle více hodnot než jednoho atributového pole, což by mohlo například u kategorizované lesní plochy mohlo znamenat kombinovat informace o výškové i druhové kategorii zároveň. 
+\hspace{10mm} Generace vrstvy využití území z dat ZABAGED a LPIS má určitě potenciál být rozšířena o přiřazení kódu využití území a bufferu dle více hodnot než jednoho atributového pole, což by mohlo například u kategorizované lesní plochy mohlo znamenat kombinovat informace o výškové i druhové kategorii zároveň. Tato vrstva by také mohla být obohacena o další česká otevřená data jako RUIAN nebo DTM.
 
-\hspace{10mm} Dále by bylo možné detekovat, které prvky se nacházejí v intravilánu a které v extravilánů obcí, což by mohlo mít u některých z nich vliv na zpřesnění informace o využití území.
+\hspace{10mm} Dále by bylo možné detekovat, jaké prvky se nacházejí v intravilánu nebo extravilánu obcí, což může mít u některých vliv na zpřesnění určení využití území.
 
 \hspace{10mm} Využití YAML formátu u konfiguračních souborů přispívá k uživatelsky přívětivé úpravě, nicméně by určitě nebylo na škodu implementovat jejich editaci zprostředkovaně skrz uživatelské rozhraní. K zjednodušení jakýchkoliv úprav jak samotných tvořených vrstev či právě konfiguračních souborů slouží dokumentace.
 
@@ -1654,10 +1650,98 @@ LYMPERIS, Efstathios. \textit{GWAT – Watershed Analysis Toolbox}, version 3.0.
 \listoftables
 \chapter*{Seznam ukázek kódu} \label{list_code}
 \addcontentsline{toc}{chapter}{Seznam ukázek kódu}  
-\chapter*{Seznam zkratek} \label{list_abr}
-\addcontentsline{toc}{chapter}{Seznam zkratek}  
+
+\begin{itemize}
+\item \hyperref[kod:md]{Kód 1.1: Ukázka Markdown syntaxe} \dotfill 23
+\item \hyperref[kod:extent]{Pseudokód 2.1: Získání územního rozsahu} \dotfill 29
+\item \hyperref[kod:wfs]{Pseudokód 2.2: Stažení vrstvy z WFS služby} \dotfill 30
+\item \hyperref[kod:buffer]{Pseudokód 2.3: Přiřazení velikosti bufferu} \dotfill 31
+\item \hyperref[kod:extenttoplg]{Kód 2.4: Převod výřezu obrazovky na polygon} \dotfill 32
+\item \hyperref[kod:wps]{Kód 2.5: Spuštění komunikace s WPS službou} \dotfill 32
+\item \hyperref[kod:polygonizace]{Kód 2.6: Polygonizace rastrové vrstvy} \dotfill 33
+\item \hyperref[kod:intersection]{Kód 2.7: Propojení vrstev využití území a HSP} \dotfill 33
+\item \hyperref[kod:cncsv]{Kód 2.9: Ukázka layers\_merging\_order.csv} \dotfill 36
+\item \hyperref[kod:zabaged_to_LandUseCode_table.yaml]{Kód 2.10: Ukázka zabaged\_to\_LandUseCode\_table.yaml} \dotfill 36
+\item \hyperref[kod:ZABAGED.yaml]{Kód 2.11: Ukázka ZABAGED.yaml} \dotfill 37
+\item \hyperref[kod:LPIS.yaml]{Kód 2.12: Ukázka LPIS.yaml} \dotfill 38
+\item \hyperref[kod:CN_table.csv]{Kód 2.13: Ukázka CN\_table.csv} \dotfill 39
+\item \hyperref[kod:CR_check]{Pseudokód 2.14: Ukázka kontroly umístění zájmového území v ČR} \dotfill 40
+\item \hyperref[kod:overlap_check]{Pseudokód 2.15: Ukázka kontroly překrytí obou vrstev} \dotfill 41
+\item \hyperref[kod:csv_check]{Pseudokód 2.16: Ukázka kontroly CSV souboru} \dotfill 42
+\item \hyperref[kod:runoff_check]{Pseudokód 2.17: Ukázka kontroly uživatelského vstupu výšky úhrnu srážky} \dotfill 43
+
+
+\end{itemize}
+
+\chapter*{Seznam použitých zkratek} \label{list_abr}
+\addcontentsline{toc}{chapter}{Seznam použitých zkratek}
+
+\begin{itemize}
+  \item API - \textit{application programming interface}, rozhraní pro programování aplikací
+  \item CN - \textit{curvature number} - číslo odtokové křivky
+  \item CTU - \textit{Czech Technical University} - České vysoké učení technické
+  \item CSV - \textit{Comma-Separated Values} - souborový formát
+  \item ČHMÚ - Český hydrometeorologický ústav
+  \item ČR - Česká republika
+  \item ČSN - česká technická norma
+  \item DMR - digitální model reliéfu
+  \item DMP - digitální model povrchu
+  \item DPB - díl půdního bloku
+  \item DTM - Digitální technická mapa
+  \item ESA - \textit{European Space Agency} - Evropská kosmická agentura
+  \item FTP - \textit{File Transfer Protocol} - standardní komunikační protokol
+  \item GIS - Geografický informační systém
+  \item GML - \textit{Geography Markup Language} - jazyk uchovávající geografické informace
+  \item GPL - \textit{General Public License} - softwarová licence 
+  \item GNU - \textit{GNU's Not Unix!} - projekt zaměřený na svobodný software
+  \item GRID - ZABAGED data nadmořské výšky v síti
+  \item HEC-HMS - \textit{Hydrologic Engineering Center -Hydrologic Modeling System },  hydrologický software
+  \item HSP - hydrologické skupiny půd
+  \item HSG - \textit{Hydrologic Soil Group}, hydrologické skupiny půd
+  \item HTML - \textit{Hypertext Markup Language}, značkovací jazyk
+  \item INSPIRE - \textit{Infrastructure for Spatial Information in the European Community}, infrastruktura prostorových dat
+  
+  \item JSON - \textit{JavaScript Object Notation}, formát zápisu dat
+  \item LPIS - \textit{Land Parcel Identification System}, systém identifikace pozemků
+  \item MIT - \textit{Massachusetts Institute of Technology}, institut stojící za stejnojmennou licencí
+  \item NULL - označení prázdné hodnoty
+  \item OGC - \textit{Open Geospatial Consortium}, mezinárodní standardizační organizace 
+  \item ORNL - \textit{Oak Ridge National Laboratory}, výzkumná instituce
+  \item OS - operační systém
+  \item OSGeo - \textit{Open Source Geospatial Foundation}, nezisková organizace
+  \item PB - půdní blok
+  \item PDF - \textit{Portable Document Format}, formát dokumentů
+  \item PyQT - python knihovna 
+  \item RUIAN - Registr územní identifikace, adres a nemovitostí
+  \item SCS-CN - \textit{The Soil Conservation Service - Curve Number}, metoda odtokových křivek
+  \item SMODERP - Simulační model povrchového odtoku a erozního procesu
+  \item SQL - \textit{Structured Query Language}, standardizovaný strukturovaný dotazovací jazyk
+  \item TIN - \textit{ triangulated irregular network }, nepravidelná trojúhelníková síť
+  \item TIF - (někdy též TIFF) - \textit{Tagged Image File Format} formát rastrových souborů
+  \item URL - \textit{Uniform Resource Locator}, jednotný lokátor zdroje
+  \item USA - Spojené státy americké
+  \item USDA - \textit{U. S. Department of Agriculture}, Americké ministerstvo zemědělství
+  \item VÚMOP - Výzkumný ústav monitoringu a ochrany půdy, v. v. i.
+  \item WMS - \textit{Web Map Service}, webová mapová služba
+  \item WPS - \textit{Web Processing Service}, webová geoprocessingová služba
+  \item WYSIWYG - \textit{What you see is what you get}, intuitivní způsob editace dokumentů v počítači
+  \item XML - \textit{Extensible Markup Language}, značkovací jazyk
+  \item YAML - \textit{YAML Ain't Markup Language}, jazyk pro serializaci dat
+  \item ZABAGED - Základní báze geografických dat
+  \item ZM - Základní mapa České republiky 
+ \end{itemize}
+
+
 \chapter*{Seznam příloh} \label{list_attach}
 \addcontentsline{toc}{chapter}{Seznam příloh}  
 
+\begin{enumerate}
+  \item Odkazy na GitHub repozitář a dokumentaci
+  \item Dokumetace zásuvného modulu
+\end{enumerate}
+
+\includepdf[pages={1}]{PRILOHA_A.pdf} 
+\includepdf[pages=-]{PRILOHA_B.pdf} 
+  
 \end{document}
 
