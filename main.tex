@@ -318,7 +318,7 @@
 
 \section*{ABSTRAKT}
 \begin{flushleft}
-Tato práce popisuje vývoj zásuvného modulu open-source softwaru QGIS, který provádí přípravu dat a následnou analýzu odtoků SCS-CN  na automatizovaně získávaných volně dostupných geo datech v ČR jako jsou ZABAGED, LPIS a data poskytovaná projektem rain.fsv.cvut.cz. Data jsou ohodnocena podle způsobu využití území a v kombinaci s daty hydrologických skupin půd a hodnotou úhrnu návrhové srážky vstupují do následné analýzy.
+Tato práce popisuje vývoj zásuvného modulu open-source softwaru QGIS, který provádí přípravu dat a následnou analýzu odtoků SCS-CN  na automatizovaně získávaných volně dostupných geo datech v ČR jako jsou ZABAGED, LPIS a data půdní a srážková poskytovaná projektem rain.fsv.cvut.cz. Data jsou ohodnocena podle způsobu využití území a v kombinaci s daty hydrologických skupin půd a hodnotou úhrnu návrhové srážky vstupují do následné analýzy.
 \end{flushleft}
 
 
@@ -330,7 +330,7 @@ QGIS, SCS-CN, využití území, zásuvný modul, Python, odtok, povodí, GIS, Z
 
 \section*{ABSTRACT}
 \begin{flushleft}
-This master's thesis describes the development of a plugin for the open-source software QGIS, which performs data preparation and subsequent runoff analysis using the SCS-CN method on automatically acquired freely available geodata in the Czech Republic, such as ZABAGED, LPIS  and data provided by the rain.fsv.cvut.cz project. The data are evaluated based on land use and, in combination with data of hydrologic soil groups and the total design rainfall amount, serve as inputs for the subsequent analysis.
+This master's thesis describes the development of a plugin for the open-source software QGIS, which performs data preparation and subsequent runoff analysis using the SCS-CN method on automatically acquired freely available geodata in the Czech Republic, such as ZABAGED, LPIS  and soil and precipitation data provided by the rain.fsv.cvut.cz project. The data are evaluated based on land use and, in combination with data of hydrologic soil groups and the total design rainfall amount, serve as inputs for the subsequent analysis.
 \end{flushleft}
 
 
@@ -421,9 +421,9 @@ Samotná práce popisuje metodu odtokových křivek SCS-CN, software QGIS a s n�
 \chapter{Metodologie}
 
 \section{Metoda SCS-CN} \label{SCSCN}
-\hspace{10mm} Metoda odtokových křivek (SCS-CN) se používá pro určení objemu přímého odtoku. Výhody této metody spočívají v její jednoduchosti a schopnosti reagovat na vlastnosti povodí, jako je typ půdy či využití pozemku (land use). Metoda byla vyvinuta v roce 1954 a publikována v roce 1986 organizací USDA Natural Resources Conservation Service (dříve nazývána Soil Conservation Service). \cite{MNYDGwleJOjKLRUp} Vývoj probíhal na empirických datech získaných v USA, nicméně později byla modifikována na různé typy využití pozemku typické i pro jiné podmínky. \cite{Holman2003}\cite{Lian2020}
+\hspace{10mm} Metoda odtokových křivek (SCS-CN) se používá pro určení objemu přímého odtoku. Výhody této metody spočívají v její jednoduchosti a schopnosti reagovat na vlastnosti povodí, jako je typ půdy či využití pozemku (\textit{land use}). Metoda byla vyvinuta v roce 1954 a publikována v roce 1986 organizací USDA Natural Resources Conservation Service (dříve nazývána Soil Conservation Service). \cite{MNYDGwleJOjKLRUp} Vývoj probíhal na empirických datech získaných v USA, nicméně později byla modifikována na různé typy využití pozemku typické i pro jiné podmínky. \cite{Holman2003}\cite{Lian2020}
 
-\hspace{10mm} Tato metoda může být využita i v menších částech jednotlivých povodí, jejichž rozloha by neměla překročit 10 $km^{2}$ a není vhodná pro výpočet odtoku z tání sněhu. V České republice se využívá hlavně pro návrhy protierozních opatření, a to v souladu s ČSN 75 1400. \cite{MNYDGwleJOjKdRUp}
+\hspace{10mm} Tato metoda může být aplikována i v menších částech jednotlivých povodí, jejichž rozloha by neměla překročit 10 $km^{2}$ \cite{Pasak1983} a není vhodná pro výpočet odtoku z tání sněhu. V České republice se využívá hlavně pro návrhy protierozních opatření, a to v souladu s ČSN 75 1400. \cite{MNYDGwleJOjKdRUp}
 
 Výstupem metody CN křivek je hodnota efektivní srážkové výšky dle vzorce (1) \cite{MNYDGwleJOjKdRUp} \cite{MNYDGwleJOjKLRU2} :
 
@@ -445,9 +445,9 @@ Hodnota počáteční ztráty ($I_{a}$) se určí jako:
 I_{a} = \lambda A
 \end{equation}
 
-\hspace{10mm} Kde $\lambda$ je poměrový koeficient, který se v základu volí $0.2$. Tato hodnota byla empiricky odvozena na povodích na území USA. \cite{Lian2020}\cite{MNYDGwleJOjKLRU2} Takto zvolená hodnota se stala jedním důvodem pro kritiku této metody. \cite{MNYDGwleJOjKLRUp} \cite{MNYDGwleJOjKLRU3} \\
+\hspace{10mm} Kde $\lambda$ je poměrový koeficient, který se v základu volí $0.2$. Tato hodnota byla empiricky odvozena na povodích na území USA. \cite{Lian2020}\cite{MNYDGwleJOjKLRU2} Takto zvolená hodnota se stala jedním důvodem pro kritiku této metody. \cite{MNYDGwleJOjKLRUp} \\
 
-\hspace{10mm} Maximální potenciální retence ($A$) je dále určena na základě CN (curvature number) křivek ze vztahu \cite{MNYDGwleJOjKdRUp} : 
+\hspace{10mm} Maximální potenciální retence ($A$) je dále určena na základě CN (\textit{curve number}) křivek ze vztahu \cite{MNYDGwleJOjKdRUp} : 
 \begin{equation}
 A = 25,4 (\frac{1000}{CN}-10)
 \end{equation}
@@ -456,12 +456,12 @@ hranici potenciální retence, což by znamenalo, že takové povodí je nekone�
 
 \begin{figure}[ht] \label{obr1}
 \centering
-\includegraphics[height=11cm]{pictures/CNcurves.jpg}
-\caption{ Závislost výšky přímého odtoku ($H_{o}$) na úhrnu deště($H_{S}$) a číslech odtokových křivek (CN) \textit{(zdroj: Ochrana zemědělské půdy před erozí, Janeček, 2012)}}
+\includegraphics[height=9cm]{pictures/SCSCN.png}
+\caption{ Závislost výšky přímého odtoku ($H_{o}$, Q) na úhrnu deště($H_{S}$, P) a číslech odtokových křivek (CN)  \cite{MNYDGwleJOjKLRU5}}
 \label{fig:example}
 \end{figure}
 
- \hspace{10mm} Tato čísla jsou tabelována pro dvojici jevů. Těmi jsou hydrologické skupiny půd (HSP) a způsob využití území (land use).[4][5][6][7]. V České republice existuje několik tabulek CN hodnot odvozených z originálních USDA hodnot, a to hodnoty dle metodiky Ochrana zemědělské půdy před erozí (rain.fsv.cvut.cz), která je nejnovější platnou metodikou\cite{MNYDGwleJOjKdRUp}. Dříve byly též odvozeny hodnoty CN křivek doporučené v softwaru HydroCad nebo hodnoty CN křivek z projektu QD1368 \cite{Kulasova2004}.
+ \hspace{10mm} Tato čísla jsou tabelována pro dvojici jevů. Těmi jsou hydrologické skupiny půd (HSP) a způsob využití území (land use).[4][5][6][7]. V České republice existují tabulky CN hodnot odvozených z originálních USDA hodnot, a to hodnoty dle metodiky Ochrana zemědělské půdy před erozí (rain.fsv.cvut.cz), která je nejnovější platnou metodikou\cite{MNYDGwleJOjKdRUp}. Dříve byly též odvozeny hodnoty CN křivek doporučené v softwaru HydroCad nebo hodnoty CN křivek z projektu QD1368 \cite{Kulasova2004}.
 
  \hspace{10mm} CN hodnoty jsou také stanoveny pro více počátečních podmínek nasycenosti, a to CN1 pro suché podmínky, CN2 (také pouze CN) pro průměrné podmínky a CN3 pro podmínky vlhké. \cite{dile2016} Nicméně suché podmínky (CN1) na území České republiky prakticky nenastávají \cite{MNYDGwleJOjKdRUp}. Hodnoty CN1 a CN3 lze získat z hodnoty CN2 následovně \cite{Batvari2021}:
  
@@ -1245,7 +1245,7 @@ LANDUSE_CODE,CN_A,CN_B,CN_C,CN_D
 
 \hspace{10mm} Skrz něj se provede několik kontrol vstupů. Nejdříve zda je v projektu, a případně u polygonu definující zájmové území, nastaven souřadnicový systém S-JTSK se směry os východ / sever (EPSG: 5514). Dále zda se zájmové území, definováno polygonem nebo výřezem obrazovky, nachází na území České republiky. Dále se provede kontrola,  zda existuje daný konfigurační soubor s názvy vrstev požadovaných po WFS službách. 
 
-\hspace{10mm} Poslední kontrolou zprostředkovanou tímto objektem před zahájením stahování vrstev je, jestli plocha zájmového území nepřesahuje 20 $km^{2}$. Tento limit je nastaven, jelikož je maximální rozlohou přijatelnou pro WPS službu poskytující data o typech půd. Také je na místě dobré zmínit, že metoda SCS-CN je vhodná pro povodí rozlohou menší než 10 $km^{2}$ \cite{MNYDGwleJOjKdRUp}, ale i přesto je uživateli umožněno ji provést na území dvakrát větším.
+\hspace{10mm} Poslední kontrolou zprostředkovanou tímto objektem před zahájením stahování vrstev je, jestli plocha zájmového území nepřesahuje 20 $km^{2}$. Tento limit je nastaven, jelikož je maximální rozlohou přijatelnou pro WPS službu poskytující data o typech půd. Také je na místě dobré zmínit, že metoda SCS-CN je vhodná pro povodí rozlohou menší než 10 $km^{2}$ \cite{Pasak1983}, ale i přesto je uživateli umožněno ji provést na území dvakrát větším.
 
 \begin{figure}[H]
 \begin{pseudocode}[style=mypseudocode, caption={Ukázka kontroly umístění zájmového území v ČR},label={kod:CR_check}]
@@ -1481,9 +1481,69 @@ Material for MkDocs. Pro jednotlivé části jsou vytvořeny Markdown soubory. N
 
 \hspace{10mm} Pomocí GitHub Actions jsou z konfiguračních a Markdown souborů generovány HTML stránky při každé úpravě hlavní větve GitHub repozitáře. Generované soubory jsou vždy vloženy do dedikované větve \textit{gh-pages} a z ní jsou publikovány na web pomocí služby GitHub Pages. Odkaz s dokumentací byl vložen do README souboru repozitáře a také byl propojen s tlačítkem v uživatelském rozhraní zásuvného modulu, které po kliknutí otevře okno ve výchozím prohlížeči.
 
+\section{Vyhodnocení generovaných vektorových vrstev} \label{casestudyiguess}
+
+\hspace{10mm} Pro hodnocení funkce výstupů zásuvného modulu bylo zvoleno zájmové území definované polygonem. Ten byl zvolen jako polygon povodí \textit{1-04-06-024}, získaný z portálu \textit{dibavod.cz}, jelikož se svou rozlohou nepřekračuje mez 10 $km^{2}$, pro kterou je metoda odtokových křivek vhodná. \cite{Pasak1983}
+
+\begin{figure}[H] \label{obr24}
+\centering
+\includegraphics[height=9cm]{pictures/casestudy1.png}
+\caption{Ukázka zájmového území pro hodnocení s podkladem OpenStreetMap}
+\label{cs1}
+\end{figure}
+\hspace{10mm} Vrstva využití území se generuje korektně. Žádné prvky se plošně nepřekrývají a na zde se nacházející liniové prvky (silnice a liniová vegetace) se korektně aplikuje buffer. Vrstva je přesně oříznutá hranicí definičního polygonu území. Symbologie byla očekávaně přiřazena atributem kódu využití území. Prvky jsou propojeny v určeném pořadí.
+
+
+\begin{figure}[H] \label{obr25}
+\centering
+\includegraphics[height=9cm]{pictures/casestudy2.png}
+\caption{Ukázka vrstvy využití území}
+\label{cs2}
+\end{figure}
+
+\hspace{10mm} Polygonizovaná vrstva hydrologických skupin půd se též vytvořila podle představ. Obsahuje HSP typu B a C. Vrstva je doplněna o polygony definující vodní plochy. Je opět vytvořena uvnitř polygonu, který definuje zájmové území.
+
+\begin{figure}[H] \label{obr26}
+\centering
+\includegraphics[height=9cm]{pictures/casestudy3.png}
+\caption{Ukázka vrstvy využití území}
+\label{cs3}
+\end{figure}
+
+\hspace{10mm} Spojení vrstev také proběhlo bez komplikací, včetně aplikace požadované symbologie.
+
+\begin{figure}[H] \label{obr27}
+\centering
+\includegraphics[height=9cm]{pictures/casestudy4.png}
+\caption{Ukázka propojený vrstvy využití území a HSP}
+\label{cs4}
+\end{figure}
+
+\hspace{10mm} Vytvoření CN vrstvy proběhlo dle předpokladů zvolené CN tabulky. Nicméně ve vrstvě vznikly prvky s prázdnými hodnotami CN, které jsou symbologií zvýrazněny červeně. Ty vznikly nad prvky ZABAGED objektů (4.12 BAŽINA, MOČÁL), kterým je zvolen kód využití území. Nicméně u tohoto způsobu využití území zatím nebylo rozhodnuto o jeho hodnotách CN. Přiřazení takových hodnot u malého procenta objektů je stále v řešení zástupců Katedry hydromeliorací a krajinného inženýrství \textit{(K143)}.
+
+\hspace{10mm} V takových případech má uživatel několik možností na doplnění hodnot. Buď může atribut CN2 doplnit do atributových polí, doplnit hodnoty CN do konfiguračního CSV souboru (\textit{CN\_table.csv}) nebo si v uživatelském rozhraní zvolit vlastní tabulku CN hodnot a provést jejich přiřazení znovu. Zanechání hodnot prázdných nebrání následujícímu vypočtu objemů přímých odtoků.
+
+\hspace{10mm} Symbologie je správně automaticky vytvořena.
+
+\begin{figure}[H] \label{obr28}
+\centering
+\includegraphics[height=9cm]{pictures/casestudy5.png}
+\caption{Ukázka vrstvy obsahující hodnoty CN}
+\label{cs5}
+\end{figure}
+
+\hspace{10mm} Vrstvy objemů přímých odtoků byly vygenerovány v pořádku pro vybrané doby opakování, zadání jedné hodnoty výšky úhrnu srážky a zadání více takových hodnot najednou. Všechny výpočty navrátili očekávané hodnoty objemů přímých odtoků. I tvorba symbologie proběhla jak měla. 
+
+\begin{figure}[H] \label{obr29}
+\centering
+\includegraphics[height=9cm]{pictures/casestudy6.png}
+\caption{Ukázka vrstvy obsahující hodnoty objemů přímých odtoků pro dobu opakování 10 let}
+\label{cs6}
+\end{figure}
+
 \chapter*{Diskuze} \label{discusion}
 \addcontentsline{toc}{chapter}{Diskuze}
-\hspace{10mm} V České republice je metoda SCS-CN hojně využívána pro výpočet úhrnu efektivní srážky. Není tedy divu, že existuje řada nástrojů, která v současnosti toto úsilí ulehčuje. Mezi takové patří například softwary HEC-HMS, Atlas HYDROLOGIE, HydroRAIN nebo komerční DesQ-Max-Q. \cite{MNYDGwleJOjKLRU2}
+\hspace{10mm} V České republice je metoda SCS-CN hojně využívána pro výpočet úhrnu efektivní srážky. Není tedy divu, že existuje řada nástrojů, která v současnosti toto úsilí ulehčuje. Mezi takové patří například aplikace HEC-HMS, Atlas HYDROLOGIE, HydroRAIN nebo komerční DesQ-Max-Q. \cite{MNYDGwleJOjKLRU2}
 
 \hspace{10mm} Na rozdíl od těchto nástrojů umožňuje vyvinutý zásuvný modul tvořit vrstvu využití území z aktuálních otevřených dat ZABAGED a LPIS, což považuji za jeho největší přínos. 
 
@@ -1491,13 +1551,13 @@ Material for MkDocs. Pro jednotlivé části jsou vytvořeny Markdown soubory. N
 
 \hspace{10mm} Mezi zahraniční QGIS zásuvné moduly s podobnou funkcí patří například řecký GWAT \cite{lymperis2024} nebo americký plugin \cite{siddiqui2020} popsán v části této práce 2.1 . Nicméně ty pro určení informací o využití území používají pouze neaktualizovaná rastrová data jako je Corine Land Cover s velikostmi pixelů v řádu desítek metrů.
 
-\hspace{10mm} Generace vrstvy využití území z dat ZABAGED a LPIS má určitě potenciál být rozšířena o přiřazení kódu využití území a bufferu dle více hodnot než jednoho atributového pole, což by mohlo například u kategorizované lesní plochy mohlo znamenat kombinovat informace o výškové i druhové kategorii zároveň. Tato vrstva by také mohla být obohacena o další česká otevřená data jako RUIAN nebo DTM.
+\hspace{10mm} Generace vrstvy využití území z dat ZABAGED a LPIS má určitě potenciál být rozšířena o přiřazení kódu využití území a bufferu dle více hodnot než jednoho atributového pole, což by například u kategorizované lesní plochy mohlo znamenat kombinovat informace o výškové i druhové kategorii zároveň. Tato vrstva by také mohla být obohacena o další česká otevřená data, jako jsou RÚIAN nebo DTM.
 
 \hspace{10mm} Dále by bylo možné detekovat, jaké prvky se nacházejí v intravilánu nebo extravilánu obcí, což může mít u některých vliv na zpřesnění určení využití území.
 
-\hspace{10mm} Využití YAML formátu u konfiguračních souborů přispívá k uživatelsky přívětivé úpravě, nicméně by určitě nebylo na škodu implementovat jejich editaci zprostředkovaně skrz uživatelské rozhraní. K zjednodušení jakýchkoliv úprav jak samotných tvořených vrstev či právě konfiguračních souborů slouží dokumentace.
+\hspace{10mm} Využití YAML formátu u konfiguračních souborů přispívá k uživatelsky přívětivé úpravě, nicméně by určitě nebylo na škodu implementovat jejich editaci zprostředkovaně skrz uživatelské rozhraní. K zjednodušení jakýchkoliv úprav samotných tvořených vrstev či právě konfiguračních souborů slouží dokumentace.
 
-\hspace{10mm} Stažení vrstev LPIS a ZABAGED s jejich následnou editací může v složitějších územích trvat okolo tří minut. Nicméně je nutno zmínit, že třetinu tohoto času trvá navrácení pouze jediné LPIS vrstvy z WFS služby. Celý tento postup je jako většina dalších přesunuta do vedlejšího vlákna QGIS pro zachování responsivity softwaru. 
+\hspace{10mm} Stažení vrstev LPIS a ZABAGED s jejich následnou editací může v složitějších územích trvat okolo tří minut. Nicméně je nutno zmínit, že třetinu tohoto času trvá navrácení pouze jediné LPIS vrstvy z WFS služby. Celý tento postup je, jako většina dalších, přesunut do vedlejšího vlákna QGIS pro zachování responsivity softwaru. 
 
 \hspace{10mm} Pro zjednodušení instalace by také bylo vhodné v budoucnu zásuvný modul publikovat v oficiálním QGIS repozitáři. Po tomto kroku by již nebylo modul nutné instalovat ze ZIP archivu, ale přímo ze správce zásuvných modulů v QGIS.
 
@@ -1505,13 +1565,13 @@ Material for MkDocs. Pro jednotlivé části jsou vytvořeny Markdown soubory. N
 \addcontentsline{toc}{chapter}{Závěr}
 \hspace{10mm} Výsledkem práce je zásuvný modul softwaru QGIS, který umožňuje automatizované stahování českých geodat, jejich ohodnocení atributy a vzájemné propojení. Dle zvolené tabulky umožňuje přiřazení CN hodnot a takovou vrstvu použít jako vstup do výpočtu objemu přímého odtoku pro projektované výšky úhrnů získaných buď uživatelskou definicí nebo pomocí WPS služby pro vybrané doby opakování.
 
-\hspace{10mm} Uživateli je umožněno pro hydrologické analýzy pomocí konfiguračních souborů editovat, jaké vrstvy budou využity pro vytvoření vrstvy využití území a v jakém pořadí budou spojeny. Také je možné definovat prvkům vlastní šířky bufferu či zpřesnění kódu využití území dle hodnoty jejího vybraného atributu. Je také možné definovat uživatelskou tabulku pro získání CN hodnot či jednoduše změnit URL adresy poskytovatelů dat v případě jejich změny.
+\hspace{10mm} Uživateli je umožněno pro hydrologické analýzy pomocí konfiguračních souborů editovat, jaké vrstvy budou aplikovány pro vytvoření vrstvy využití území a v jakém pořadí budou spojeny. Také je možné definovat prvkům vlastní šířky bufferu či zpřesnění kódu využití území dle hodnoty jejího vybraného atributu. Je také možné definovat uživatelskou tabulku pro získání CN hodnot či jednoduše změnit URL adresy poskytovatelů dat v případě jejich změny.
 
 \hspace{10mm} Uživatelské vstupy jsou před každým procesem kontrolovány, zda splňují potřebné parametry a zásuvný modul je také doplněn o softwarové testy a dokumentaci, která je, včetně odkazu na GitHub repozitář, uvedena jako příloha této práce. Každá vytvořená vrstva má také vlastní definovanou symbologii uchovávanou v barevných tabulkách nebo automaticky přiřazenou.
 
 \hspace{10mm} Zásuvný modul poskytuje výsledky s velkou mírou automatizace nicméně je vhodné, aby byl využíván odborně způsobilými osobami s uvážením vhodnosti základně zvolených parametrů této generace a samotných výsledků. Tomuto je uzpůsobena i volená symbologie zvýrazňující prvky s chybějícími či nevhodnými hodnotami.
 
-\hspace{10mm} Zásuvný modul je publikován pod licencí \textit{GNU General Public License verze 3}, která je převzata z využití QGIS Python API (\textit{PyQGIS}).
+\hspace{10mm} Zásuvný modul je publikován pod licencí \textit{GNU General Public License verze 3}, která je převzata z čerpání funkcí QGIS Python API (\textit{PyQGIS}).
 
 \hspace{10mm} Jako možná rozšíření zásuvného modulu bych uvedl například filtrování symbologie tak, aby se zobrazovaly pouze třídy přítomné v aktuální vrstvě, nebo doplnění konfiguračních souborů o buffery a kódy využití území pro více ZABAGED prvků. Jakékoliv další zjištěné nedostatky je možné zmínit v GitHub repozitáři v záložce \textit{"Issues"}.
 
@@ -1533,6 +1593,10 @@ HOLMAN, I.P.; HOLLIS, J.M.; BAMLEY, M.E. a THOMPSON, T.R.E. The contribution of 
 \bibitem{Lian2020}
 LIAN, Huishu; YEN, Haw; HUANG, Jr-Chuan; FENG, Qingyu; QIN, Lihuan et al. CN-China: Revised runoff curve number by using rainfall-runoff events data in China. \textit{Water Research}. 2020, roč. 2020, č. 177, s.~115767. ISSN 0043-1354. Dostupné také z: \url{https://www.sciencedirect.com/science/article/pii/S0043135420303043}.
 
+\bibitem{Pasak1983}
+KADLEC, Václav. \textit{Navrhování technických protierozních opatření: metodika}. Praha: Výzkumný ústav meliorací a ochrany půdy, 2014. ISBN 978-80-87361-29-0.
+
+
 \bibitem{MNYDGwleJOjKdRUp}
 PODHRÁZSKÁ, Jana; BEDNÁŘ, Marek; DOSTÁL, Tomáš; DUMBROVSKÝ, Miroslav; HANEL, Martin et al. \textit{Ochrana zemědělské půdy před erozí: metodika}. Praha: Výzkumný ústav meliorací a ochrany půdy, 2024. ISBN 978-80-7212-667-5.
 
@@ -1541,10 +1605,7 @@ KAVKA, Petr a KAŠPAR, Marek. Krátkodobé srážky pro hydrologické modelován
 \textit{ Fakulta stavební ČVUT v Praze, 2023. ISBN 978-80-01-07115-1}
 
 \bibitem{MNYDGwleJOjKLRU3}
-JANEČEK, M. a P. KOVÁŘ. Aktuálnost „Metody čísel odtokových křivek –
-CN“ k určování přímého odtoku z malého povodí.
-\textit{ Vodní hospodářství. 2010,
-č. 7, s. 187-189.} 
+SMELÍK, Lukáš. Analýza změn odtokových poměrů pro Českou republiku. \textit{VTEI}. 2016, roč. 58, č. 4, s.~7-12. ISSN 1805-6555.
 
 \bibitem{MNYDGwleJOjKLRU5}
 Urban hydrology for small watersheds: Technical Release 55 (TR-55) (Second ed.).
