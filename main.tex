@@ -421,9 +421,9 @@ Samotná práce popisuje metodu odtokových křivek SCS-CN, software QGIS a s n�
 \chapter{Metodologie}
 
 \section{Metoda SCS-CN} \label{SCSCN}
-\hspace{10mm} Metoda odtokových křivek (SCS-CN) se používá pro určení objemu přímého odtoku. Výhody této metody spočívají v její jednoduchosti a schopnosti reagovat na vlastnosti povodí, jako je typ půdy či využití pozemku (\textit{land use}). Metoda byla vyvinuta v roce 1954 a publikována v roce 1986 organizací USDA Natural Resources Conservation Service (dříve nazývána Soil Conservation Service). \cite{MNYDGwleJOjKLRUp} Vývoj probíhal na empirických datech získaných v USA, nicméně později byla modifikována na různé typy využití pozemku typické i pro jiné podmínky. \cite{Holman2003}\cite{Lian2020}
+\hspace{10mm} Metoda odtokových křivek (SCS-CN) se používá pro určení objemu přímého odtoku. Výhody této metody spočívají v její jednoduchosti a schopnosti reagovat na vlastnosti povodí, jako je typ půdy či využití pozemku (\textit{land use}). Metoda byla vyvinuta v roce 1954 a publikována v roce 1986 organizací USDA Natural Resources Conservation Service (dříve nazývána Soil Conservation Service). \cite{MNYDGwleJOjKLRUp} Vývoj probíhal na empirických datech získaných v USA, nicméně později byla modifikována na různé typy využití částí povrchu typické i pro jiné podmínky. \cite{Holman2003}\cite{Lian2020}
 
-\hspace{10mm} Tato metoda může být aplikována i v menších částech jednotlivých povodí, jejichž rozloha by neměla překročit 10 $km^{2}$ \cite{Pasak1983} a není vhodná pro výpočet odtoku z tání sněhu. V České republice se využívá hlavně pro návrhy protierozních opatření, a to v souladu s ČSN 75 1400. \cite{MNYDGwleJOjKdRUp}
+\hspace{10mm} Tato metoda může být aplikována i v menších částech jednotlivých povodí, jejichž rozloha by neměla překročit 10 $km^{2}$ \cite{Pasak1983} a není vhodná pro výpočet odtoku z tání sněhu. V České republice se využívá hlavně pro návrhy protierozních opatření, a to v souladu s ČSN 75 4500. \cite{MNYDGwleJOjKdRUp}
 
 Výstupem metody CN křivek je hodnota efektivní srážkové výšky dle vzorce (1) \cite{MNYDGwleJOjKdRUp} \cite{MNYDGwleJOjKLRU2} :
 
@@ -461,7 +461,7 @@ hranici potenciální retence, což by znamenalo, že takové povodí je nekone�
 \label{fig:example}
 \end{figure}
 
- \hspace{10mm} Tato čísla jsou tabelována pro dvojici jevů. Těmi jsou hydrologické skupiny půd (HSP) a způsob využití území (land use).[4][5][6][7]. V České republice existují tabulky CN hodnot odvozených z originálních USDA hodnot, a to hodnoty dle metodiky Ochrana zemědělské půdy před erozí (rain.fsv.cvut.cz), která je nejnovější platnou metodikou\cite{MNYDGwleJOjKdRUp}. Dříve byly též odvozeny hodnoty CN křivek doporučené v softwaru HydroCad nebo hodnoty CN křivek z projektu QD1368 \cite{Kulasova2004}.
+ \hspace{10mm} Tato čísla jsou tabelována pro dvojici jevů. Těmi jsou hydrologické skupiny půd (HSP) a způsob využití území (land use).[4][5][6][7]. V České republice existují tabulky CN hodnot odvozených z originálních USDA hodnot, a to hodnoty dle metodiky Ochrana zemědělské půdy před erozí (rain.fsv.cvut.cz), která je nejnovější platnou metodikou\cite{MNYDGwleJOjKdRUp}. V minulosti byly též odvozeny hodnoty CN křivek doporučené v softwaru HydroCad nebo hodnoty CN křivek z projektu QD1368 \cite{Kulasova2004}.
 
  \hspace{10mm} CN hodnoty jsou také stanoveny pro více počátečních podmínek nasycenosti, a to CN1 pro suché podmínky, CN2 (také pouze CN) pro průměrné podmínky a CN3 pro podmínky vlhké. \cite{dile2016} Nicméně suché podmínky (CN1) na území České republiky prakticky nenastávají \cite{MNYDGwleJOjKdRUp}. Hodnoty CN1 a CN3 lze získat z hodnoty CN2 následovně \cite{Batvari2021}:
  
@@ -496,7 +496,7 @@ hranici potenciální retence, což by znamenalo, že takové povodí je nekone�
 % Různé zdroje půd (HSP) - velký rozdíl výsledků, je tam graf https://www.vodnihospodarstvi.cz/ArchivPDF/vh2022/vh_09-2022.pdf
 \newpage
 \section{QGIS} \label{qgis}
-\hspace{10mm} QGIS (dříve známý jako Quantum GIS) je jeden z geografických informačních systémů (GIS), tj.  informační systém zabývající se informacemi, které se týkají jevů přidružených k místu vztaženému k Zemi. \cite{dONaeOjXanl1W2md}
+\hspace{10mm} QGIS (dříve známý jako Quantum GIS) je jeden z nástrojů geografických informačních systémů (GIS), tj.  informační systém zabývající se informacemi, které se týkají jevů přidružených k místu vztaženému k Zemi. \cite{dONaeOjXanl1W2md}
 
 \begin{figure}[ht] \label{obr2}
 \centering
@@ -547,7 +547,7 @@ hranici potenciální retence, což by znamenalo, že takové povodí je nekone�
 \newpage
 \subsection{ZABAGED\texorpdfstring{\textsuperscript{\textregistered}}{ (R)}} \label{zabaged}
 
-\hspace{10mm} Základní báze geografických dat České republiky (ZABAGED\texorpdfstring{\textsuperscript{\textregistered}}{ (R)}) je vektorová geografická datová sada ve správě Zeměměřického úřadu ve veřejném zájmu. Skládá se z 140 různých polohopisných geografických objektů, které spadají do následujících kategorií \cite{nEFEg7XpI9hVQCiO} :
+\hspace{10mm} Základní báze geografických dat České republiky (ZABAGED\texorpdfstring{\textsuperscript{\textregistered}}{ (R)}) je vektorová geografická datová sada spravovaná Zeměměřickým úřadem ve veřejném zájmu. Skládá se z 140 různých polohopisných geografických objektů, které spadají do následujících kategorií \cite{nEFEg7XpI9hVQCiO} :
 \begin{itemize}
 \item 1. Sídla, hospodářské a kulturní objekty
 \item 2. Komunikace
@@ -582,7 +582,7 @@ skenování či data od externích subjektů. \cite{nEFEg7XpI9hVQCiO}
 
 \hspace{10mm} LPIS je veden ve všech státech Evropské unie, ale v různých státech se pozemky uchovávají v jiných druzích parcel (katastrální parcely, zemědělské parcely, zemědělské půdní bloky nebo fyzické bloky). \cite{KocurBera2019}
 
-Takové plochy obsahují údaje o druhu zemědělské kultury, a to \cite{sSYEwLE0rNKoWGYk}:
+Takové plochy na našem území obsahují údaje o druhu zemědělské kultury, a těmi jsou \cite{sSYEwLE0rNKoWGYk}:
 \begin{itemize}
     \item orná půda, kterou je
     \begin{itemize}
@@ -662,9 +662,10 @@ Zdroje hydrologických skupin půd v České republice existují celkem čtyři 
 \label{fig:xml}
 \end{figure}
 
+\newpage
 \hspace{10mm} Pro komunikaci se serverem poskytující WFS službu může uživatel využít následujících jedenáct operací:
 
-\begin{table}[htbp]
+\begin{table}[H]
   \centering
   \caption{Tabulka WFS operací} 
   \label{tab:WFS}
@@ -714,7 +715,7 @@ Zdroje hydrologických skupin půd v České republice existují celkem čtyři 
 
 
 
-\hspace{10mm}YAML (YAML Ain’t Markup Language) je jazyk pro serializaci dat. Je tvořen tak, aby byl čitelný a pohodlný pro užívání s řadou novodobých programovacích jazyků. Informace uchovává v Unicode charakterů strukturovaných v hodnotových párech a  odrážkových seznamech.  \cite{hsOq0virmVAO85Ud}
+\hspace{10mm}YAML (YAML Ain’t Markup Language) je jazyk pro serializaci dat. Je tvořen tak, aby byl čitelný a pohodlný pro užívání s řadou novodobých programovacích jazyků. Informace uchovává v podobě Unicode charakterů strukturovaných v hodnotových párech a  odrážkových seznamech.  \cite{hsOq0virmVAO85Ud}
 \begin{figure}[ht] \label{obr7}
 \centering
 \includegraphics[height=3cm]{pictures/yaml.png}
@@ -730,14 +731,14 @@ Zdroje hydrologických skupin půd v České republice existují celkem čtyři 
 \subsection{Python knihovna PyQt} \label{pyqt}
 \hspace{10mm}PyQt je sada Python příkazů pro multiplatformní aplikační vývojovou platformu, která kombinuje všechny výhody Qt a Pythonu.  \cite{Summerfield2007}
 
-\begin{figure}[ht] \label{obr8}
+\begin{figure}[H] \label{obr8}
 \centering
 \includegraphics[height=3cm]{pictures/Python_and_Qt.png}
 \caption{Kombinace log Python a Qt  (zdroj: Wikimedia Commons)}
 \label{fig:qt}
 \end{figure}
 
-\hspace{10mm}Qt je aplikační rámec pro tvorbu uživatelských prostředí podporující řadu hardwaru a operačních systémů. Tvorbu uživatelského prostředí zprostředkovávají softwary jako jsou QtCreator nebo QtDesigner, jehož specializovaná verze je součástí instalace QGIS.
+\hspace{10mm}Qt je aplikační rámec pro tvorbu uživatelských prostředí podporující řadu hardwaru a operačních systémů. Tvorbu uživatelského prostředí zprostředkovávají aplikace jako jsou QtCreator nebo QtDesigner, jehož specializovaná verze je součástí instalace QGIS.
 
 \hspace{10mm}PyQt umožňuje propojit Python kód s množstvím prvků uživatelského prostředí, jako jsou tlačítka, popisky, přepínače, zaškrtávací políčka, rozbalovací seznamy nebo okna pro vstup textu.
 
@@ -1233,7 +1234,7 @@ LANDUSE_CODE,CN_A,CN_B,CN_C,CN_D
 \end{figure}
 
 \subsection*{WPS\_config.yaml} \label{WPS_config.yaml}
-\hspace{10mm} Tento soubor obsahuje, podobně jako\textit{Soil.yaml} dva hodnotové páry, a to \textit{URL} s adresou WPS služby poskytující data o šestihodinových srážkách a \textit{process\_identifier}, který obsahuje řetězec obsahující název požadovaného procesu této služby.
+\hspace{10mm} Tento soubor obsahuje, podobně jako \textit{Soil.yaml} dva hodnotové páry, a to \textit{URL} s adresou WPS služby poskytující data o šestihodinových srážkách a \textit{process\_identifier}, který obsahuje řetězec obsahující název požadovaného procesu této služby.
 
 \section{Kontroly} \label{checks}
 \hspace{10mm} Všechny kontroly, které nejsou splněny, ukončí právě probíhající proces. Ty obecné vypíšou do uživatelského rozhraní QGIS. Více detailní chybové hlášky se objeví ve zprávách výpisu prostředí QGIS.
@@ -1243,7 +1244,7 @@ LANDUSE_CODE,CN_A,CN_B,CN_C,CN_D
 
 \hspace{10mm} Pro následující kontroly je vytvořen objekt \textit{InputChecker}, pro který jsou vstupem již zmíněný polygon, souřadnice jeho ohrazujícího obdélníku, názvy stahovaných ZABAGED vrstev z konfiguračního souboru, právě aktivní QGIS projekt a příznaky označující, pro jaký proces se kontroly provádí.
 
-\hspace{10mm} Skrz něj se provede několik kontrol vstupů. Nejdříve zda je v projektu, a případně u polygonu definující zájmové území, nastaven souřadnicový systém S-JTSK se směry os východ / sever (EPSG: 5514). Dále zda se zájmové území, definováno polygonem nebo výřezem obrazovky, nachází na území České republiky. Dále se provede kontrola,  zda existuje daný konfigurační soubor s názvy vrstev požadovaných po WFS službách. 
+\hspace{10mm} Skrz něj se provede několik kontrol vstupů. Nejdříve zda je v projektu, a případně u polygonu definující zájmové území, nastaven souřadnicový systém S-JTSK se směry os východ / sever (EPSG: 5514). Dále zda se zájmové území, definováno polygonem nebo výřezem obrazovky, nachází na území České republiky. Poté se provede kontrola,  zda existuje daný konfigurační soubor s názvy vrstev požadovaných po WFS službách. 
 
 \hspace{10mm} Poslední kontrolou zprostředkovanou tímto objektem před zahájením stahování vrstev je, jestli plocha zájmového území nepřesahuje 20 $km^{2}$. Tento limit je nastaven, jelikož je maximální rozlohou přijatelnou pro WPS službu poskytující data o typech půd. Také je na místě dobré zmínit, že metoda SCS-CN je vhodná pro povodí rozlohou menší než 10 $km^{2}$ \cite{Pasak1983}, ale i přesto je uživateli umožněno ji provést na území dvakrát větším.
 
